@@ -3,6 +3,8 @@ const posts = require('./controllers/posts');
 const votes = require('./controllers/votes');
 const comments = require('./controllers/comments');
 const requireAuth = require('./middlewares/requireAuth');
+const postAuth = require('./middlewares/postAuth');
+const commentAuth = require('./middlewares/commentAuth');
 
 const router = require('express').Router();
 
@@ -17,7 +19,7 @@ router.get('/post/:post', posts.show);
 router.get('/posts', posts.list);
 router.get('/posts/:category', posts.listByCategory);
 router.get('/user/:user', posts.listByUser);
-router.delete('/post/:post', requireAuth, posts.delete);
+router.delete('/post/:post', [requireAuth, postAuth], posts.delete);
 
 //Post votes
 router.get('/post/:post/upvote', requireAuth, votes.upvote);
@@ -27,7 +29,11 @@ router.get('/post/:post/unvote', requireAuth, votes.unvote);
 //Posts comments
 router.param('comment', comments.load);
 router.post('/post/:post', requireAuth, comments.create);
-router.delete('/post/:post/:comment', requireAuth, comments.delete);
+router.delete(
+  '/post/:post/:comment',
+  [requireAuth, commentAuth],
+  comments.delete
+);
 
 module.exports = (app) => {
   app.use('/api', router);
