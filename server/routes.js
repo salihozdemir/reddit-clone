@@ -1,6 +1,7 @@
 const users = require('./controllers/users');
 const posts = require('./controllers/posts');
 const votes = require('./controllers/votes');
+const comments = require('./controllers/comments');
 const requireAuth = require('./middlewares/requireAuth');
 
 const router = require('express').Router();
@@ -23,7 +24,10 @@ router.get('/post/:post/upvote', requireAuth, votes.upvote);
 router.get('/post/:post/downvote', requireAuth, votes.downvote);
 router.get('/post/:post/unvote', requireAuth, votes.unvote);
 
-
+//Posts comments
+router.param('comment', comments.load);
+router.post('/post/:post', requireAuth, comments.create);
+router.delete('/post/:post/:comment', requireAuth, comments.delete);
 
 module.exports = (app) => {
   app.use('/api', router);
