@@ -4,7 +4,7 @@ const User = require('../models/user');
 exports.load = async (req, res, next, id) => {
   try {
     const post = await Post.findById(id);
-    if (post) return res.status(404).json({ message: 'Post not found.' });
+    if (!post) return res.status(404).json({ message: 'Post not found.' });
     req.post = post;
   } catch (error) {
     if (error.name === 'CastError')
