@@ -99,8 +99,8 @@ postSchema.pre('save', function (next) {
 postSchema.post('save', function (doc, next) {
   if (this.wasNew) this.vote(this.author._id, 1);
   doc
-    .populate('author')
-    .populate('comments.author')
+    .populate('author', '_id username role')
+    .populate('comments.author', '_id username')
     .execPopulate()
     .then(() => next());
 });
