@@ -34,8 +34,9 @@ exports.create = async (req, res, next) => {
 
 exports.show = async (req, res, next) => {
   try {
+    const { id } = req.post;
     const post = await Post.findByIdAndUpdate(
-      req.post.id,
+      id,
       { $inc: { views: 1 } },
       { new: true }
     );
@@ -57,7 +58,7 @@ exports.list = async (req, res, next) => {
 
 exports.listByCategory = async (req, res, next) => {
   try {
-    const category = req.params.category;
+    const { category } = req.params;
     const { sortType = '-score' } = req.body;
     const posts = await Post.find({ category }).sort(sortType);
     res.json(posts);
@@ -68,7 +69,7 @@ exports.listByCategory = async (req, res, next) => {
 
 exports.listByUser = async (req, res, next) => {
   try {
-    const username = req.params.user;
+    const { username } = req.params;
     const { sortType = '-score' } = req.body;
     const author = await User.findOne({ username });
     const posts = await Post.find({ author: author.id }).sort(sortType);

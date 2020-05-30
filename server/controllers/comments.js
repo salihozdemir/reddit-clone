@@ -14,7 +14,9 @@ exports.load = async (req, res, next, id) => {
 
 exports.create = async (req, res, next) => {
   try {
-    const post = await req.post.addComment(req.user.id, req.body.comment);
+    const { id } = req.user;
+    const { comment } = req.body;
+    const post = await req.post.addComment(id, comment);
     res.status(201).json(post);
   } catch (error) {
     next(error);
@@ -23,7 +25,8 @@ exports.create = async (req, res, next) => {
 
 exports.delete = async (req, res, next) => {
   try {
-    const post = await req.post.removeComment(req.params.comment);
+    const { comment } = req.params;
+    const post = await req.post.removeComment(comment);
     res.json(post);
   } catch (error) {
     next(error);
