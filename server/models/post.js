@@ -11,6 +11,13 @@ const commentSchema = new Schema({
   created: { type: Date, default: Date.now }
 });
 
+commentSchema.set('toJSON', { getters: true });
+commentSchema.options.toJSON.transform = (doc, ret) => {
+  const obj = { ...ret };
+  delete obj._id;
+  return obj;
+};
+
 const voteSchema = new Schema(
   {
     user: { type: Schema.Types.ObjectId, required: true },
@@ -38,7 +45,6 @@ const postSchema = new Schema({
 });
 
 postSchema.set('toJSON', { getters: true, virtuals: true });
-
 postSchema.options.toJSON.transform = (doc, ret) => {
   const obj = { ...ret };
   delete obj._id;
@@ -99,8 +105,8 @@ postSchema.pre('save', function (next) {
 postSchema.post('save', function (doc, next) {
   if (this.wasNew) this.vote(this.author._id, 1);
   doc
-    .populate('author', '_id username role')
-    .populate('comments.author', '_id username')
+    .populate('author')
+    .populate('comments.author')
     .execPopulate()
     .then(() => next());
 });
