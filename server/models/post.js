@@ -37,6 +37,15 @@ const postSchema = new Schema({
   text: { type: String }
 });
 
+postSchema.set('toJSON', { getters: true, virtuals: true });
+
+postSchema.options.toJSON.transform = (doc, ret) => {
+  const obj = { ...ret };
+  delete obj._id;
+  delete obj.__v;
+  return obj;
+};
+
 postSchema.virtual('votePercentage').get(function () {
   if (this.votes.length == 0) return 0;
   const upVotes = this.votes.filter((v) => v.vote == 1);
