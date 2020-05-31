@@ -1,3 +1,5 @@
+const { body, validationResult } = require('express-validator');
+
 exports.load = async (req, res, next, id) => {
   try {
     const comment = await req.post.comments.id(id);
@@ -13,6 +15,12 @@ exports.load = async (req, res, next, id) => {
 };
 
 exports.create = async (req, res, next) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    const errors = result.array({ onlyFirstError: true });
+    return res.status(422).json({ errors });
+  }
+
   try {
     const { id } = req.user;
     const { comment } = req.body;
@@ -32,3 +40,16 @@ exports.delete = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.validate = [
+  body('comment')
+    .trim()
+    .exists()
+    .withMessage('is required')
+
+    .notEmpty()
+    .withMessage('cannot be blank')
+
+    .isLength({ max: 2000 })
+    .withMessage('must be at most 2000 characters long')
+];

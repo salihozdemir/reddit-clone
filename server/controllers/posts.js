@@ -1,5 +1,6 @@
 const Post = require('../models/post');
 const User = require('../models/user');
+const { body, oneOf, validationResult } = require('express-validator');
 
 exports.load = async (req, res, next, id) => {
   try {
@@ -15,6 +16,12 @@ exports.load = async (req, res, next, id) => {
 };
 
 exports.create = async (req, res, next) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    const errors = result.array({ onlyFirstError: true });
+    return res.status(422).json({ errors });
+  }
+
   try {
     const { title, url, category, type, text } = req.body;
     const author = req.user.id;
@@ -93,3 +100,29 @@ exports.delete = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.validate = [
+  body('title')
+    .trim()
+    .exists()
+    .withMessage('is required')
+
+    .notEmpty()
+    .withMessage('contains invalid characters')
+
+    .isLength({ max: 100 })
+    .withMessage('must be at most 100 characters long'),
+  body('category')
+    .trim()
+    .exists()
+    .withMessage('is required')
+
+    .notEmpty()
+    .withMessage('cannot be blank'),
+  body('type')
+    .exists()
+    .withMessage('is required')
+
+    .isIn(['link', 'text'])
+    .withMessage('must be a link or text post'),
+];

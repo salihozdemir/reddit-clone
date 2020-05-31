@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const jwtDecode = require('jwt-decode');
+const { body, validationResult } = require('express-validator');
 
 const {
   createToken,
@@ -8,12 +9,16 @@ const {
 } = require('../utils/authentication');
 
 exports.signup = async (req, res) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    const errors = result.array({ onlyFirstError: true });
+    return res.status(422).json({ errors });
+  }
+
   try {
     const { username } = req.body;
-
-    const hashedPassword = await hashPassword(
-      req.body.password
-    );
+    
+    const hashedPassword = await hashPassword(req.body.password);
 
     const userData = {
       username: username.toLowerCase(),
@@ -52,8 +57,7 @@ exports.signup = async (req, res) => {
       });
     } else {
       return res.status(400).json({
-        message:
-          'There was a problem creating your account.'
+        message: 'There was a problem creating your account.'
       });
     }
   } catch (error) {
@@ -76,10 +80,7 @@ exports.authenticate = async (req, res) => {
       });
     }
 
-    const passwordValid = await verifyPassword(
-      password,
-      user.password
-    );
+    const passwordValid = await verifyPassword(password, user.password);
 
     if (passwordValid) {
       const token = createToken(user);
@@ -105,3 +106,33 @@ exports.authenticate = async (req, res) => {
     });
   }
 };
+
+exports.validate = [
+  body('username')
+    .trim()
+    .exists()
+    .withMessage('is required')
+
+    .notEmpty()
+    .withMessage('cannot be blank')
+
+    .isLength({ max: 50 })
+    .withMessage('must be at most 50 characters long')
+
+    .matches(/^[a-zA-Z0-9_-]+$/)
+    .withMessage('contains invalid characters'),
+
+  body('password')
+    .trim()
+    .exists()
+    .withMessage('is required')
+
+    .notEmpty()
+    .withMessage('cannot be blank')
+    
+    .isLength({ min: 6 })
+    .withMessage('must be at least 6 characters long')
+    
+    .isLength({ max: 50 })
+    .withMessage('must be at most 50 characters long')
+];
