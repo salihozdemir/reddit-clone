@@ -17,7 +17,7 @@ exports.signup = async (req, res) => {
 
   try {
     const { username } = req.body;
-    
+
     const hashedPassword = await hashPassword(req.body.password);
 
     const userData = {
@@ -68,6 +68,11 @@ exports.signup = async (req, res) => {
 };
 
 exports.authenticate = async (req, res) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    const errors = result.array({ onlyFirstError: true });
+    return res.status(422).json({ errors });
+  }
   try {
     const { username, password } = req.body;
     const user = await User.findOne({
@@ -109,8 +114,8 @@ exports.authenticate = async (req, res) => {
 
 exports.validate = [
   body('username')
-    .trim()
     .exists()
+    .trim()
     .withMessage('is required')
 
     .notEmpty()
@@ -123,16 +128,16 @@ exports.validate = [
     .withMessage('contains invalid characters'),
 
   body('password')
-    .trim()
     .exists()
+    .trim()
     .withMessage('is required')
 
     .notEmpty()
     .withMessage('cannot be blank')
-    
+
     .isLength({ min: 6 })
     .withMessage('must be at least 6 characters long')
-    
+
     .isLength({ max: 50 })
     .withMessage('must be at most 50 characters long')
 ];
