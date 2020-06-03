@@ -1,9 +1,8 @@
 module.exports = {
   port: 8080,
   db: {
-    url:
-      process.env.DATABASE_URL ||
-      'mongodb://localhost/reddit-clone',
+    prod: process.env.DATABASE_URL || 'mongodb://localhost/reddit-clone',
+    test: 'mongodb://localhost/reddit-test',
     options: {
       useNewUrlParser: true,
       useUnifiedTopology: true,
