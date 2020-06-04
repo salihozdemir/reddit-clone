@@ -7,14 +7,14 @@ const clearDb = (done) => {
   return done();
 };
 
-beforeAll(async (done) => {
+beforeEach(async (done) => {
   if (mongoose.connection.readyState === 0) {
     await connect(`${config.db.test}-${process.env.TEST_SUITE}`);
   }
   return clearDb(done);
 });
 
-afterAll(async (done) => {
+afterEach(async (done) => {
   await mongoose.connection.close();
   return done();
 });
