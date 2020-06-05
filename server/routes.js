@@ -18,7 +18,7 @@ router.post('/posts', [requireAuth, posts.validate], posts.create);
 router.get('/post/:post', posts.show);
 router.get('/posts', posts.list);
 router.get('/posts/:category', posts.listByCategory);
-router.get('/user/:user', posts.listByUser);
+router.get('/user/:username', posts.listByUser);
 router.delete('/post/:post', [requireAuth, postAuth], posts.delete);
 
 //Post votes

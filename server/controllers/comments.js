@@ -43,8 +43,8 @@ exports.delete = async (req, res, next) => {
 
 exports.validate = [
   body('comment')
-    .trim()
     .exists()
+    .trim()
     .withMessage('is required')
 
     .notEmpty()
