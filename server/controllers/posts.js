@@ -1,6 +1,6 @@
 const Post = require('../models/post');
 const User = require('../models/user');
-const { body, oneOf, validationResult } = require('express-validator');
+const { body, validationResult } = require('express-validator');
 
 exports.load = async (req, res, next, id) => {
   try {
@@ -101,20 +101,42 @@ exports.delete = async (req, res, next) => {
   }
 };
 
+const urlOrTextIsValid = (req, res, next) => {
+  if (req.body.type === 'link') {
+    const chain = body('url')
+      .exists()
+      .withMessage('is required')
+
+      .isURL()
+      .withMessage('is invalid');
+
+    chain(req, res, next);
+  } else {
+    const chain = body('text')
+      .exists()
+      .withMessage('is required')
+
+      .isLength({ min: 4 })
+      .withMessage('must be at least 4 characters long');
+
+    chain(req, res, next);
+  }
+};
+
 exports.validate = [
   body('title')
-    .trim()
     .exists()
+    .trim()
     .withMessage('is required')
 
     .notEmpty()
-    .withMessage('contains invalid characters')
+    .withMessage('cannot be blank')
 
     .isLength({ max: 100 })
     .withMessage('must be at most 100 characters long'),
   body('category')
-    .trim()
     .exists()
+    .trim()
     .withMessage('is required')
 
     .notEmpty()
@@ -125,4 +147,5 @@ exports.validate = [
 
     .isIn(['link', 'text'])
     .withMessage('must be a link or text post'),
+  urlOrTextIsValid
 ];
