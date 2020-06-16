@@ -12,6 +12,7 @@ const User = ({ navigation }) => {
       <Text style={styles.text}>ExpiresAt: {authState.expiresAt}</Text>
       <Text style={styles.text}>Username: {authState.userInfo.username}</Text>
       <Text style={styles.text}>Role: {authState.userInfo.role}</Text>
+      <Text style={styles.text}>Id: {authState.userInfo.id}</Text>
       <Button title="Sign Out" onPress={() => authContext.signOut()} />
     </View>
   )

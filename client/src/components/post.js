@@ -1,7 +1,9 @@
 import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import moment from 'moment'
 
+import { AuthContext } from '../context/auth-context'
 import { ArrowDown, ArrowUp, MessageSquare } from './icons/index'
 
 const Post = ({
@@ -13,30 +15,45 @@ const Post = ({
   text,
   comments,
   created,
-  url
+  url,
+  votes
 }) => {
-  console.log('text', text)
+  const { authState } = React.useContext(AuthContext)
+  const { id } = authState.userInfo
+
+  const isUpVoted = () => {
+    return votes.find(v => v.user === id)?.vote === 1
+  }
+
+  const isDownVoted = () => {
+    return votes.find(v => v.user === id)?.vote === -1
+  }
+
   return (
     <View as={SafeAreaView} style={styles.container}>
-      <Text style={styles.category}>{category}</Text>
-      <Text style={styles.user}>{author?.username}</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.category}>{category} by </Text>
+        <Text style={styles.user}>{author?.username}</Text>
+      </View>
       <Text style={styles.title}>{title}</Text>
-      <Text>{type === 'link' ? url : text}</Text>
+      <Text numberOfLines={5} style={styles.textColor}>
+        {type === 'link' ? url : text}
+      </Text>
       <View style={styles.bottomContainer}>
         <View style={styles.centerAlign}>
           <TouchableOpacity>
-            <ArrowDown color="black" />
+            <ArrowUp color={isUpVoted() ? '#80bdab' : '#424242'} />
           </TouchableOpacity>
           <Text>{score}</Text>
           <TouchableOpacity>
-            <ArrowUp color="black" />
+            <ArrowDown color={isDownVoted() ? '#900c3f' : '#424242'} />
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.centerAlign}>
-          <MessageSquare color="black" />
-          <Text>{comments?.length}</Text>
+          <MessageSquare color="#424242" />
+          <Text style={styles.textColor}> {comments?.length}</Text>
         </TouchableOpacity>
-        <Text>{created}</Text>
+        <Text>{moment(created).fromNow(true)}</Text>
       </View>
     </View>
   )
@@ -50,23 +67,31 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginTop: 10
   },
   centerAlign: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   title: {
     fontWeight: 'bold',
-    fontSize: 18
+    fontSize: 18,
+    color: '#424242'
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    fontSize: 13
   },
   category: {
-    color: '#696969',
-    fontSize: 12
+    color: '#696969'
   },
   user: {
-    color: 'cornflowerblue',
-    fontSize: 13
+    color: 'cornflowerblue'
+  },
+  textColor: {
+    color: '#424242'
   }
 })
 

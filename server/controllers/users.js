@@ -43,10 +43,11 @@ exports.signup = async (req, res) => {
       const decodedToken = jwtDecode(token);
       const expiresAt = decodedToken.exp;
 
-      const { username, role } = savedUser;
+      const { username, role, id } = savedUser;
       const userInfo = {
         username,
-        role
+        role,
+        id,
       };
 
       return res.json({
@@ -91,8 +92,8 @@ exports.authenticate = async (req, res) => {
       const token = createToken(user);
       const decodedToken = jwtDecode(token);
       const expiresAt = decodedToken.exp;
-      const { username, role } = user;
-      const userInfo = { username, role };
+      const { username, role, id } = user;
+      const userInfo = { username, role, id };
 
       res.json({
         message: 'Authentication successful!',

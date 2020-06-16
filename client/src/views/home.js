@@ -11,7 +11,6 @@ const Home = () => {
     const getPostData = async () => {
       const response = await fetch('http://172.17.0.1:8080/api/posts')
       const data = await response.json()
-      console.log(data)
       setPostsData(data)
     }
     getPostData()
@@ -33,6 +32,7 @@ const Home = () => {
             comments={item.comments}
             created={item.created}
             url={item.url}
+            votes={item.votes}
           />
         )}
         ListHeaderComponent={<Text>Son Aramalar</Text>}
