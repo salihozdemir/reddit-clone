@@ -1,9 +1,11 @@
 import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, TouchableOpacity, StyleSheet } from 'react-native'
+
+import { Home, PlusSquare, User } from './icons/index'
 
 function TabBar({ state, descriptors, navigation }) {
   return (
-    <View style={{ flexDirection: 'row' }}>
+    <View style={styles.tabBarContainer}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key]
         const label =
@@ -29,21 +31,38 @@ function TabBar({ state, descriptors, navigation }) {
 
         return (
           <TouchableOpacity
-            accessibilityRole="button"
-            accessibilityStates={isFocused ? ['selected'] : []}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
-            testID={options.tabBarTestID}
+            key={route.key}
             onPress={onPress}
-            style={{ flex: 1 }}
+            style={styles.button}
           >
-            <Text style={{ color: isFocused ? '#673ab7' : '#222' }}>
-              {label}
-            </Text>
+            {label === 'Home' && (
+              <Home color={isFocused ? 'cornflowerblue' : '#424242'} />
+            )}
+            {label === 'CreatePost' && (
+              <PlusSquare color={isFocused ? 'cornflowerblue' : '#424242'} />
+            )}
+            {label === 'User' && (
+              <User color={isFocused ? 'cornflowerblue' : '#424242'} />
+            )}
           </TouchableOpacity>
         )
       })}
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  tabBarContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    height: 40,
+    elevation: 23
+  },
+  button: {
+    flex: 1,
+    alignItems: 'center'
+  }
+})
 
 export default TabBar

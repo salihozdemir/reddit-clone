@@ -1,3 +1,6 @@
 export { default as ArrowDown } from './ArrowDown'
 export { default as ArrowUp } from './ArrowUp'
+export { default as Home } from './Home'
 export { default as MessageSquare } from './MessageSquare'
+export { default as PlusSquare } from './PlusSquare'
+export { default as User } from './User'
