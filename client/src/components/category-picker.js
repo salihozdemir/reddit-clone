@@ -1,7 +1,34 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity, Text } from 'react-native'
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  FlatList,
+  View
+} from 'react-native'
 
-const CategoryPicker = ({ item, isActive, setActive }) => {
+import categories from '../categories'
+
+const CategoryPicker = ({ selected, onClick }) => {
+  return (
+    <View>
+      <FlatList
+        data={categories}
+        horizontal
+        keyExtractor={item => item}
+        renderItem={({ item }) => (
+          <CategoryItem
+            item={item}
+            isActive={item === selected}
+            setActive={() => onClick(item)}
+          />
+        )}
+      />
+    </View>
+  )
+}
+
+const CategoryItem = ({ item, isActive, setActive }) => {
   const styles = StyleSheet.create({
     category: {
       padding: 5,
