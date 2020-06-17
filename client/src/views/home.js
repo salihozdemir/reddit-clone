@@ -2,19 +2,20 @@ import React from 'react'
 import { StyleSheet, View, FlatList, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
+import { FetchContext } from '../context/fetch-context'
 import Post from '../components/post'
 
 const Home = () => {
+  const fetchContext = React.useContext(FetchContext)
   const [postsData, setPostsData] = React.useState([])
 
   React.useEffect(() => {
     const getPostData = async () => {
-      const response = await fetch('http://172.17.0.1:8080/api/posts')
-      const data = await response.json()
+      const { data } = await fetchContext.authAxios.get('posts')
       setPostsData(data)
     }
     getPostData()
-  }, [])
+  }, [fetchContext])
 
   return (
     <View as={SafeAreaView} style={styles.container}>
