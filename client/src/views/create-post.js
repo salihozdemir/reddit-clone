@@ -1,24 +1,45 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  TouchableOpacity,
+  Text
+} from 'react-native'
+// import { Picker } from '@react-native-community/picker'
+import CategoryPicker from '../components/category-picker'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
+import categories from '../categories'
+
 const CreatePost = () => {
+  const [selectedCategory, setSelectedCategory] = React.useState('')
   return (
-    <View as={SafeAreaView} style={styles.boxCenter}>
-      <Text style={styles.text}>Create Post</Text>
+    <View as={SafeAreaView} style={styles.categoryContainer}>
+      <Text>Category</Text>
+      <View>
+        <FlatList
+          data={categories}
+          horizontal={true}
+          keyExtractor={item => item}
+          renderItem={({ item }) => (
+            <CategoryPicker
+              item={item}
+              isActive={item === selectedCategory}
+              setActive={() => setSelectedCategory(item)}
+            />
+          )}
+        />
+      </View>
+      <Text>{selectedCategory}</Text>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  boxCenter: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  text: {
-    fontSize: 30,
-    color: 'red'
+  categoryContainer: {
+    padding: 5,
+    backgroundColor: 'white'
   }
 })
 
