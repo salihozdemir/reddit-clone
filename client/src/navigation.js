@@ -5,19 +5,22 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { TransitionSpecs } from '@react-navigation/stack'
 
+import { AuthContext } from './context/auth-context'
+
 import TabBar from './components/tab-bar'
 import HomeScreen from './views/home'
 import CreatePostScreen from './views/create-post'
 import UserScreen from './views/user'
+import SignModal from './components/sign-modal'
 import SignInScreen from './views/sign-in'
 import SignUpScreen from './views/sign-up'
-import SignModal from './components/sign-modal'
 
 const Tab = createBottomTabNavigator()
-const RootStack = createStackNavigator()
 const SignStack = createStackNavigator()
+const UserStack = createStackNavigator()
+const CreatePostStack = createStackNavigator()
 
-function Sign() {
+function SignScreens() {
   return (
     <SignStack.Navigator>
       <SignStack.Screen name="SignModal" component={SignModal} />
@@ -27,38 +30,54 @@ function Sign() {
   )
 }
 
-function MyTabs() {
+function UserScreens() {
+  const { authState } = React.useContext(AuthContext)
   return (
-    <Tab.Navigator tabBar={props => <TabBar {...props} />}>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen
-        name="CreatePost"
-        options={{
-          transitionSpec: {
-            open: TransitionSpecs.TransitionIOSSpec,
-            close: TransitionSpecs.TransitionIOSSpec
-          }
-        }}
-        component={CreatePostScreen}
-      />
-      <Tab.Screen name="User" component={UserScreen} />
-    </Tab.Navigator>
+    <UserStack.Navigator mode="modal">
+      {authState.token ? (
+        <UserStack.Screen name="UserScreen" component={UserScreen} />
+      ) : (
+        <UserStack.Screen name="Sign" component={SignScreens} />
+      )}
+    </UserStack.Navigator>
   )
 }
 
-function RootStackScreen() {
+function CreatePostScreens() {
+  const { authState } = React.useContext(AuthContext)
+  return (
+    <CreatePostStack.Navigator mode="modal">
+      {authState.token ? (
+        <CreatePostStack.Screen
+          name="CreatePost"
+          component={CreatePostScreen}
+        />
+      ) : (
+        <CreatePostStack.Screen name="Sign" component={SignScreens} />
+      )}
+    </CreatePostStack.Navigator>
+  )
+}
+
+function MyTabs() {
   return (
     <NavigationContainer>
-      <RootStack.Navigator mode="modal">
-        <RootStack.Screen
-          name="Main"
-          component={MyTabs}
-          options={{ headerShown: false }}
+      <Tab.Navigator tabBar={props => <TabBar {...props} />}>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen
+          name="CreatePost"
+          options={{
+            transitionSpec: {
+              open: TransitionSpecs.TransitionIOSSpec,
+              close: TransitionSpecs.TransitionIOSSpec
+            }
+          }}
+          component={CreatePostScreens}
         />
-        <RootStack.Screen name="Sign" component={Sign} />
-      </RootStack.Navigator>
+        <Tab.Screen name="User" component={UserScreens} />
+      </Tab.Navigator>
     </NavigationContainer>
   )
 }
 
-export default RootStackScreen
+export default MyTabs

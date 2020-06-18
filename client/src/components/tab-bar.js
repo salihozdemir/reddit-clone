@@ -2,10 +2,8 @@ import React from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 
 import { Home, PlusSquare, User } from './icons/index'
-import { AuthContext } from '../context/auth-context'
 
 function TabBar({ state, descriptors, navigation }) {
-  const { authState } = React.useContext(AuthContext)
   return (
     <View style={styles.tabBarContainer}>
       {state.routes.map((route, index) => {
@@ -27,11 +25,7 @@ function TabBar({ state, descriptors, navigation }) {
           })
 
           if (!isFocused && !event.defaultPrevented) {
-            if (authState.token || label === 'Home') {
-              navigation.navigate(route.name)
-            } else {
-              navigation.navigate('Sign')
-            }
+            navigation.navigate(route.name)
           }
         }
 
