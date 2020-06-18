@@ -1,35 +1,40 @@
 import React from 'react'
-import { StyleSheet, TextInput, View, Button } from 'react-native'
+import { StyleSheet, View, TextInput, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-import { AuthContext } from '../context/auth-context'
+import Button from '../components/button'
+import { FurnitureAndHousehold } from '../components/icons/index'
 
-const SignUp = ({ navigation }) => {
-  const { authContext } = React.useContext(AuthContext)
-
-  const [username, setUsername] = React.useState('')
-  const [password, setPassword] = React.useState('')
-
+const SignIn = ({ navigation }) => {
   return (
     <View as={SafeAreaView} style={styles.boxCenter}>
-      <TextInput
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
-      />
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <Button
-        title="Sign in"
-        onPress={() => {
-          authContext.signIn({ username, password })
-          navigation.navigate('User')
-        }}
-      />
+      <FurnitureAndHousehold weight={150} height={150} />
+      <View style={styles.textInputContainer}>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Username"
+          placeholderTextColor="#1e1e1e"
+        />
+        <TextInput
+          style={styles.textInput}
+          placeholder="Password"
+          placeholderTextColor="#1e1e1e"
+        />
+        <TextInput
+          style={styles.textInput}
+          placeholder="Confirm Password"
+          placeholderTextColor="#1e1e1e"
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          style={styles.submit}
+          underlayColor="#4f76b9"
+          onPress={() => navigation.navigate('SignUp')}
+        >
+          Go!
+        </Button>
+      </View>
     </View>
   )
 }
@@ -38,12 +43,40 @@ const styles = StyleSheet.create({
   boxCenter: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'white'
   },
-  text: {
-    fontSize: 30,
-    color: 'red'
+  buttonContainer: {
+    width: '90%'
+  },
+  button: {
+    height: 50,
+    margin: 10,
+    justifyContent: 'center',
+    borderRadius: 999
+  },
+  buttonText: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    color: 'white',
+    textAlign: 'center',
+    letterSpacing: 2
+  },
+  submit: {
+    backgroundColor: 'cornflowerblue'
+  },
+  textInputContainer: {
+    width: '90%',
+    marginTop: 20
+  },
+  textInput: {
+    borderWidth: 1,
+    borderColor: '#9f9f9f',
+    height: 50,
+    borderRadius: 10,
+    margin: 10,
+    paddingLeft: 20
   }
 })
 
-export default SignUp
+export default SignIn
