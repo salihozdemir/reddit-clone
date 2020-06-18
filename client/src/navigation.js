@@ -16,19 +16,8 @@ import SignInScreen from './views/sign-in'
 import SignUpScreen from './views/sign-up'
 
 const Tab = createBottomTabNavigator()
-const SignStack = createStackNavigator()
 const UserStack = createStackNavigator()
 const CreatePostStack = createStackNavigator()
-
-function SignScreens() {
-  return (
-    <SignStack.Navigator>
-      <SignStack.Screen name="SignModal" component={SignModal} />
-      <SignStack.Screen name="SignUp" component={SignUpScreen} />
-      <SignStack.Screen name="SignIn" component={SignInScreen} />
-    </SignStack.Navigator>
-  )
-}
 
 function UserScreens() {
   const { authState } = React.useContext(AuthContext)
@@ -37,7 +26,29 @@ function UserScreens() {
       {authState.token ? (
         <UserStack.Screen name="UserScreen" component={UserScreen} />
       ) : (
-        <UserStack.Screen name="Sign" component={SignScreens} />
+        <>
+          <UserStack.Screen
+            name="SignModal"
+            component={SignModal}
+            options={{ headerShown: false }}
+          />
+          <UserStack.Screen
+            name="SignUp"
+            component={SignUpScreen}
+            options={{
+              headerTitle: '',
+              headerTransparent: true
+            }}
+          />
+          <UserStack.Screen
+            name="SignIn"
+            component={SignInScreen}
+            options={{
+              headerTitle: '',
+              headerTransparent: true
+            }}
+          />
+        </>
       )}
     </UserStack.Navigator>
   )
@@ -53,7 +64,29 @@ function CreatePostScreens() {
           component={CreatePostScreen}
         />
       ) : (
-        <CreatePostStack.Screen name="Sign" component={SignScreens} />
+        <>
+          <CreatePostStack.Screen
+            name="SignModal"
+            component={SignModal}
+            options={{ headerShown: false }}
+          />
+          <CreatePostStack.Screen
+            name="SignUp"
+            component={SignUpScreen}
+            options={{
+              headerTitle: '',
+              headerTransparent: true
+            }}
+          />
+          <CreatePostStack.Screen
+            name="SignIn"
+            component={SignInScreen}
+            options={{
+              headerTitle: '',
+              headerTransparent: true
+            }}
+          />
+        </>
       )}
     </CreatePostStack.Navigator>
   )
@@ -64,16 +97,7 @@ function MyTabs() {
     <NavigationContainer>
       <Tab.Navigator tabBar={props => <TabBar {...props} />}>
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen
-          name="CreatePost"
-          options={{
-            transitionSpec: {
-              open: TransitionSpecs.TransitionIOSSpec,
-              close: TransitionSpecs.TransitionIOSSpec
-            }
-          }}
-          component={CreatePostScreens}
-        />
+        <Tab.Screen name="CreatePost" component={CreatePostScreens} />
         <Tab.Screen name="User" component={UserScreens} />
       </Tab.Navigator>
     </NavigationContainer>
