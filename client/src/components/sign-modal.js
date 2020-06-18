@@ -1,13 +1,28 @@
 import React from 'react'
-import { StyleSheet, Text, View, Button } from 'react-native'
+import { StyleSheet, View, TouchableHighlight, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-const SignIns = ({ navigation }) => {
+import { Spaceship } from './icons/index'
+
+const SignModal = ({ navigation }) => {
   return (
     <View as={SafeAreaView} style={styles.boxCenter}>
+      <Spaceship width={200} height={200} />
       <View style={styles.buttonContainer}>
-        <Button title="SignUp" onPress={() => navigation.navigate('SignUp')} />
-        <Button title="SignIn" onPress={() => navigation.navigate('SignIn')} />
+        <TouchableHighlight
+          style={[styles.button, styles.signUp]}
+          underlayColor="#4f76b9"
+          onPress={() => navigation.navigate('SignUp')}
+        >
+          <Text style={styles.buttonText}>Create Account</Text>
+        </TouchableHighlight>
+        <TouchableHighlight
+          style={[styles.button, styles.signIn]}
+          underlayColor="#b36e51"
+          onPress={() => navigation.navigate('SignIn')}
+        >
+          <Text style={styles.buttonText}>Sign In</Text>
+        </TouchableHighlight>
       </View>
     </View>
   )
@@ -16,12 +31,34 @@ const SignIns = ({ navigation }) => {
 const styles = StyleSheet.create({
   boxCenter: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: 'white'
   },
   buttonContainer: {
-    width: 200
+    width: '90%',
+    marginTop: 40,
+    marginBottom: 40
+  },
+  button: {
+    height: 50,
+    margin: 10,
+    justifyContent: 'center',
+    borderRadius: 999
+  },
+  buttonText: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    color: 'white',
+    textAlign: 'center',
+    letterSpacing: 2
+  },
+  signIn: {
+    backgroundColor: '#ce815e'
+  },
+  signUp: {
+    backgroundColor: 'cornflowerblue'
   }
 })
 
-export default SignIns
+export default SignModal
