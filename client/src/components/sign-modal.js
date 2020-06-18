@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { Spaceship } from './icons/index'
 
-const SignModal = ({ navigation }) => {
+const SignModa = ({ navigation }) => {
   return (
     <View as={SafeAreaView} style={styles.boxCenter}>
       <Spaceship width={200} height={200} />
@@ -31,14 +31,13 @@ const SignModal = ({ navigation }) => {
 const styles = StyleSheet.create({
   boxCenter: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white'
   },
   buttonContainer: {
     width: '90%',
-    marginTop: 40,
-    marginBottom: 40
+    marginTop: 100
   },
   button: {
     height: 50,
@@ -61,4 +60,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default SignModal
+export default SignModa
