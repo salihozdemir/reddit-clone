@@ -27,10 +27,11 @@ function TabBar({ state, descriptors, navigation }) {
           })
 
           if (!isFocused && !event.defaultPrevented) {
-            if (authState.token) {
+            if (authState.token || label === 'Home') {
               navigation.navigate(route.name)
+            } else {
+              navigation.navigate('Sign')
             }
-            navigation.navigate('Sign')
           }
         }
 
