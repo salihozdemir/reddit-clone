@@ -9,11 +9,11 @@ import {
 
 import categories from '../categories'
 
-const CategoryPicker = ({ selected, onClick }) => {
+const CategoryPicker = ({ selected, onClick, addAll }) => {
   return (
     <View>
       <FlatList
-        data={categories}
+        data={addAll ? ['all', ...categories] : categories}
         horizontal
         keyExtractor={item => item}
         renderItem={({ item }) => (
