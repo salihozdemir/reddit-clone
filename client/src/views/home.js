@@ -40,6 +40,13 @@ const Home = () => {
     setIsLoaading(false)
   }
 
+  const unVote = async (postId, index) => {
+    setIsLoaading(true)
+    const { data } = await fetchContext.authAxios.get(`post/${postId}/unvote`)
+    postsData[index] = data
+    setIsLoaading(false)
+  }
+
   return (
     <View as={SafeAreaView} style={styles.container}>
       <FlatList
@@ -66,6 +73,7 @@ const Home = () => {
             votes={item.votes}
             upVote={() => upVote(item.id, index)}
             downVote={() => downVote(item.id, index)}
+            unVote={() => unVote(item.id, index)}
           />
         )}
       />
