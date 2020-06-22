@@ -4,8 +4,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
-import { AuthContext } from './context/auth-context'
-
 import TabBar from './components/tab-bar'
 import HomeScreen from './views/home'
 import PostDetail from './views/post-detail'
@@ -17,8 +15,38 @@ import SignUpScreen from './views/sign-up'
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createStackNavigator()
-const UserStack = createStackNavigator()
-const CreatePostStack = createStackNavigator()
+const SignStack = createStackNavigator()
+const RootStack = createStackNavigator()
+
+function SignScreens() {
+  return (
+    <SignStack.Navigator headerMode="screen">
+      <SignStack.Screen
+        name="SignModal"
+        component={SignModal}
+        options={{
+          headerShown: false
+        }}
+      />
+      <SignStack.Screen
+        name="SignUp"
+        component={SignUpScreen}
+        options={{
+          headerTitle: '',
+          headerTransparent: true
+        }}
+      />
+      <SignStack.Screen
+        name="SignIn"
+        component={SignInScreen}
+        options={{
+          headerTitle: '',
+          headerTransparent: true
+        }}
+      />
+    </SignStack.Navigator>
+  )
+}
 
 function HomeScreens() {
   return (
@@ -40,89 +68,47 @@ function HomeScreens() {
   )
 }
 
-function UserScreens() {
-  const { authState } = React.useContext(AuthContext)
-  return (
-    <UserStack.Navigator mode="modal">
-      {authState.token ? (
-        <UserStack.Screen name="UserScreen" component={UserScreen} />
-      ) : (
-        <>
-          <UserStack.Screen
-            name="SignModal"
-            component={SignModal}
-            options={{ headerShown: false }}
-          />
-          <UserStack.Screen
-            name="SignUp"
-            component={SignUpScreen}
-            options={{
-              headerTitle: '',
-              headerTransparent: true
-            }}
-          />
-          <UserStack.Screen
-            name="SignIn"
-            component={SignInScreen}
-            options={{
-              headerTitle: '',
-              headerTransparent: true
-            }}
-          />
-        </>
-      )}
-    </UserStack.Navigator>
-  )
-}
-
-function CreatePostScreens() {
-  const { authState } = React.useContext(AuthContext)
-  return (
-    <CreatePostStack.Navigator mode="modal">
-      {authState.token ? (
-        <CreatePostStack.Screen
-          name="CreatePost"
-          component={CreatePostScreen}
-        />
-      ) : (
-        <>
-          <CreatePostStack.Screen
-            name="SignModal"
-            component={SignModal}
-            options={{ headerShown: false }}
-          />
-          <CreatePostStack.Screen
-            name="SignUp"
-            component={SignUpScreen}
-            options={{
-              headerTitle: '',
-              headerTransparent: true
-            }}
-          />
-          <CreatePostStack.Screen
-            name="SignIn"
-            component={SignInScreen}
-            options={{
-              headerTitle: '',
-              headerTransparent: true
-            }}
-          />
-        </>
-      )}
-    </CreatePostStack.Navigator>
-  )
-}
-
 function MyTabs() {
   return (
+    <Tab.Navigator tabBar={props => <TabBar {...props} />}>
+      <Tab.Screen name="Home" component={HomeScreens} />
+      <Tab.Screen name="CreatePost" component={CreatePostScreen} />
+      <Tab.Screen name="User" component={UserScreen} />
+    </Tab.Navigator>
+  )
+}
+
+function RootScreen() {
+  return (
     <NavigationContainer>
-      <Tab.Navigator tabBar={props => <TabBar {...props} />}>
-        <Tab.Screen name="Home" component={HomeScreens} />
-        <Tab.Screen name="CreatePost" component={CreatePostScreens} />
-        <Tab.Screen name="User" component={UserScreens} />
-      </Tab.Navigator>
+      <RootStack.Navigator
+        screenOptions={{
+          headerShown: false,
+          cardStyle: { backgroundColor: 'transparent' },
+          cardOverlayEnabled: true,
+          cardStyleInterpolator: ({ current: { progress } }) => ({
+            cardStyle: {
+              opacity: progress.interpolate({
+                inputRange: [0, 0.5, 0.9, 1],
+                outputRange: [0, 0.25, 0.7, 1]
+              })
+            },
+            overlayStyle: {
+              opacity: progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 0.5],
+                extrapolate: 'clamp'
+              })
+            }
+          })
+        }}
+        mode="modal"
+      >
+        <RootStack.Screen name="Tab" component={MyTabs} />
+        <RootStack.Screen name="SignModal" component={SignScreens} />
+      </RootStack.Navigator>
     </NavigationContainer>
   )
 }
 
-export default MyTabs
+export default RootScreen
