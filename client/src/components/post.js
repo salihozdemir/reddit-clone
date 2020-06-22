@@ -16,7 +16,9 @@ const Post = ({
   comments,
   created,
   url,
-  votes
+  votes,
+  upVote,
+  downVote
 }) => {
   const { authState } = React.useContext(AuthContext)
   const { id } = authState.userInfo
@@ -41,11 +43,11 @@ const Post = ({
       </Text>
       <View style={styles.bottomContainer}>
         <View style={styles.centerAlign}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={upVote}>
             <ArrowUp color={isUpVoted() ? '#80bdab' : '#424242'} />
           </TouchableOpacity>
           <Text>{score}</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={downVote}>
             <ArrowDown color={isDownVoted() ? '#900c3f' : '#424242'} />
           </TouchableOpacity>
         </View>

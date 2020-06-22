@@ -10,8 +10,8 @@ const Home = () => {
   const fetchContext = React.useContext(FetchContext)
 
   const [postsData, setPostsData] = React.useState([])
-  const [category, setCategory] = React.useState('')
-  const [isLoaading, setIsLoaading] = React.useState(false)
+  const [category, setCategory] = React.useState('all')
+  const [isLoading, setIsLoaading] = React.useState(false)
 
   const getPostData = React.useCallback(async () => {
     setIsLoaading(true)
@@ -26,18 +26,33 @@ const Home = () => {
     getPostData()
   }, [getPostData])
 
+  const upVote = async (postId, index) => {
+    setIsLoaading(true)
+    const { data } = await fetchContext.authAxios.get(`post/${postId}/upvote`)
+    postsData[index] = data
+    setIsLoaading(false)
+  }
+
+  const downVote = async (postId, index) => {
+    setIsLoaading(true)
+    const { data } = await fetchContext.authAxios.get(`post/${postId}/downvote`)
+    postsData[index] = data
+    setIsLoaading(false)
+  }
+
   return (
     <View as={SafeAreaView} style={styles.container}>
       <FlatList
         data={postsData}
-        refreshing={isLoaading}
+        extraData={isLoading}
+        refreshing={isLoading}
         onRefresh={() => getPostData()}
         keyExtractor={item => item.id}
         ListHeaderComponent={
           <CategoryPicker selected={category} onClick={setCategory} addAll />
         }
         ListHeaderComponentStyle={styles.categoryPicker}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <Post
             score={item.score}
             type={item.type}
@@ -49,6 +64,8 @@ const Home = () => {
             created={item.created}
             url={item.url}
             votes={item.votes}
+            upVote={() => upVote(item.id, index)}
+            downVote={() => downVote(item.id, index)}
           />
         )}
       />
