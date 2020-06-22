@@ -19,17 +19,18 @@ const Post = ({
   votes,
   upVote,
   downVote,
-  unVote
+  unVote,
+  navigationDetail
 }) => {
   const { authState } = React.useContext(AuthContext)
   const { id } = authState.userInfo
 
   const isUpVoted = () => {
-    return votes.find(v => v.user === id)?.vote === 1
+    return votes?.find(v => v.user === id)?.vote === 1
   }
 
   const isDownVoted = () => {
-    return votes.find(v => v.user === id)?.vote === -1
+    return votes?.find(v => v.user === id)?.vote === -1
   }
 
   return (
@@ -38,10 +39,12 @@ const Post = ({
         <Text style={styles.category}>{category} by </Text>
         <Text style={styles.user}>{author?.username}</Text>
       </View>
-      <Text style={styles.title}>{title}</Text>
-      <Text numberOfLines={5} style={styles.textColor}>
-        {type === 'link' ? url : text}
-      </Text>
+      <TouchableOpacity onPress={navigationDetail}>
+        <Text style={styles.title}>{title}</Text>
+        <Text numberOfLines={5} style={styles.textColor}>
+          {type === 'link' ? url : text}
+        </Text>
+      </TouchableOpacity>
       <View style={styles.bottomContainer}>
         <View style={styles.centerAlign}>
           <TouchableOpacity onPress={isUpVoted() ? unVote : upVote}>

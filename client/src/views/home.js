@@ -6,7 +6,7 @@ import CategoryPicker from '../components/category-picker'
 import { FetchContext } from '../context/fetch-context'
 import Post from '../components/post'
 
-const Home = () => {
+const Home = ({ navigation }) => {
   const fetchContext = React.useContext(FetchContext)
 
   const [postsData, setPostsData] = React.useState([])
@@ -47,6 +47,10 @@ const Home = () => {
     setIsLoaading(false)
   }
 
+  const navigationDetail = postId => {
+    navigation.navigate('PostDetail', { postId })
+  }
+
   return (
     <View as={SafeAreaView} style={styles.container}>
       <FlatList
@@ -74,6 +78,7 @@ const Home = () => {
             upVote={() => upVote(item.id, index)}
             downVote={() => downVote(item.id, index)}
             unVote={() => unVote(item.id, index)}
+            navigationDetail={() => navigationDetail(item.id)}
           />
         )}
       />
