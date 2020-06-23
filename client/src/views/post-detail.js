@@ -6,11 +6,13 @@ import { FetchContext } from '../context/fetch-context'
 
 import Post from '../components/post'
 import CommentListItem from '../components/comment-list-item'
+import CreateComment from '../components/create-comment'
 
 const PostDetail = ({ route }) => {
   const fetchContext = React.useContext(FetchContext)
   const [post, setPost] = React.useState(null)
   const [isLoading, setIsLoaading] = React.useState(false)
+  const [comment, setComment] = React.useState('')
 
   const { postId } = route.params
 
@@ -25,18 +27,25 @@ const PostDetail = ({ route }) => {
     getPostData()
   }, [getPostData])
 
-  const upVote = async postId => {
+  const upVote = async () => {
     const { data } = await fetchContext.authAxios.get(`post/${postId}/upvote`)
     setPost(data)
   }
 
-  const downVote = async postId => {
+  const downVote = async () => {
     const { data } = await fetchContext.authAxios.get(`post/${postId}/downvote`)
     setPost(data)
   }
 
-  const unVote = async postId => {
+  const unVote = async () => {
     const { data } = await fetchContext.authAxios.get(`post/${postId}/unvote`)
+    setPost(data)
+  }
+
+  const createComment = async () => {
+    const { data } = await fetchContext.authAxios.post(`/post/${postId}`, {
+      comment
+    })
     setPost(data)
   }
 
@@ -55,9 +64,9 @@ const PostDetail = ({ route }) => {
             created={post.created}
             url={post.url}
             votes={post.votes}
-            upVote={() => upVote(post.id)}
-            downVote={() => downVote(post.id)}
-            unVote={() => unVote(post.id)}
+            upVote={() => upVote()}
+            downVote={() => downVote()}
+            unVote={() => unVote()}
           />
           <FlatList
             data={post.comments}
@@ -72,6 +81,7 @@ const PostDetail = ({ route }) => {
               />
             )}
           />
+          <CreateComment onPress={createComment} setComment={setComment} />
         </>
       ) : (
         <Text>Loading...</Text>
@@ -82,6 +92,7 @@ const PostDetail = ({ route }) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     marginTop: 50
   }
 })
