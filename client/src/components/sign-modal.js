@@ -1,24 +1,29 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useTheme } from '@react-navigation/native'
 
 import Button from '../components/button'
 import { Spaceship } from './icons/index'
 
 const SignModal = ({ navigation }) => {
+  const { colors } = useTheme()
+
   return (
     <View as={SafeAreaView} style={styles.boxCenter}>
       <Spaceship width={200} height={200} />
-      <View style={styles.buttonContainer}>
+      <View
+        style={[styles.buttonContainer, { backgroundColor: colors.bgColor }]}
+      >
         <Button
-          style={styles.signUp}
+          style={{ backgroundColor: colors.signUpButton }}
           underlayColor="#4f76b9"
           onPress={() => navigation.navigate('SignUp')}
         >
           Create Account
         </Button>
         <Button
-          style={styles.signIn}
+          style={{ backgroundColor: colors.SignInColor }}
           underlayColor="#b36e51"
           onPress={() => navigation.navigate('SignIn')}
         >
@@ -33,18 +38,11 @@ const styles = StyleSheet.create({
   boxCenter: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white'
+    alignItems: 'center'
   },
   buttonContainer: {
     width: '90%',
     marginTop: 100
-  },
-  signIn: {
-    backgroundColor: '#ce815e'
-  },
-  signUp: {
-    backgroundColor: 'cornflowerblue'
   }
 })
 

@@ -7,6 +7,7 @@ import {
   TextInput
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useTheme } from '@react-navigation/native'
 
 import { FetchContext } from '../context/fetch-context'
 import CategoryPicker from '../components/category-picker'
@@ -16,12 +17,15 @@ const TypeSwichContainer = ({ children }) => {
 }
 
 const TypeSwichButton = ({ selected, onClick, title }) => {
+  const { colors } = useTheme()
+
   return (
     <TouchableOpacity
       style={[
         styles.typeButton,
         title === 'Link' ? styles.typeButtonRight : styles.typeButtonLeft,
-        selected === title ? styles.selectedButton : ''
+        selected === title ? { backgroundColor: colors.blue } : '',
+        { borderColor: colors.lightGrey }
       ]}
       onPress={() => onClick(title)}
     >
@@ -29,7 +33,7 @@ const TypeSwichButton = ({ selected, onClick, title }) => {
         <Text
           style={[
             styles.typeButtonLabel,
-            selected === title ? styles.whiteText : ''
+            selected === title ? { color: colors.buttonText } : ''
           ]}
         >
           {title}
@@ -41,6 +45,7 @@ const TypeSwichButton = ({ selected, onClick, title }) => {
 
 const CreatePost = () => {
   const fetchContext = React.useContext(FetchContext)
+  const { colors } = useTheme()
 
   const [type, setType] = React.useState('Text')
   const [category, setCategory] = React.useState('')
@@ -58,7 +63,10 @@ const CreatePost = () => {
   }
 
   return (
-    <View as={SafeAreaView} style={styles.container}>
+    <View
+      as={SafeAreaView}
+      style={[styles.container, { backgroundColor: colors.bgColor }]}
+    >
       <Text>Type</Text>
       <TypeSwichContainer>
         <TypeSwichButton selected={type} onClick={setType} title="Text" />
@@ -68,14 +76,14 @@ const CreatePost = () => {
       <CategoryPicker selected={category} onClick={setCategory} />
       <Text>Title</Text>
       <TextInput
-        style={styles.textInput}
+        style={[styles.textInput, { borderColor: colors.lightGrey }]}
         onChangeText={text => setTitle(text)}
       />
       {type === 'Link' ? (
         <>
           <Text>Url</Text>
           <TextInput
-            style={styles.textInput}
+            style={[styles.textInput, { borderColor: colors.lightGrey }]}
             onChangeText={text => setUrl(text)}
           />
         </>
@@ -83,7 +91,7 @@ const CreatePost = () => {
         <>
           <Text>Text</Text>
           <TextInput
-            style={styles.textInput}
+            style={[styles.textInput, { borderColor: colors.lightGrey }]}
             multiline={true}
             numberOfLines={10}
             onChangeText={text => setText(text)}
@@ -92,10 +100,10 @@ const CreatePost = () => {
       )}
       <View>
         <TouchableOpacity
-          style={styles.submitButton}
+          style={[styles.submitButton, { backgroundColor: colors.blue }]}
           onPress={() => createPost()}
         >
-          <Text style={styles.whiteText}>Create Post</Text>
+          <Text style={{ color: colors.buttonText }}>Create Post</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -105,8 +113,7 @@ const CreatePost = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 5,
-    backgroundColor: 'white'
+    padding: 5
   },
   typeContainer: {
     flexDirection: 'row',
@@ -117,8 +124,7 @@ const styles = StyleSheet.create({
     flex: 0.5,
     justifyContent: 'center',
     height: 30,
-    borderWidth: 1,
-    borderColor: '#e4e4e4'
+    borderWidth: 1
   },
   typeButtonLeft: {
     borderTopLeftRadius: 10,
@@ -131,14 +137,7 @@ const styles = StyleSheet.create({
   typeButtonLabel: {
     textAlign: 'center'
   },
-  selectedButton: {
-    backgroundColor: 'cornflowerblue'
-  },
-  whiteText: {
-    color: 'white'
-  },
   textInput: {
-    borderColor: 'gray',
     borderWidth: 1,
     textAlignVertical: 'top'
   },
@@ -146,7 +145,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'cornflowerblue',
     height: 40
   }
 })

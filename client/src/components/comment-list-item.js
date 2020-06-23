@@ -1,13 +1,17 @@
 import React from 'react'
 import { Text, View, StyleSheet } from 'react-native'
+import { useTheme } from '@react-navigation/native'
 
 import moment from 'moment'
 
-const commentListItem = ({ body, author, created }) => {
+const CommentListItem = ({ body, author, created }) => {
+  const { colors } = useTheme()
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.authorName}>{author?.username}</Text>
+    <View style={[styles.container, { backgroundColor: colors.bgColor }]}>
+      <View style={[styles.header, { borderBottomColor: colors.lightGrey }]}>
+        <Text style={[styles.authorName, { color: colors.blue }]}>
+          {author?.username}
+        </Text>
         <Text>{moment(created).fromNow(true)}</Text>
       </View>
       <View style={styles.body}>
@@ -20,24 +24,21 @@ const commentListItem = ({ body, author, created }) => {
 const styles = StyleSheet.create({
   container: {
     padding: 5,
-    marginTop: 10,
-    backgroundColor: 'white'
+    marginTop: 10
   },
   header: {
     flexDirection: 'row',
     padding: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ecedf0'
+    borderBottomWidth: 1
   },
   body: {
     marginTop: 5,
     padding: 5
   },
   authorName: {
-    color: 'cornflowerblue',
     fontWeight: 'bold',
     marginRight: 10
   }
 })
 
-export default commentListItem
+export default CommentListItem

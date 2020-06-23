@@ -6,8 +6,9 @@ import {
   FlatList,
   View
 } from 'react-native'
+import { useTheme } from '@react-navigation/native'
 
-import categories from '../categories'
+import categories from '../constants/categories'
 
 const CategoryPicker = ({ selected, onClick, addAll }) => {
   return (
@@ -29,14 +30,16 @@ const CategoryPicker = ({ selected, onClick, addAll }) => {
 }
 
 const CategoryItem = ({ item, isActive, setActive }) => {
+  const { colors } = useTheme()
+
   const styles = StyleSheet.create({
     category: {
       padding: 5,
       marginLeft: 5,
       marginRight: 5,
-      color: isActive ? 'cornflowerblue' : '#424242',
+      color: isActive ? colors.blue : colors.grey,
       borderBottomWidth: 1,
-      borderBottomColor: isActive ? 'cornflowerblue' : 'transparent'
+      borderBottomColor: isActive ? colors.blue : 'transparent'
     }
   })
 

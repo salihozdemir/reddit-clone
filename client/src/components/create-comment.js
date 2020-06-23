@@ -1,9 +1,12 @@
 import React from 'react'
 import { TextInput, TouchableOpacity, View, StyleSheet } from 'react-native'
+import { useTheme } from '@react-navigation/native'
 
 import { Send } from '../components/icons'
 
-const createComment = ({ onPress, setComment }) => {
+const CreateComment = ({ onPress, setComment }) => {
+  const { colors } = useTheme()
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -12,7 +15,7 @@ const createComment = ({ onPress, setComment }) => {
         onChangeText={setComment}
       />
       <TouchableOpacity onPress={onPress}>
-        <Send color="black" />
+        <Send color={colors.grey} />
       </TouchableOpacity>
     </View>
   )
@@ -31,4 +34,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default createComment
+export default CreateComment

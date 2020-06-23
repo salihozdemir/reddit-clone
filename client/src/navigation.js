@@ -4,6 +4,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
+import DefaultTheme from './constants/default-theme'
+
 import TabBar from './components/tab-bar'
 import HomeScreen from './views/home'
 import PostDetail from './views/post-detail'
@@ -80,7 +82,7 @@ function MyTabs() {
 
 function RootScreen() {
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={DefaultTheme}>
       <RootStack.Navigator
         screenOptions={{
           headerShown: false,

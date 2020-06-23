@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, FlatList } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useTheme } from '@react-navigation/native'
 
 import CategoryPicker from '../components/category-picker'
 import { FetchContext } from '../context/fetch-context'
@@ -8,6 +9,7 @@ import Post from '../components/post'
 
 const Home = ({ navigation }) => {
   const fetchContext = React.useContext(FetchContext)
+  const { colors } = useTheme()
 
   const [postsData, setPostsData] = React.useState([])
   const [category, setCategory] = React.useState('all')
@@ -62,7 +64,10 @@ const Home = ({ navigation }) => {
         ListHeaderComponent={
           <CategoryPicker selected={category} onClick={setCategory} addAll />
         }
-        ListHeaderComponentStyle={styles.categoryPicker}
+        ListHeaderComponentStyle={[
+          styles.categoryPicker,
+          { backgroundColor: colors.bgColor }
+        ]}
         renderItem={({ item, index }) => (
           <Post
             score={item.score}
@@ -88,10 +93,9 @@ const Home = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#eaeaea'
+    flex: 1
   },
   categoryPicker: {
-    backgroundColor: 'white',
     padding: 5
   }
 })

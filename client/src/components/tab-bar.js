@@ -1,13 +1,16 @@
 import React from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import { useTheme } from '@react-navigation/native'
 
 import { AuthContext } from '../context/auth-context'
 import { Home, PlusSquare, User } from './icons/index'
 
 function TabBar({ state, descriptors, navigation }) {
   const { authState } = React.useContext(AuthContext)
+  const { colors } = useTheme()
+
   return (
-    <View style={styles.tabBarContainer}>
+    <View style={[styles.tabBarContainer, { backgroundColor: colors.bgColor }]}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key]
         const label =
@@ -42,13 +45,13 @@ function TabBar({ state, descriptors, navigation }) {
             style={styles.button}
           >
             {label === 'Home' && (
-              <Home color={isFocused ? 'cornflowerblue' : '#424242'} />
+              <Home color={isFocused ? colors.blue : colors.grey} />
             )}
             {label === 'CreatePost' && (
-              <PlusSquare color={isFocused ? 'cornflowerblue' : '#424242'} />
+              <PlusSquare color={isFocused ? colors.blue : colors.grey} />
             )}
             {label === 'User' && (
-              <User color={isFocused ? 'cornflowerblue' : '#424242'} />
+              <User color={isFocused ? colors.blue : colors.grey} />
             )}
           </TouchableOpacity>
         )
@@ -61,7 +64,6 @@ const styles = StyleSheet.create({
   tabBarContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'white',
     height: 40,
     elevation: 23
   },
