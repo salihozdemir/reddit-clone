@@ -12,7 +12,7 @@ const customDefaultTheme = {
     buttonText: 'white',
     bgColor: 'white',
     signInButton: '#ce815e',
-    SignUpButton: '#6495ed',
+    signUpButton: '#6495ed',
     icon: '#888a8c'
   }
 }
