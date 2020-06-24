@@ -3,8 +3,11 @@ import { StyleSheet, View, FlatList, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
 
-import CategoryPicker from '../components/category-picker'
 import { FetchContext } from '../context/fetch-context'
+
+import PostLoader from '../components/post-loader'
+import LoaderText from '../components/loader-text'
+import CategoryPicker from '../components/category-picker'
 import Post from '../components/post'
 
 const Home = ({ navigation }) => {
@@ -95,7 +98,21 @@ const Home = ({ navigation }) => {
           )}
         />
       ) : (
-        <Text>Yükleniyor</Text>
+        <>
+          <View
+            style={[
+              styles.loaderCategories,
+              { backgroundColor: colors.bgColor }
+            ]}
+          >
+            {[1, 2, 3, 4, 5].map(i => (
+              <LoaderText key={i} />
+            ))}
+          </View>
+          {[1, 2, 3, 4, 5].map(i => (
+            <PostLoader key={i} />
+          ))}
+        </>
       )}
     </View>
   )
@@ -115,6 +132,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 50,
     fontSize: 22
+  },
+  loaderCategories: {
+    padding: 5,
+    marginTop: 7,
+    elevation: 3,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   }
 })
 
