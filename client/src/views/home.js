@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, FlatList } from 'react-native'
+import { StyleSheet, View, FlatList, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
 
@@ -68,6 +68,11 @@ const Home = ({ navigation }) => {
           styles.categoryPicker,
           { backgroundColor: colors.bgColor }
         ]}
+        ListEmptyComponent={
+          <Text style={[styles.empty, { color: colors.grey }]}>
+            Ups! Not found any post!
+          </Text>
+        }
         renderItem={({ item, index }) => (
           <Post
             score={item.score}
@@ -98,6 +103,12 @@ const styles = StyleSheet.create({
   },
   categoryPicker: {
     padding: 5
+  },
+  empty: {
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 50,
+    fontSize: 22
   }
 })
 
