@@ -1,5 +1,11 @@
 import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback
+} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import moment from 'moment'
 
@@ -18,6 +24,7 @@ const Post = ({
   created,
   url,
   votes,
+  views,
   upVote,
   downVote,
   unVote,
@@ -42,30 +49,33 @@ const Post = ({
       style={[styles.container, { backgroundColor: colors.bgColor }]}
     >
       <View style={styles.headerContainer}>
-        <Text style={{ color: colors.grey }}>{category} by </Text>
-        <Text style={{ color: colors.blue }}>{author?.username}</Text>
+        <Text style={{ color: colors.grey }}>/{category} </Text>
+        <Text style={{ color: colors.blue }}>@{author?.username} · </Text>
+        <Text>{moment(created).fromNow(true)}</Text>
       </View>
-      <TouchableOpacity onPress={navigationDetail}>
+      <TouchableWithoutFeedback onPress={navigationDetail}>
         <Text style={[styles.title, { color: colors.grey }]}>{title}</Text>
-        <Text numberOfLines={5} style={{ color: colors.grey }}>
+      </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={navigationDetail}>
+        <Text numberOfLines={10} style={{ color: colors.grey }}>
           {type === 'link' ? url : text}
         </Text>
-      </TouchableOpacity>
+      </TouchableWithoutFeedback>
       <View style={styles.bottomContainer}>
         <View style={styles.centerAlign}>
           <TouchableOpacity onPress={isUpVoted() ? unVote : upVote}>
-            <ArrowUp color={isUpVoted() ? colors.upVote : colors.grey} />
+            <ArrowUp color={isUpVoted() ? colors.upVote : colors.icon} />
           </TouchableOpacity>
-          <Text>{score}</Text>
+          <Text style={styles.score}>{score}</Text>
           <TouchableOpacity onPress={isDownVoted() ? unVote : downVote}>
-            <ArrowDown color={isDownVoted() ? colors.downVote : colors.grey} />
+            <ArrowDown color={isDownVoted() ? colors.downVote : colors.icon} />
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.centerAlign}>
-          <MessageSquare color={colors.grey} />
-          <Text style={styles.textColor}> {comments?.length}</Text>
+          <MessageSquare color={colors.icon} style={styles.commentIcon} />
+          <Text style={styles.icon}> {comments?.length}</Text>
         </TouchableOpacity>
-        <Text>{moment(created).fromNow(true)}</Text>
+        <Text>{views} views</Text>
       </View>
     </View>
   )
@@ -85,7 +95,7 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10
+    marginTop: 12
   },
   centerAlign: {
     flexDirection: 'row',
@@ -95,6 +105,12 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
     fontSize: 18
+  },
+  score: {
+    marginHorizontal: 5
+  },
+  commentIcon: {
+    marginBottom: -3
   }
 })
 

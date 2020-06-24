@@ -80,6 +80,7 @@ const Home = ({ navigation }) => {
             created={item.created}
             url={item.url}
             votes={item.votes}
+            views={item.views}
             upVote={() => upVote(item.id, index)}
             downVote={() => downVote(item.id, index)}
             unVote={() => unVote(item.id, index)}
