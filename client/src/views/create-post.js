@@ -4,12 +4,15 @@ import {
   View,
   TouchableOpacity,
   Text,
-  TextInput
+  TextInput,
+  ScrollView
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
 
 import { FetchContext } from '../context/fetch-context'
+
+import { Plus } from '../components/icons'
 import CategoryPicker from '../components/category-picker'
 
 const TypeSwichContainer = ({ children }) => {
@@ -63,57 +66,77 @@ const CreatePost = () => {
   }
 
   return (
-    <View
+    <ScrollView
       as={SafeAreaView}
       style={[styles.container, { backgroundColor: colors.bgColor }]}
     >
-      <Text>Type</Text>
+      <Text style={[styles.formLabel, { color: colors.grey }]}>TYPE</Text>
       <TypeSwichContainer>
         <TypeSwichButton selected={type} onClick={setType} title="Text" />
         <TypeSwichButton selected={type} onClick={setType} title="Link" />
       </TypeSwichContainer>
-      <Text>Category</Text>
-      <CategoryPicker selected={category} onClick={setCategory} />
-      <Text>Title</Text>
+      <Text style={[styles.formLabel, { color: colors.grey }]}>CATEGORY</Text>
+      <CategoryPicker
+        selected={category}
+        onClick={setCategory}
+        style={{ marginBottom: 10 }}
+      />
+      <Text style={[styles.formLabel, { color: colors.grey }]}>TITLE</Text>
       <TextInput
-        style={[styles.textInput, { borderColor: colors.lightGrey }]}
+        style={[
+          styles.textInput,
+          { borderColor: colors.lightGrey, height: 40 }
+        ]}
         onChangeText={text => setTitle(text)}
+        value={title}
       />
       {type === 'Link' ? (
         <>
-          <Text>Url</Text>
+          <Text style={[styles.formLabel, { color: colors.grey }]}>URL</Text>
           <TextInput
             style={[styles.textInput, { borderColor: colors.lightGrey }]}
             onChangeText={text => setUrl(text)}
+            value={url}
           />
         </>
       ) : (
         <>
-          <Text>Text</Text>
+          <Text style={[styles.formLabel, { color: colors.grey }]}>TEXT</Text>
           <TextInput
             style={[styles.textInput, { borderColor: colors.lightGrey }]}
             multiline={true}
             numberOfLines={10}
+            value={text}
             onChangeText={text => setText(text)}
           />
         </>
       )}
-      <View>
+      <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={[styles.submitButton, { backgroundColor: colors.blue }]}
           onPress={() => createPost()}
         >
-          <Text style={{ color: colors.buttonText }}>Create Post</Text>
+          <Plus color={colors.buttonText} />
+          <Text
+            style={{
+              color: colors.buttonText,
+              fontWeight: 'bold',
+              fontSize: 15
+            }}
+          >
+            Create Post
+          </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 5
+    paddingHorizontal: 15,
+    paddingVertical: 7
   },
   typeContainer: {
     flexDirection: 'row',
@@ -139,13 +162,27 @@ const styles = StyleSheet.create({
   },
   textInput: {
     borderWidth: 1,
-    textAlignVertical: 'top'
+    textAlignVertical: 'top',
+    marginTop: 5
   },
   submitButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-evenly',
+    height: 40,
+    borderRadius: 10,
+    flex: 0.4
+  },
+  formLabel: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginTop: 10
+  },
+  buttonContainer: {
+    marginTop: 30,
+    flexDirection: 'row',
     justifyContent: 'center',
-    height: 40
+    alignItems: 'center'
   }
 })
 

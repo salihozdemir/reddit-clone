@@ -10,9 +10,9 @@ import { useTheme } from '@react-navigation/native'
 
 import categories from '../constants/categories'
 
-const CategoryPicker = ({ selected, onClick, addAll }) => {
+const CategoryPicker = ({ selected, onClick, addAll, ...props }) => {
   return (
-    <View>
+    <View {...props}>
       <FlatList
         data={addAll ? ['all', ...categories] : categories}
         horizontal
