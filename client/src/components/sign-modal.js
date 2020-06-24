@@ -12,9 +12,7 @@ const SignModal = ({ navigation }) => {
   return (
     <View as={SafeAreaView} style={styles.boxCenter}>
       <Spaceship width={200} height={200} />
-      <View
-        style={[styles.buttonContainer, { backgroundColor: colors.bgColor }]}
-      >
+      <View style={styles.buttonContainer}>
         <Button
           style={{ backgroundColor: colors.signUpButton }}
           underlayColor="#4f76b9"
@@ -23,7 +21,7 @@ const SignModal = ({ navigation }) => {
           Create Account
         </Button>
         <Button
-          style={{ backgroundColor: colors.SignInColor }}
+          style={{ backgroundColor: colors.signInButton }}
           underlayColor="#b36e51"
           onPress={() => navigation.navigate('SignIn')}
         >

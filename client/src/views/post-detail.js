@@ -47,32 +47,36 @@ const PostDetail = ({ route }) => {
       comment
     })
     setPost(data)
+    setComment('')
   }
 
   return (
     <View as={SafeAreaView} style={styles.container}>
       {post ? (
         <>
-          <Post
-            score={post.score}
-            type={post.type}
-            title={post.title}
-            author={post.author}
-            category={post.category}
-            text={post.text}
-            comments={post.comments}
-            created={post.created}
-            url={post.url}
-            votes={post.votes}
-            upVote={() => upVote()}
-            downVote={() => downVote()}
-            unVote={() => unVote()}
-          />
           <FlatList
             data={post.comments}
             refreshing={isLoading}
             onRefresh={() => getPostData()}
             keyExtractor={item => item.id}
+            ListHeaderComponent={
+              <Post
+                score={post.score}
+                type={post.type}
+                title={post.title}
+                author={post.author}
+                category={post.category}
+                text={post.text}
+                comments={post.comments}
+                created={post.created}
+                url={post.url}
+                votes={post.votes}
+                views={post.views}
+                upVote={() => upVote()}
+                downVote={() => downVote()}
+                unVote={() => unVote()}
+              />
+            }
             renderItem={({ item, index }) => (
               <CommentListItem
                 body={item.body}
@@ -81,7 +85,11 @@ const PostDetail = ({ route }) => {
               />
             )}
           />
-          <CreateComment onPress={createComment} setComment={setComment} />
+          <CreateComment
+            onPress={createComment}
+            setComment={setComment}
+            comment={comment}
+          />
         </>
       ) : (
         <Text>Loading...</Text>
@@ -92,8 +100,7 @@ const PostDetail = ({ route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginTop: 50
+    flex: 1
   }
 })
 

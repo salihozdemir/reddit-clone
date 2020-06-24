@@ -12,7 +12,7 @@ const CommentListItem = ({ body, author, created }) => {
         <Text style={[styles.authorName, { color: colors.blue }]}>
           {author?.username}
         </Text>
-        <Text>{moment(created).fromNow(true)}</Text>
+        <Text>{moment(created).fromNow()}</Text>
       </View>
       <View style={styles.body}>
         <Text>{body}</Text>
@@ -24,10 +24,13 @@ const CommentListItem = ({ body, author, created }) => {
 const styles = StyleSheet.create({
   container: {
     padding: 5,
-    marginTop: 10
+    marginTop: 10,
+    elevation: 1,
+    paddingHorizontal: 10
   },
   header: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     padding: 5,
     borderBottomWidth: 1
   },

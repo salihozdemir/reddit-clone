@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
   tabBarContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 40,
-    elevation: 23
+    height: 28,
+    elevation: 10
   },
   button: {
     flex: 1,

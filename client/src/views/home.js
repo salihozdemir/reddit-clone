@@ -49,50 +49,54 @@ const Home = ({ navigation }) => {
     setIsLoaading(false)
   }
 
-  const navigationDetail = postId => {
-    navigation.navigate('PostDetail', { postId })
+  const navigationDetail = (postId, category) => {
+    navigation.navigate('PostDetail', { postId, category })
   }
 
   return (
     <View as={SafeAreaView} style={styles.container}>
-      <FlatList
-        data={postsData}
-        extraData={isLoading}
-        refreshing={isLoading}
-        onRefresh={() => getPostData()}
-        keyExtractor={item => item.id}
-        ListHeaderComponent={
-          <CategoryPicker selected={category} onClick={setCategory} addAll />
-        }
-        ListHeaderComponentStyle={[
-          styles.categoryPicker,
-          { backgroundColor: colors.bgColor }
-        ]}
-        ListEmptyComponent={
-          <Text style={[styles.empty, { color: colors.grey }]}>
-            Ups! Not found any post!
-          </Text>
-        }
-        renderItem={({ item, index }) => (
-          <Post
-            score={item.score}
-            type={item.type}
-            title={item.title}
-            author={item.author}
-            category={item.category}
-            text={item.text}
-            comments={item.comments}
-            created={item.created}
-            url={item.url}
-            votes={item.votes}
-            views={item.views}
-            upVote={() => upVote(item.id, index)}
-            downVote={() => downVote(item.id, index)}
-            unVote={() => unVote(item.id, index)}
-            navigationDetail={() => navigationDetail(item.id)}
-          />
-        )}
-      />
+      {postsData.length !== 0 ? (
+        <FlatList
+          data={postsData}
+          extraData={isLoading}
+          refreshing={isLoading}
+          onRefresh={() => getPostData()}
+          keyExtractor={item => item.id}
+          ListHeaderComponent={
+            <CategoryPicker selected={category} onClick={setCategory} addAll />
+          }
+          ListHeaderComponentStyle={[
+            styles.categoryPicker,
+            { backgroundColor: colors.bgColor }
+          ]}
+          ListEmptyComponent={
+            <Text style={[styles.empty, { color: colors.grey }]}>
+              Ups! Not found any post!
+            </Text>
+          }
+          renderItem={({ item, index }) => (
+            <Post
+              score={item.score}
+              type={item.type}
+              title={item.title}
+              author={item.author}
+              category={item.category}
+              text={item.text}
+              comments={item.comments}
+              created={item.created}
+              url={item.url}
+              votes={item.votes}
+              views={item.views}
+              upVote={() => upVote(item.id, index)}
+              downVote={() => downVote(item.id, index)}
+              unVote={() => unVote(item.id, index)}
+              navigationDetail={() => navigationDetail(item.id, item.category)}
+            />
+          )}
+        />
+      ) : (
+        <Text>Yükleniyor</Text>
+      )}
     </View>
   )
 }
@@ -102,7 +106,9 @@ const styles = StyleSheet.create({
     flex: 1
   },
   categoryPicker: {
-    padding: 5
+    padding: 5,
+    marginTop: 7,
+    elevation: 3
   },
   empty: {
     fontWeight: 'bold',

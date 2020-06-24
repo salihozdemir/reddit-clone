@@ -51,7 +51,7 @@ const Post = ({
       <View style={styles.headerContainer}>
         <Text style={{ color: colors.grey }}>/{category} </Text>
         <Text style={{ color: colors.blue }}>@{author?.username} · </Text>
-        <Text>{moment(created).fromNow(true)}</Text>
+        <Text>{moment(created).fromNow()}</Text>
       </View>
       <TouchableWithoutFeedback onPress={navigationDetail}>
         <Text style={[styles.title, { color: colors.grey }]}>{title}</Text>
@@ -85,7 +85,8 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 15,
     paddingVertical: 7,
-    marginTop: 7
+    marginTop: 7,
+    elevation: 1
   },
   headerContainer: {
     flexDirection: 'row',
