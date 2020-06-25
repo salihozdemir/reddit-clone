@@ -76,7 +76,7 @@ const User = ({ navigation, route }) => {
           <Text style={styles.label}>Post Count</Text>
           <Text>{userPosts?.length}</Text>
         </View>
-        {username && username === authState.userInfo.username && (
+        {username === authState.userInfo.username && (
           <TouchableOpacity
             style={styles.infoBox}
             onPress={() => {

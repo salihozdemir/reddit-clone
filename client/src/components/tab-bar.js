@@ -31,7 +31,9 @@ function TabBar({ state, descriptors, navigation }) {
 
           if (!isFocused && !event.defaultPrevented) {
             if (authState.token) {
-              navigation.navigate(route.name)
+              navigation.navigate(route.name, {
+                username: authState.userInfo.username
+              })
             } else {
               navigation.navigate('SignModal')
             }
