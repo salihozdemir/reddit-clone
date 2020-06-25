@@ -1,12 +1,7 @@
 import React from 'react'
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback
-} from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useNavigation } from '@react-navigation/native'
 import moment from 'moment'
 
 import { useTheme } from '@react-navigation/native'
@@ -14,6 +9,7 @@ import { AuthContext } from '../context/auth-context'
 import { ArrowDown, ArrowUp, MessageSquare } from './icons/index'
 
 const Post = ({
+  postId,
   score,
   type,
   title,
@@ -27,10 +23,10 @@ const Post = ({
   views,
   upVote,
   downVote,
-  unVote,
-  navigationDetail
+  unVote
 }) => {
   const { colors } = useTheme()
+  const navigation = useNavigation()
 
   const { authState } = React.useContext(AuthContext)
   const { id } = authState.userInfo
@@ -50,17 +46,29 @@ const Post = ({
     >
       <View style={styles.headerContainer}>
         <Text style={{ color: colors.grey }}>/{category} </Text>
-        <Text style={{ color: colors.blue }}>@{author?.username} · </Text>
+        <Text
+          style={{ color: colors.blue }}
+          onPress={() =>
+            navigation.navigate('User', { username: author.username })
+          }
+        >
+          @{author?.username} ·{' '}
+        </Text>
         <Text>{moment(created).fromNow()}</Text>
       </View>
-      <TouchableWithoutFeedback onPress={navigationDetail}>
-        <Text style={[styles.title, { color: colors.grey }]}>{title}</Text>
-      </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback onPress={navigationDetail}>
-        <Text numberOfLines={10} style={{ color: colors.grey }}>
-          {type === 'link' ? url : text}
-        </Text>
-      </TouchableWithoutFeedback>
+      <Text
+        style={[styles.title, { color: colors.grey }]}
+        onPress={() => navigation.navigate('PostDetail', { postId, category })}
+      >
+        {title}
+      </Text>
+      <Text
+        numberOfLines={10}
+        style={{ color: colors.grey }}
+        onPress={() => navigation.navigate('PostDetail', { postId, category })}
+      >
+        {type === 'link' ? url : text}
+      </Text>
       <View style={styles.bottomContainer}>
         <View style={styles.centerAlign}>
           <TouchableOpacity onPress={isUpVoted() ? unVote : upVote}>
