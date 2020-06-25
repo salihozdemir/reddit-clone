@@ -4,12 +4,12 @@ import Svg, { Path } from 'react-native-svg'
 function SvgArrowDown(props) {
   return (
     <Svg
-      width={22}
-      height={22}
+      width={24}
+      height={24}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={4}
+      strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
       className=""

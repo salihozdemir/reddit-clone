@@ -4,12 +4,12 @@ import Svg, { Path } from 'react-native-svg'
 function SvgMessageSquare(props) {
   return (
     <Svg
-      width={20}
-      height={20}
+      width={24}
+      height={24}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={3}
+      strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
       className=""

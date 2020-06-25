@@ -64,15 +64,31 @@ const Post = ({
       <View style={styles.bottomContainer}>
         <View style={styles.centerAlign}>
           <TouchableOpacity onPress={isUpVoted() ? unVote : upVote}>
-            <ArrowUp color={isUpVoted() ? colors.upVote : colors.icon} />
+            <ArrowUp
+              width={22}
+              height={22}
+              strokeWidth={4}
+              color={isUpVoted() ? colors.upVote : colors.icon}
+            />
           </TouchableOpacity>
           <Text style={styles.score}>{score}</Text>
           <TouchableOpacity onPress={isDownVoted() ? unVote : downVote}>
-            <ArrowDown color={isDownVoted() ? colors.downVote : colors.icon} />
+            <ArrowDown
+              width={22}
+              height={22}
+              strokeWidth={4}
+              color={isDownVoted() ? colors.downVote : colors.icon}
+            />
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.centerAlign}>
-          <MessageSquare color={colors.icon} style={styles.commentIcon} />
+          <MessageSquare
+            color={colors.icon}
+            style={styles.commentIcon}
+            width={20}
+            height={20}
+            strokeWidth={3}
+          />
           <Text style={styles.icon}> {comments?.length}</Text>
         </TouchableOpacity>
         <Text>{views} views</Text>
