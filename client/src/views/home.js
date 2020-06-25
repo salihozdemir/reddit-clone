@@ -14,7 +14,7 @@ const Home = ({ navigation }) => {
   const fetchContext = React.useContext(FetchContext)
   const { colors } = useTheme()
 
-  const [postsData, setPostsData] = React.useState([])
+  const [postsData, setPostsData] = React.useState(null)
   const [category, setCategory] = React.useState('all')
   const [isLoading, setIsLoaading] = React.useState(false)
 
@@ -52,13 +52,9 @@ const Home = ({ navigation }) => {
     setIsLoaading(false)
   }
 
-  const navigationDetail = (postId, category) => {
-    navigation.navigate('PostDetail', { postId, category })
-  }
-
   return (
     <View as={SafeAreaView} style={styles.container}>
-      {postsData.length !== 0 ? (
+      {postsData ? (
         <FlatList
           data={postsData}
           extraData={isLoading}
@@ -79,6 +75,7 @@ const Home = ({ navigation }) => {
           }
           renderItem={({ item, index }) => (
             <Post
+              postId={item.id}
               score={item.score}
               type={item.type}
               title={item.title}
@@ -93,7 +90,6 @@ const Home = ({ navigation }) => {
               upVote={() => upVote(item.id, index)}
               downVote={() => downVote(item.id, index)}
               unVote={() => unVote(item.id, index)}
-              navigationDetail={() => navigationDetail(item.id, item.category)}
             />
           )}
         />

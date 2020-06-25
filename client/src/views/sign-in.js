@@ -34,7 +34,7 @@ const SignUp = ({ navigation }) => {
           underlayColor="#4f76b9"
           onPress={() => {
             authContext.signIn({ username, password })
-            navigation.navigate('User')
+            navigation.navigate('Home')
           }}
         >
           Go!
