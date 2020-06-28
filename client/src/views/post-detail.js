@@ -3,12 +3,15 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { StyleSheet, Text, View, FlatList } from 'react-native'
 
 import axios from '../utils/fetcher'
+import { AuthContext } from '../context/auth-context'
 
 import Post from '../components/post'
 import CommentListItem from '../components/comment-list-item'
 import CreateComment from '../components/create-comment'
 
 const PostDetail = ({ route }) => {
+  const { authState } = React.useContext(AuthContext)
+
   const [post, setPost] = React.useState(null)
   const [isLoading, setIsLoaading] = React.useState(false)
   const [comment, setComment] = React.useState('')
@@ -47,6 +50,7 @@ const PostDetail = ({ route }) => {
               <Post
                 index={false}
                 postId={post.id}
+                userId={authState.userInfo.id}
                 score={post.score}
                 type={post.type}
                 title={post.title}

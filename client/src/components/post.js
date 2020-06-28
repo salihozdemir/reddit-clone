@@ -6,12 +6,12 @@ import moment from 'moment'
 
 import axios from '../utils/fetcher'
 
-import { AuthContext } from '../context/auth-context'
 import { ArrowDown, ArrowUp, MessageSquare } from './icons/index'
 
 const Post = ({
   index,
   postId,
+  userId,
   score,
   type,
   title,
@@ -29,15 +29,12 @@ const Post = ({
   const { colors } = useTheme()
   const navigation = useNavigation()
 
-  const { authState } = React.useContext(AuthContext)
-  const { id } = authState.userInfo
-
   const isUpVoted = () => {
-    return votes?.find(v => v.user === id)?.vote === 1
+    return votes.find(v => v.user === userId)?.vote === 1
   }
 
   const isDownVoted = () => {
-    return votes?.find(v => v.user === id)?.vote === -1
+    return votes.find(v => v.user === userId)?.vote === -1
   }
 
   const upVote = async () => {

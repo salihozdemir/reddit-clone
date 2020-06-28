@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
 
 import axios from '../utils/fetcher'
+import { AuthContext } from '../context/auth-context'
 
 import PostLoader from '../components/post-loader'
 import LoaderText from '../components/loader-text'
@@ -11,6 +12,7 @@ import CategoryPicker from '../components/category-picker'
 import Post from '../components/post'
 
 const Home = () => {
+  const { authState } = React.useContext(AuthContext)
   const { colors } = useTheme()
 
   const [postsData, setPostsData] = React.useState(null)
@@ -55,6 +57,7 @@ const Home = () => {
             <Post
               index={index}
               postId={item.id}
+              userId={authState.userInfo.id}
               score={item.score}
               type={item.type}
               title={item.title}
