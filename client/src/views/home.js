@@ -3,51 +3,50 @@ import { StyleSheet, View, FlatList, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
 
-import { FetchContext } from '../context/fetch-context'
+import axios from '../utils/fetcher'
 
 import PostLoader from '../components/post-loader'
 import LoaderText from '../components/loader-text'
 import CategoryPicker from '../components/category-picker'
 import Post from '../components/post'
 
-const Home = ({ navigation }) => {
-  const fetchContext = React.useContext(FetchContext)
+const Home = () => {
   const { colors } = useTheme()
 
   const [postsData, setPostsData] = React.useState(null)
   const [category, setCategory] = React.useState('all')
   const [isLoading, setIsLoaading] = React.useState(false)
 
-  const getPostData = React.useCallback(async () => {
+  const getPostData = async () => {
     setIsLoaading(true)
-    const { data } = await fetchContext.authAxios.get(
+    const { data } = await axios.get(
       !category || category === 'all' ? 'posts' : `posts/${category}`
     )
     setPostsData(data)
     setIsLoaading(false)
-  }, [category, fetchContext.authAxios])
+  }
 
   React.useEffect(() => {
     getPostData()
-  }, [getPostData])
+  }, [])
 
   const upVote = async (postId, index) => {
     setIsLoaading(true)
-    const { data } = await fetchContext.authAxios.get(`post/${postId}/upvote`)
+    const { data } = await axios.get(`post/${postId}/upvote`)
     postsData[index] = data
     setIsLoaading(false)
   }
 
   const downVote = async (postId, index) => {
     setIsLoaading(true)
-    const { data } = await fetchContext.authAxios.get(`post/${postId}/downvote`)
+    const { data } = await axios.get(`post/${postId}/downvote`)
     postsData[index] = data
     setIsLoaading(false)
   }
 
   const unVote = async (postId, index) => {
     setIsLoaading(true)
-    const { data } = await fetchContext.authAxios.get(`post/${postId}/unvote`)
+    const { data } = await axios.get(`post/${postId}/unvote`)
     postsData[index] = data
     setIsLoaading(false)
   }
@@ -94,22 +93,22 @@ const Home = ({ navigation }) => {
           )}
         />
       ) : (
-        <>
-          <View
-            style={[
-              styles.loaderCategories,
-              { backgroundColor: colors.bgColor }
-            ]}
-          >
+          <>
+            <View
+              style={[
+                styles.loaderCategories,
+                { backgroundColor: colors.bgColor }
+              ]}
+            >
+              {[1, 2, 3, 4, 5].map(i => (
+                <LoaderText key={i} />
+              ))}
+            </View>
             {[1, 2, 3, 4, 5].map(i => (
-              <LoaderText key={i} />
+              <PostLoader key={i} />
             ))}
-          </View>
-          {[1, 2, 3, 4, 5].map(i => (
-            <PostLoader key={i} />
-          ))}
-        </>
-      )}
+          </>
+        )}
     </View>
   )
 }

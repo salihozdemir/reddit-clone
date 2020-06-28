@@ -2,48 +2,47 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StyleSheet, Text, View, FlatList } from 'react-native'
 
-import { FetchContext } from '../context/fetch-context'
+import axios from '../utils/fetcher'
 
 import Post from '../components/post'
 import CommentListItem from '../components/comment-list-item'
 import CreateComment from '../components/create-comment'
 
 const PostDetail = ({ route }) => {
-  const fetchContext = React.useContext(FetchContext)
   const [post, setPost] = React.useState(null)
   const [isLoading, setIsLoaading] = React.useState(false)
   const [comment, setComment] = React.useState('')
 
   const { postId } = route.params
 
-  const getPostData = React.useCallback(async () => {
+  const getPostData = async () => {
     setIsLoaading(true)
-    const { data } = await fetchContext.authAxios.get(`post/${postId}`)
+    const { data } = await axios.get(`post/${postId}`)
     setPost(data)
     setIsLoaading(false)
-  }, [fetchContext.authAxios, postId])
+  }
 
   React.useEffect(() => {
     getPostData()
-  }, [getPostData])
+  }, [])
 
   const upVote = async () => {
-    const { data } = await fetchContext.authAxios.get(`post/${postId}/upvote`)
+    const { data } = await axios.get(`post/${postId}/upvote`)
     setPost(data)
   }
 
   const downVote = async () => {
-    const { data } = await fetchContext.authAxios.get(`post/${postId}/downvote`)
+    const { data } = await axios.get(`post/${postId}/downvote`)
     setPost(data)
   }
 
   const unVote = async () => {
-    const { data } = await fetchContext.authAxios.get(`post/${postId}/unvote`)
+    const { data } = await axios.get(`post/${postId}/unvote`)
     setPost(data)
   }
 
   const createComment = async () => {
-    const { data } = await fetchContext.authAxios.post(`/post/${postId}`, {
+    const { data } = await axios.post(`/post/${postId}`, {
       comment
     })
     setPost(data)

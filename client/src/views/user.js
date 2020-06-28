@@ -9,8 +9,8 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
 
+import axios from '../utils/fetcher'
 import { AuthContext } from '../context/auth-context'
-import { FetchContext } from '../context/fetch-context'
 
 import { LogOut } from '../components/icons'
 import Post from '../components/post'
@@ -18,7 +18,6 @@ import PostLoader from '../components/post-loader'
 
 const User = ({ navigation, route }) => {
   const { authContext, authState } = React.useContext(AuthContext)
-  const { authAxios } = React.useContext(FetchContext)
   const { colors } = useTheme()
 
   const [isLoading, setIsLoaading] = React.useState(false)
@@ -26,37 +25,37 @@ const User = ({ navigation, route }) => {
 
   const username = route.params?.username
 
-  const getUserPostDetail = React.useCallback(async () => {
+  const getUserPostDetail = async () => {
     setIsLoaading(true)
-    const { data } = await authAxios.get(
+    const { data } = await axios.get(
       `user/${username || authState.userInfo.username}`
     )
     setuserPosts(data)
     setIsLoaading(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [username])
+  }
 
   React.useEffect(() => {
     getUserPostDetail()
-  }, [getUserPostDetail])
+  }, [])
 
   const upVote = async (postId, index) => {
     setIsLoaading(true)
-    const { data } = await authAxios.get(`post/${postId}/upvote`)
+    const { data } = await axios.get(`post/${postId}/upvote`)
+    console.log(data)
     userPosts[index] = data
     setIsLoaading(false)
   }
 
   const downVote = async (postId, index) => {
     setIsLoaading(true)
-    const { data } = await authAxios.get(`post/${postId}/downvote`)
+    const { data } = await axios.get(`post/${postId}/downvote`)
     userPosts[index] = data
     setIsLoaading(false)
   }
 
   const unVote = async (postId, index) => {
     setIsLoaading(true)
-    const { data } = await authAxios.get(`post/${postId}/unvote`)
+    const { data } = await axios.get(`post/${postId}/unvote`)
     userPosts[index] = data
     setIsLoaading(false)
   }
@@ -122,12 +121,12 @@ const User = ({ navigation, route }) => {
           )}
         />
       ) : (
-        <>
-          {[1, 2, 3, 4, 5].map(i => (
-            <PostLoader key={i} />
-          ))}
-        </>
-      )}
+          <>
+            {[1, 2, 3, 4, 5].map(i => (
+              <PostLoader key={i} />
+            ))}
+          </>
+        )}
     </View>
   )
 }

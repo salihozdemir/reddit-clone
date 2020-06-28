@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
 
-import { FetchContext } from '../context/fetch-context'
+import axios from '../utils/fetcher'
 
 import { Plus } from '../components/icons'
 import CategoryPicker from '../components/category-picker'
@@ -47,7 +47,6 @@ const TypeSwichButton = ({ selected, onClick, title }) => {
 }
 
 const CreatePost = () => {
-  const fetchContext = React.useContext(FetchContext)
   const { colors } = useTheme()
 
   const [type, setType] = React.useState('Text')
@@ -59,7 +58,7 @@ const CreatePost = () => {
   const createPost = async () => {
     try {
       const payload = { type, category, title, url, text }
-      await fetchContext.authAxios.post('posts', payload)
+      await axios.post('posts', payload)
     } catch (error) {
       console.log(error.response.data)
     }
@@ -100,17 +99,17 @@ const CreatePost = () => {
           />
         </>
       ) : (
-        <>
-          <Text style={[styles.formLabel, { color: colors.grey }]}>TEXT</Text>
-          <TextInput
-            style={[styles.textInput, { borderColor: colors.lightGrey }]}
-            multiline={true}
-            numberOfLines={10}
-            value={text}
-            onChangeText={text => setText(text)}
-          />
-        </>
-      )}
+          <>
+            <Text style={[styles.formLabel, { color: colors.grey }]}>TEXT</Text>
+            <TextInput
+              style={[styles.textInput, { borderColor: colors.lightGrey }]}
+              multiline={true}
+              numberOfLines={10}
+              value={text}
+              onChangeText={text => setText(text)}
+            />
+          </>
+        )}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={[styles.submitButton, { backgroundColor: colors.blue }]}
