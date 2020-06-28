@@ -42,7 +42,7 @@ const PostDetail = ({ route }) => {
       {post ? (
         <>
           <FlatList
-            data={post.comments}
+            data={post.comments.sort((a, b) => a.created < b.created)}
             refreshing={isLoading}
             onRefresh={() => getPostData()}
             keyExtractor={item => item.id}
