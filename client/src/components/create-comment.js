@@ -4,7 +4,7 @@ import { useTheme } from '@react-navigation/native'
 
 import { Send } from '../components/icons'
 
-const CreateComment = ({ onPress, setComment, comment }) => {
+const CreateComment = ({ onPress, setComment, comment, setIsFocused }) => {
   const { colors } = useTheme()
 
   return (
@@ -12,6 +12,8 @@ const CreateComment = ({ onPress, setComment, comment }) => {
       <TextInput
         style={[styles.textInput, { backgroundColor: colors.background }]}
         placeholder="Add a comment"
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         onChangeText={setComment}
         maxLength={2000}
         autoCorrect={false}

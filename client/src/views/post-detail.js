@@ -11,10 +11,12 @@ import CreateComment from '../components/create-comment'
 
 const PostDetail = ({ route }) => {
   const { authState } = React.useContext(AuthContext)
+  const flatListRef = React.useRef()
 
   const [post, setPost] = React.useState(null)
   const [isLoading, setIsLoaading] = React.useState(false)
   const [comment, setComment] = React.useState('')
+  const [isFocused, setIsFocused] = React.useState(null)
 
   const { postId } = route.params
 
@@ -29,6 +31,11 @@ const PostDetail = ({ route }) => {
     getPostData()
   }, [])
 
+  React.useEffect(() => {
+    isFocused &&
+      flatListRef.current.scrollToOffset({ animated: true, offset: 0 })
+  }, [isFocused])
+
   const createComment = async () => {
     const { data } = await axios.post(`/post/${postId}`, {
       comment
@@ -42,6 +49,7 @@ const PostDetail = ({ route }) => {
       {post ? (
         <>
           <FlatList
+            ref={flatListRef}
             data={post.comments.sort((a, b) => a.created < b.created)}
             refreshing={isLoading}
             onRefresh={() => getPostData()}
@@ -77,6 +85,7 @@ const PostDetail = ({ route }) => {
           <CreateComment
             onPress={createComment}
             setComment={setComment}
+            setIsFocused={setIsFocused}
             comment={comment}
           />
         </>
