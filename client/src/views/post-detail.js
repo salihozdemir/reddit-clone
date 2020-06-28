@@ -26,21 +26,6 @@ const PostDetail = ({ route }) => {
     getPostData()
   }, [])
 
-  const upVote = async () => {
-    const { data } = await axios.get(`post/${postId}/upvote`)
-    setPost(data)
-  }
-
-  const downVote = async () => {
-    const { data } = await axios.get(`post/${postId}/downvote`)
-    setPost(data)
-  }
-
-  const unVote = async () => {
-    const { data } = await axios.get(`post/${postId}/unvote`)
-    setPost(data)
-  }
-
   const createComment = async () => {
     const { data } = await axios.post(`/post/${postId}`, {
       comment
@@ -60,6 +45,8 @@ const PostDetail = ({ route }) => {
             keyExtractor={item => item.id}
             ListHeaderComponent={
               <Post
+                index={false}
+                postId={post.id}
                 score={post.score}
                 type={post.type}
                 title={post.title}
@@ -71,9 +58,8 @@ const PostDetail = ({ route }) => {
                 url={post.url}
                 votes={post.votes}
                 views={post.views}
-                upVote={() => upVote()}
-                downVote={() => downVote()}
-                unVote={() => unVote()}
+                setIsLoaading={setIsLoaading}
+                setData={setPost}
               />
             }
             renderItem={({ item, index }) => (

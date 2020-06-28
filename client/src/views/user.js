@@ -38,32 +38,6 @@ const User = ({ navigation, route }) => {
     getUserPostDetail()
   }, [])
 
-  const upVote = async (postId, index) => {
-    setIsLoaading(true)
-    const { data } = await axios.get(`post/${postId}/upvote`)
-    console.log(data)
-    userPosts[index] = data
-    setIsLoaading(false)
-  }
-
-  const downVote = async (postId, index) => {
-    setIsLoaading(true)
-    const { data } = await axios.get(`post/${postId}/downvote`)
-    userPosts[index] = data
-    setIsLoaading(false)
-  }
-
-  const unVote = async (postId, index) => {
-    setIsLoaading(true)
-    const { data } = await axios.get(`post/${postId}/unvote`)
-    userPosts[index] = data
-    setIsLoaading(false)
-  }
-
-  const navigationDetail = (postId, category) => {
-    navigation.navigate('PostDetail', { postId, category })
-  }
-
   return (
     <View as={SafeAreaView} style={styles.boxCenter}>
       <View style={[styles.userInfo, { backgroundColor: colors.bgColor }]}>
@@ -102,6 +76,8 @@ const User = ({ navigation, route }) => {
           }
           renderItem={({ item, index }) => (
             <Post
+              index={index}
+              postId={item.id}
               score={item.score}
               type={item.type}
               title={item.title}
@@ -113,20 +89,18 @@ const User = ({ navigation, route }) => {
               url={item.url}
               votes={item.votes}
               views={item.views}
-              upVote={() => upVote(item.id, index)}
-              downVote={() => downVote(item.id, index)}
-              unVote={() => unVote(item.id, index)}
-              navigationDetail={() => navigationDetail(item.id, item.category)}
+              setIsLoaading={setIsLoaading}
+              setData={setuserPosts}
             />
           )}
         />
       ) : (
-          <>
-            {[1, 2, 3, 4, 5].map(i => (
-              <PostLoader key={i} />
-            ))}
-          </>
-        )}
+        <>
+          {[1, 2, 3, 4, 5].map(i => (
+            <PostLoader key={i} />
+          ))}
+        </>
+      )}
     </View>
   )
 }

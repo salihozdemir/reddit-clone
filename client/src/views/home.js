@@ -30,27 +30,6 @@ const Home = () => {
     getPostData()
   }, [])
 
-  const upVote = async (postId, index) => {
-    setIsLoaading(true)
-    const { data } = await axios.get(`post/${postId}/upvote`)
-    postsData[index] = data
-    setIsLoaading(false)
-  }
-
-  const downVote = async (postId, index) => {
-    setIsLoaading(true)
-    const { data } = await axios.get(`post/${postId}/downvote`)
-    postsData[index] = data
-    setIsLoaading(false)
-  }
-
-  const unVote = async (postId, index) => {
-    setIsLoaading(true)
-    const { data } = await axios.get(`post/${postId}/unvote`)
-    postsData[index] = data
-    setIsLoaading(false)
-  }
-
   return (
     <View as={SafeAreaView} style={styles.container}>
       {postsData ? (
@@ -74,6 +53,7 @@ const Home = () => {
           }
           renderItem={({ item, index }) => (
             <Post
+              index={index}
               postId={item.id}
               score={item.score}
               type={item.type}
@@ -86,29 +66,28 @@ const Home = () => {
               url={item.url}
               votes={item.votes}
               views={item.views}
-              upVote={() => upVote(item.id, index)}
-              downVote={() => downVote(item.id, index)}
-              unVote={() => unVote(item.id, index)}
+              setIsLoaading={setIsLoaading}
+              setData={setPostsData}
             />
           )}
         />
       ) : (
-          <>
-            <View
-              style={[
-                styles.loaderCategories,
-                { backgroundColor: colors.bgColor }
-              ]}
-            >
-              {[1, 2, 3, 4, 5].map(i => (
-                <LoaderText key={i} />
-              ))}
-            </View>
+        <>
+          <View
+            style={[
+              styles.loaderCategories,
+              { backgroundColor: colors.bgColor }
+            ]}
+          >
             {[1, 2, 3, 4, 5].map(i => (
-              <PostLoader key={i} />
+              <LoaderText key={i} />
             ))}
-          </>
-        )}
+          </View>
+          {[1, 2, 3, 4, 5].map(i => (
+            <PostLoader key={i} />
+          ))}
+        </>
+      )}
     </View>
   )
 }
