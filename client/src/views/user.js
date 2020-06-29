@@ -7,7 +7,7 @@ import {
   TouchableOpacity
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useTheme } from '@react-navigation/native'
+import { useTheme, useNavigation } from '@react-navigation/native'
 
 import axios from '../utils/fetcher'
 import { AuthContext } from '../context/auth-context'
@@ -16,8 +16,39 @@ import { LogOut } from '../components/icons'
 import Post from '../components/post'
 import PostLoader from '../components/post-loader'
 
-const User = ({ navigation, route }) => {
+const HeaderComponent = ({ username, postCount }) => {
   const { authContext, authState } = React.useContext(AuthContext)
+  const { colors } = useTheme()
+  const navigation = useNavigation()
+
+  return (
+    <View style={[styles.userInfo, { backgroundColor: colors.bgColor }]}>
+      <View style={styles.infoBox}>
+        <Text style={styles.label}>Username</Text>
+        <Text>{username ?? authState.userInfo.username}</Text>
+      </View>
+      <View style={styles.infoBox}>
+        <Text style={styles.label}>Post Count</Text>
+        <Text>{postCount}</Text>
+      </View>
+      {username === authState.userInfo.username && (
+        <TouchableOpacity
+          style={styles.infoBox}
+          onPress={() => {
+            authContext.signOut()
+            navigation.navigate('Home')
+          }}
+        >
+          <LogOut color={colors.downVote} />
+          <Text style={{ color: colors.downVote }}>Logout</Text>
+        </TouchableOpacity>
+      )}
+    </View>
+  )
+}
+
+const User = ({ route }) => {
+  const { authState } = React.useContext(AuthContext)
   const { colors } = useTheme()
 
   const [isLoading, setIsLoaading] = React.useState(false)
@@ -25,43 +56,21 @@ const User = ({ navigation, route }) => {
 
   const username = route.params?.username
 
-  const getUserPostDetail = async () => {
+  const getUserPostDetail = React.useCallback(async () => {
     setIsLoaading(true)
     const { data } = await axios.get(
       `user/${username || authState.userInfo.username}`
     )
     setuserPosts(data)
     setIsLoaading(false)
-  }
+  }, [authState.userInfo.username, username])
 
   React.useEffect(() => {
     getUserPostDetail()
-  }, [])
+  }, [getUserPostDetail])
 
   return (
     <View as={SafeAreaView} style={styles.boxCenter}>
-      <View style={[styles.userInfo, { backgroundColor: colors.bgColor }]}>
-        <View style={styles.infoBox}>
-          <Text style={styles.label}>Username</Text>
-          <Text>{username ?? authState.userInfo.username}</Text>
-        </View>
-        <View style={styles.infoBox}>
-          <Text style={styles.label}>Post Count</Text>
-          <Text>{userPosts?.length}</Text>
-        </View>
-        {username === authState.userInfo.username && (
-          <TouchableOpacity
-            style={styles.infoBox}
-            onPress={() => {
-              authContext.signOut()
-              navigation.navigate('Home')
-            }}
-          >
-            <LogOut color={colors.downVote} />
-            <Text style={{ color: colors.downVote }}>Logout</Text>
-          </TouchableOpacity>
-        )}
-      </View>
       {userPosts.length !== 0 ? (
         <FlatList
           data={userPosts}
@@ -74,6 +83,11 @@ const User = ({ navigation, route }) => {
               Ups! Not found any post!
             </Text>
           }
+          ListHeaderComponent={
+            <HeaderComponent username={username} postCount={userPosts.length} />
+          }
+          stickyHeaderIndices={[0]}
+          ListHeaderComponentStyle={styles.headerComponentStyle}
           renderItem={({ item, index }) => (
             <Post
               index={index}
@@ -128,6 +142,10 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: 'bold',
     fontSize: 16
+  },
+  headerComponentStyle: {
+    marginBottom: 7,
+    elevation: 3
   }
 })
 

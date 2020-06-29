@@ -24,7 +24,7 @@ const CommentListItem = ({ body, author, created }) => {
 const styles = StyleSheet.create({
   container: {
     padding: 5,
-    marginTop: 10,
+    marginBottom: 7,
     elevation: 1,
     paddingHorizontal: 10
   },

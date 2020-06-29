@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   },
   categoryPicker: {
     padding: 5,
-    marginTop: 7,
+    marginVertical: 7,
     elevation: 3
   },
   empty: {

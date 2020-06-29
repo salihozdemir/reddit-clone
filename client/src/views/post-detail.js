@@ -77,6 +77,7 @@ const PostDetail = ({ route }) => {
                 setData={setPost}
               />
             }
+            ListHeaderComponentStyle={styles.headerComponentStyle}
             renderItem={({ item, index }) => (
               <CommentListItem
                 body={item.body}
@@ -107,6 +108,9 @@ const PostDetail = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  headerComponentStyle: {
+    marginVertical: 7
   }
 })
 
