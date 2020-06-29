@@ -6,11 +6,13 @@ import { Send } from '../components/icons'
 
 const CreateComment = ({ onPress, setComment, comment, setIsFocused }) => {
   const { colors } = useTheme()
+  const textInputRef = React.useRef()
 
   return (
     <View style={[styles.container, { backgroundColor: colors.bgColor }]}>
       <TextInput
         style={[styles.textInput, { backgroundColor: colors.background }]}
+        ref={textInputRef}
         placeholder="Add a comment"
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
@@ -19,7 +21,12 @@ const CreateComment = ({ onPress, setComment, comment, setIsFocused }) => {
         autoCorrect={false}
         value={comment}
       />
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity
+        onPress={() => {
+          textInputRef.current.blur()
+          onPress()
+        }}
+      >
         <Send color={colors.grey} />
       </TouchableOpacity>
     </View>
