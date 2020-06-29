@@ -1,6 +1,8 @@
 import React from 'react'
 import AsyncStorage from '@react-native-community/async-storage'
 
+import axios from '../utils/fetcher'
+
 const AuthContext = React.createContext()
 const { Provider } = AuthContext
 
@@ -72,19 +74,10 @@ const AuthProvider = ({ children }) => {
     () => ({
       signIn: async data => {
         try {
-          const response = await fetch(
-            'http://172.17.0.1:8080/api/authenticate',
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(data)
-            }
-          )
+          const res = await axios.post('authenticate', data)
 
-          const { token, expiresAt, userInfo } = await response.json()
-          if (response.ok) {
+          const { token, expiresAt, userInfo } = res.data
+          if (res.status === 200) {
             await AsyncStorage.setItem('token', token)
             await AsyncStorage.setItem('expiresAt', JSON.stringify(expiresAt))
             await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
@@ -108,16 +101,10 @@ const AuthProvider = ({ children }) => {
       },
       signUp: async data => {
         try {
-          const response = await fetch('http://172.17.0.1:8080/api/signup', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-          })
+          const res = await axios.post('signup', data)
 
-          const { token, expiresAt, userInfo } = await response.json()
-          if (response.ok) {
+          const { token, expiresAt, userInfo } = res.data
+          if (res.status === 200) {
             await AsyncStorage.setItem('token', token)
             await AsyncStorage.setItem('expiresAt', JSON.stringify(expiresAt))
             await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))

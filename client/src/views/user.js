@@ -9,8 +9,8 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
 
+import axios from '../utils/fetcher'
 import { AuthContext } from '../context/auth-context'
-import { FetchContext } from '../context/fetch-context'
 
 import { LogOut } from '../components/icons'
 import Post from '../components/post'
@@ -18,7 +18,6 @@ import PostLoader from '../components/post-loader'
 
 const User = ({ navigation, route }) => {
   const { authContext, authState } = React.useContext(AuthContext)
-  const { authAxios } = React.useContext(FetchContext)
   const { colors } = useTheme()
 
   const [isLoading, setIsLoaading] = React.useState(false)
@@ -26,44 +25,18 @@ const User = ({ navigation, route }) => {
 
   const username = route.params?.username
 
-  const getUserPostDetail = React.useCallback(async () => {
+  const getUserPostDetail = async () => {
     setIsLoaading(true)
-    const { data } = await authAxios.get(
+    const { data } = await axios.get(
       `user/${username || authState.userInfo.username}`
     )
     setuserPosts(data)
     setIsLoaading(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [username])
+  }
 
   React.useEffect(() => {
     getUserPostDetail()
-  }, [getUserPostDetail])
-
-  const upVote = async (postId, index) => {
-    setIsLoaading(true)
-    const { data } = await authAxios.get(`post/${postId}/upvote`)
-    userPosts[index] = data
-    setIsLoaading(false)
-  }
-
-  const downVote = async (postId, index) => {
-    setIsLoaading(true)
-    const { data } = await authAxios.get(`post/${postId}/downvote`)
-    userPosts[index] = data
-    setIsLoaading(false)
-  }
-
-  const unVote = async (postId, index) => {
-    setIsLoaading(true)
-    const { data } = await authAxios.get(`post/${postId}/unvote`)
-    userPosts[index] = data
-    setIsLoaading(false)
-  }
-
-  const navigationDetail = (postId, category) => {
-    navigation.navigate('PostDetail', { postId, category })
-  }
+  }, [])
 
   return (
     <View as={SafeAreaView} style={styles.boxCenter}>
@@ -103,6 +76,9 @@ const User = ({ navigation, route }) => {
           }
           renderItem={({ item, index }) => (
             <Post
+              index={index}
+              postId={item.id}
+              userId={authState.userInfo.id}
               score={item.score}
               type={item.type}
               title={item.title}
@@ -114,10 +90,8 @@ const User = ({ navigation, route }) => {
               url={item.url}
               votes={item.votes}
               views={item.views}
-              upVote={() => upVote(item.id, index)}
-              downVote={() => downVote(item.id, index)}
-              unVote={() => unVote(item.id, index)}
-              navigationDetail={() => navigationDetail(item.id, item.category)}
+              setIsLoaading={setIsLoaading}
+              setData={setuserPosts}
             />
           )}
         />

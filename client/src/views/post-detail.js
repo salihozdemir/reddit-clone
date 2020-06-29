@@ -2,48 +2,42 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { StyleSheet, Text, View, FlatList } from 'react-native'
 
-import { FetchContext } from '../context/fetch-context'
+import axios from '../utils/fetcher'
+import { AuthContext } from '../context/auth-context'
 
 import Post from '../components/post'
 import CommentListItem from '../components/comment-list-item'
 import CreateComment from '../components/create-comment'
 
 const PostDetail = ({ route }) => {
-  const fetchContext = React.useContext(FetchContext)
+  const { authState } = React.useContext(AuthContext)
+  const flatListRef = React.useRef()
+
   const [post, setPost] = React.useState(null)
   const [isLoading, setIsLoaading] = React.useState(false)
   const [comment, setComment] = React.useState('')
+  const [isFocused, setIsFocused] = React.useState(null)
 
   const { postId } = route.params
 
-  const getPostData = React.useCallback(async () => {
+  const getPostData = async () => {
     setIsLoaading(true)
-    const { data } = await fetchContext.authAxios.get(`post/${postId}`)
+    const { data } = await axios.get(`post/${postId}`)
     setPost(data)
     setIsLoaading(false)
-  }, [fetchContext.authAxios, postId])
+  }
 
   React.useEffect(() => {
     getPostData()
-  }, [getPostData])
+  }, [])
 
-  const upVote = async () => {
-    const { data } = await fetchContext.authAxios.get(`post/${postId}/upvote`)
-    setPost(data)
-  }
-
-  const downVote = async () => {
-    const { data } = await fetchContext.authAxios.get(`post/${postId}/downvote`)
-    setPost(data)
-  }
-
-  const unVote = async () => {
-    const { data } = await fetchContext.authAxios.get(`post/${postId}/unvote`)
-    setPost(data)
-  }
+  React.useEffect(() => {
+    isFocused &&
+      flatListRef.current.scrollToOffset({ animated: true, offset: 0 })
+  }, [isFocused])
 
   const createComment = async () => {
-    const { data } = await fetchContext.authAxios.post(`/post/${postId}`, {
+    const { data } = await axios.post(`/post/${postId}`, {
       comment
     })
     setPost(data)
@@ -55,12 +49,16 @@ const PostDetail = ({ route }) => {
       {post ? (
         <>
           <FlatList
-            data={post.comments}
+            ref={flatListRef}
+            data={post.comments.sort((a, b) => a.created < b.created)}
             refreshing={isLoading}
             onRefresh={() => getPostData()}
             keyExtractor={item => item.id}
             ListHeaderComponent={
               <Post
+                index={false}
+                postId={post.id}
+                userId={authState.userInfo.id}
                 score={post.score}
                 type={post.type}
                 title={post.title}
@@ -72,9 +70,8 @@ const PostDetail = ({ route }) => {
                 url={post.url}
                 votes={post.votes}
                 views={post.views}
-                upVote={() => upVote()}
-                downVote={() => downVote()}
-                unVote={() => unVote()}
+                setIsLoaading={setIsLoaading}
+                setData={setPost}
               />
             }
             renderItem={({ item, index }) => (
@@ -88,6 +85,7 @@ const PostDetail = ({ route }) => {
           <CreateComment
             onPress={createComment}
             setComment={setComment}
+            setIsFocused={setIsFocused}
             comment={comment}
           />
         </>
