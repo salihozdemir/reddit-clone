@@ -98,14 +98,18 @@ const Post = ({
       </View>
       <Text
         style={[styles.title, { color: colors.grey }]}
-        onPress={() => navigation.navigate('PostDetail', { postId, category })}
+        onPress={() =>
+          navigation.navigate('PostDetail', { postId, category, comments })
+        }
       >
         {title}
       </Text>
       <Text
         numberOfLines={10}
         style={{ color: colors.grey }}
-        onPress={() => navigation.navigate('PostDetail', { postId, category })}
+        onPress={() =>
+          navigation.navigate('PostDetail', { postId, category, comments })
+        }
       >
         {type === 'link' ? url : text}
       </Text>

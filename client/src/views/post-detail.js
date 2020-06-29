@@ -1,6 +1,6 @@
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { StyleSheet, Text, View, FlatList } from 'react-native'
+import { StyleSheet, View, FlatList } from 'react-native'
 
 import axios from '../utils/fetcher'
 import { AuthContext } from '../context/auth-context'
@@ -8,6 +8,8 @@ import { AuthContext } from '../context/auth-context'
 import Post from '../components/post'
 import CommentListItem from '../components/comment-list-item'
 import CreateComment from '../components/create-comment'
+import CommentLoader from '../components/comment-loader'
+import PostLoader from '../components/post-loader'
 
 const PostDetail = ({ route }) => {
   const { authState } = React.useContext(AuthContext)
@@ -19,17 +21,18 @@ const PostDetail = ({ route }) => {
   const [isFocused, setIsFocused] = React.useState(null)
 
   const { postId } = route.params
+  const { comments } = route.params
 
-  const getPostData = async () => {
+  const getPostData = React.useCallback(async () => {
     setIsLoaading(true)
     const { data } = await axios.get(`post/${postId}`)
     setPost(data)
     setIsLoaading(false)
-  }
+  }, [postId])
 
   React.useEffect(() => {
     getPostData()
-  }, [])
+  }, [getPostData])
 
   React.useEffect(() => {
     isFocused &&
@@ -90,7 +93,12 @@ const PostDetail = ({ route }) => {
           />
         </>
       ) : (
-        <Text>Loading...</Text>
+        <>
+          <PostLoader />
+          {comments.map(i => (
+            <CommentLoader key={i.id} />
+          ))}
+        </>
       )}
     </View>
   )
