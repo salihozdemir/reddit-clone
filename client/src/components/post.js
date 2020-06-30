@@ -135,7 +135,13 @@ const Post = ({
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.centerAlign}>
+        <TouchableOpacity
+          style={styles.centerAlign}
+          activeOpacity={0.7}
+          onPress={() =>
+            navigation.navigate('PostDetail', { postId, category, comments })
+          }
+        >
           <MessageSquare
             color={colors.icon}
             style={styles.commentIcon}
