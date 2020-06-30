@@ -47,6 +47,13 @@ const PostDetail = ({ route }) => {
     setComment('')
   }
 
+  const deleteComment = async commentId => {
+    setIsLoaading(true)
+    const { data } = await axios.delete(`/post/${postId}/${commentId}`)
+    setPost(data)
+    setIsLoaading(false)
+  }
+
   return (
     <View as={SafeAreaView} style={styles.container}>
       {post ? (
@@ -83,6 +90,7 @@ const PostDetail = ({ route }) => {
                 body={item.body}
                 author={item.author}
                 created={item.created}
+                deleteComment={() => deleteComment(item.id)}
               />
             )}
           />
