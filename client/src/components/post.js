@@ -24,7 +24,8 @@ const Post = ({
   votes,
   views,
   setIsLoaading,
-  setData
+  setData,
+  postType
 }) => {
   const { colors } = useTheme()
   const navigation = useNavigation()
@@ -40,7 +41,7 @@ const Post = ({
   const upVote = async () => {
     setIsLoaading(true)
     const { data } = await axios.get(`post/${postId}/upvote`)
-    if (index) {
+    if (postType !== 'item') {
       setData(prevData => {
         prevData[index] = data
         return prevData
@@ -54,7 +55,7 @@ const Post = ({
   const downVote = async () => {
     setIsLoaading(true)
     const { data } = await axios.get(`post/${postId}/downvote`)
-    if (index) {
+    if (postType !== 'item') {
       setData(prevData => {
         prevData[index] = data
         return prevData
@@ -68,7 +69,7 @@ const Post = ({
   const unVote = async () => {
     setIsLoaading(true)
     const { data } = await axios.get(`post/${postId}/unvote`)
-    if (index) {
+    if (postType !== 'item') {
       setData(prevData => {
         prevData[index] = data
         return prevData

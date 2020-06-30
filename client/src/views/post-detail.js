@@ -66,7 +66,6 @@ const PostDetail = ({ route }) => {
             keyExtractor={item => item.id}
             ListHeaderComponent={
               <Post
-                index={false}
                 postId={post.id}
                 userId={authState.userInfo.id}
                 score={post.score}
@@ -82,6 +81,7 @@ const PostDetail = ({ route }) => {
                 views={post.views}
                 setIsLoaading={setIsLoaading}
                 setData={setPost}
+                postType="item"
               />
             }
             ListHeaderComponentStyle={styles.headerComponentStyle}
