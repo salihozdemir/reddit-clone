@@ -52,7 +52,7 @@ const User = ({ route }) => {
   const { colors } = useTheme()
 
   const [isLoading, setIsLoaading] = React.useState(false)
-  const [userPosts, setuserPosts] = React.useState([])
+  const [userPosts, setuserPosts] = React.useState(null)
 
   const username = route.params?.username
 
@@ -69,9 +69,21 @@ const User = ({ route }) => {
     getUserPostDetail()
   }, [getUserPostDetail])
 
+  const deletePost = async (postId, index) => {
+    setIsLoaading(true)
+    const { status } = await axios.delete(`post/${postId}`)
+    if (status === 200) {
+      setuserPosts(prevData => {
+        prevData.splice(index, 1)
+        return prevData
+      })
+    }
+    setIsLoaading(false)
+  }
+
   return (
     <View as={SafeAreaView} style={styles.boxCenter}>
-      {userPosts.length !== 0 ? (
+      {userPosts ? (
         <FlatList
           data={userPosts}
           extraData={isLoading}
@@ -106,6 +118,8 @@ const User = ({ route }) => {
               views={item.views}
               setIsLoaading={setIsLoaading}
               setData={setuserPosts}
+              deleteButton={true}
+              deletePost={() => deletePost(item.id, index)}
             />
           )}
         />

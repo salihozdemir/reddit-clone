@@ -5,8 +5,9 @@ import { useNavigation, useTheme } from '@react-navigation/native'
 import moment from 'moment'
 
 import axios from '../utils/fetcher'
+import { AuthContext } from '../context/auth-context'
 
-import { ArrowDown, ArrowUp, MessageSquare } from './icons/index'
+import { ArrowDown, ArrowUp, MessageSquare, Trash } from './icons/index'
 
 const Post = ({
   index,
@@ -25,10 +26,13 @@ const Post = ({
   views,
   setIsLoaading,
   setData,
-  postType
+  postType,
+  deleteButton,
+  deletePost
 }) => {
   const { colors } = useTheme()
   const navigation = useNavigation()
+  const { authState } = React.useContext(AuthContext)
 
   const isUpVoted = () => {
     return votes.find(v => v.user === userId)?.vote === 1
@@ -86,16 +90,29 @@ const Post = ({
       style={[styles.container, { backgroundColor: colors.bgColor }]}
     >
       <View style={styles.headerContainer}>
-        <Text style={{ color: colors.grey }}>/{category} </Text>
-        <Text
-          style={{ color: colors.blue }}
-          onPress={() =>
-            navigation.navigate('User', { username: author.username })
-          }
-        >
-          @{author?.username} ·{' '}
-        </Text>
-        <Text>{moment(created).fromNow()}</Text>
+        <View style={styles.headerLeft}>
+          <Text style={{ color: colors.grey }}>/{category} </Text>
+          <Text
+            style={{ color: colors.blue }}
+            onPress={() =>
+              navigation.navigate('User', { username: author.username })
+            }
+          >
+            @{author?.username} ·{' '}
+          </Text>
+          <Text>{moment(created).fromNow()}</Text>
+        </View>
+        <View style={styles.headerRight}>
+          {deleteButton && author?.id === authState.userInfo.id && (
+            <TouchableOpacity
+              style={styles.trash}
+              activeOpacity={0.5}
+              onPress={deletePost}
+            >
+              <Trash color={colors.downVote} width={20} height={20} />
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
       <Text
         style={[styles.title, { color: colors.grey }]}
@@ -167,9 +184,14 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 7,
     fontSize: 13
   },
+  headerLeft: {
+    flexDirection: 'row'
+  },
+  headerRight: {},
   bottomContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',

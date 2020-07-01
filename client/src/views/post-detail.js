@@ -11,7 +11,7 @@ import CreateComment from '../components/create-comment'
 import CommentLoader from '../components/comment-loader'
 import PostLoader from '../components/post-loader'
 
-const PostDetail = ({ route }) => {
+const PostDetail = ({ route, navigation }) => {
   const { authState } = React.useContext(AuthContext)
   const flatListRef = React.useRef()
 
@@ -54,6 +54,15 @@ const PostDetail = ({ route }) => {
     setIsLoaading(false)
   }
 
+  const deletePost = async postId => {
+    setIsLoaading(true)
+    const { status } = await axios.delete(`post/${postId}`)
+    if (status === 200) {
+      navigation.push('Home')
+    }
+    setIsLoaading(false)
+  }
+
   return (
     <View as={SafeAreaView} style={styles.container}>
       {post ? (
@@ -82,6 +91,8 @@ const PostDetail = ({ route }) => {
                 setIsLoaading={setIsLoaading}
                 setData={setPost}
                 postType="item"
+                deleteButton={true}
+                deletePost={() => deletePost(post.id)}
               />
             }
             ListHeaderComponentStyle={styles.headerComponentStyle}

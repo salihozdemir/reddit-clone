@@ -15,7 +15,7 @@ const Home = () => {
   const { authState } = React.useContext(AuthContext)
   const { colors } = useTheme()
 
-  const [postsData, setPostsData] = React.useState(null)
+  const [postData, setPostData] = React.useState(null)
   const [category, setCategory] = React.useState('all')
   const [isLoading, setIsLoaading] = React.useState(false)
 
@@ -24,7 +24,7 @@ const Home = () => {
     const { data } = await axios.get(
       !category || category === 'all' ? 'posts' : `posts/${category}`
     )
-    setPostsData(data)
+    setPostData(data)
     setIsLoaading(false)
   }, [category])
 
@@ -34,9 +34,9 @@ const Home = () => {
 
   return (
     <View as={SafeAreaView} style={styles.container}>
-      {postsData ? (
+      {postData ? (
         <FlatList
-          data={postsData}
+          data={postData}
           extraData={isLoading}
           refreshing={isLoading}
           onRefresh={() => getPostData()}
@@ -70,7 +70,8 @@ const Home = () => {
               votes={item.votes}
               views={item.views}
               setIsLoaading={setIsLoaading}
-              setData={setPostsData}
+              setData={setPostData}
+              deleteButton={false}
             />
           )}
         />
