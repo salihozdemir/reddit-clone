@@ -160,6 +160,12 @@ const styles = StyleSheet.create({
   headerComponentStyle: {
     marginBottom: 7,
     elevation: 3
+  },
+  empty: {
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 50,
+    fontSize: 22
   }
 })
 
