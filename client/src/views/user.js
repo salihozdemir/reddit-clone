@@ -39,8 +39,8 @@ const HeaderComponent = ({ username, postCount }) => {
             navigation.navigate('Home')
           }}
         >
-          <LogOut color={colors.downVote} />
-          <Text style={{ color: colors.downVote }}>Logout</Text>
+          <LogOut color={colors.red} />
+          <Text style={{ color: colors.red }}>Logout</Text>
         </TouchableOpacity>
       )}
     </View>

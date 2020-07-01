@@ -109,7 +109,7 @@ const Post = ({
               activeOpacity={0.5}
               onPress={deletePost}
             >
-              <Trash color={colors.downVote} width={20} height={20} />
+              <Trash color={colors.red} width={20} height={20} />
             </TouchableOpacity>
           )}
         </View>
@@ -138,7 +138,7 @@ const Post = ({
               width={22}
               height={22}
               strokeWidth={4}
-              color={isUpVoted() ? colors.upVote : colors.icon}
+              color={isUpVoted() ? colors.green : colors.icon}
             />
           </TouchableOpacity>
           <Text style={styles.score}>{score}</Text>
@@ -149,7 +149,7 @@ const Post = ({
               width={22}
               height={22}
               strokeWidth={4}
-              color={isDownVoted() ? colors.downVote : colors.icon}
+              color={isDownVoted() ? colors.red : colors.icon}
             />
           </TouchableOpacity>
         </View>

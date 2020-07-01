@@ -40,7 +40,8 @@ const SignUp = ({ navigation }) => {
             <TextInput
               style={[
                 styles.textInput,
-                touched.username && errors.username && { borderColor: colors.downVote }
+                touched.username &&
+                  errors.username && { borderColor: colors.red }
               ]}
               placeholder="Username"
               placeholderTextColor="#1e1e1e"
@@ -53,7 +54,8 @@ const SignUp = ({ navigation }) => {
             <TextInput
               style={[
                 styles.textInput,
-                touched.password && errors.password && { borderColor: colors.downVote }
+                touched.password &&
+                  errors.password && { borderColor: colors.red }
               ]}
               placeholder="Password"
               placeholderTextColor="#1e1e1e"
@@ -63,7 +65,11 @@ const SignUp = ({ navigation }) => {
             />
           </View>
           <View style={styles.container}>
-            <Button style={styles.submitButton} underlayColor="#4f76b9" onPress={handleSubmit}>
+            <Button
+              style={styles.submitButton}
+              underlayColor="#4f76b9"
+              onPress={handleSubmit}
+            >
               Go!
             </Button>
           </View>

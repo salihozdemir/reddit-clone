@@ -36,7 +36,7 @@ const TypeSwichButton = ({ selected, onClick, title }) => {
         <Text
           style={[
             styles.typeButtonLabel,
-            selected === title ? { color: colors.buttonText } : ''
+            selected === title ? { color: colors.white } : ''
           ]}
         >
           {title}
@@ -99,26 +99,26 @@ const CreatePost = () => {
           />
         </>
       ) : (
-          <>
-            <Text style={[styles.formLabel, { color: colors.grey }]}>TEXT</Text>
-            <TextInput
-              style={[styles.textInput, { borderColor: colors.lightGrey }]}
-              multiline={true}
-              numberOfLines={10}
-              value={text}
-              onChangeText={text => setText(text)}
-            />
-          </>
-        )}
+        <>
+          <Text style={[styles.formLabel, { color: colors.grey }]}>TEXT</Text>
+          <TextInput
+            style={[styles.textInput, { borderColor: colors.lightGrey }]}
+            multiline={true}
+            numberOfLines={10}
+            value={text}
+            onChangeText={text => setText(text)}
+          />
+        </>
+      )}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={[styles.submitButton, { backgroundColor: colors.blue }]}
           onPress={() => createPost()}
         >
-          <Plus color={colors.buttonText} />
+          <Plus color={colors.white} />
           <Text
             style={{
-              color: colors.buttonText,
+              color: colors.white,
               fontWeight: 'bold',
               fontSize: 15
             }}

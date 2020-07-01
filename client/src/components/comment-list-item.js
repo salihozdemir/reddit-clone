@@ -26,7 +26,7 @@ const CommentListItem = ({ body, author, created, deleteComment }) => {
               activeOpacity={0.5}
               onPress={deleteComment}
             >
-              <Trash color={colors.downVote} width={20} height={20} />
+              <Trash color={colors.red} width={20} height={20} />
             </TouchableOpacity>
           )}
         </View>

@@ -7,7 +7,7 @@ const Button = ({ children, ...props }) => {
 
   return (
     <TouchableHighlight {...props} style={[styles.button, props.style]}>
-      <Text style={[styles.buttonText, { color: colors.buttonText }]}>
+      <Text style={[styles.buttonText, { color: colors.white }]}>
         {children}
       </Text>
     </TouchableHighlight>
