@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, FlatList, Text } from 'react-native'
+import { StyleSheet, View, FlatList, Text, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
 
@@ -34,6 +34,7 @@ const Home = () => {
 
   return (
     <View as={SafeAreaView} style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor={colors.background} />
       {postData ? (
         <FlatList
           data={postData}
