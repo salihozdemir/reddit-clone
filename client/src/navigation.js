@@ -2,8 +2,9 @@ import 'react-native-gesture-handler'
 import * as React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
+import { createStackNavigator, DarkTheme } from '@react-navigation/stack'
 
+import { ThemeContext } from './context/theme-swich-context'
 import DefaultTheme from './constants/default-theme'
 
 import TabBar from './components/tab-bar'
@@ -85,8 +86,9 @@ function MyTabs() {
 }
 
 function RootScreen() {
+  const { theme } = React.useContext(ThemeContext)
   return (
-    <NavigationContainer theme={DefaultTheme}>
+    <NavigationContainer theme={theme === 'light' ? DefaultTheme : DarkTheme}>
       <RootStack.Navigator
         screenOptions={{
           headerShown: false,

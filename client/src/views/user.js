@@ -11,13 +11,15 @@ import { useTheme, useNavigation } from '@react-navigation/native'
 
 import axios from '../utils/fetcher'
 import { AuthContext } from '../context/auth-context'
+import { ThemeContext } from '../context/theme-swich-context'
 
-import { LogOut } from '../components/icons'
+import { LogOut, Moon, Sun } from '../components/icons'
 import Post from '../components/post'
 import PostLoader from '../components/post-loader'
 
 const HeaderComponent = ({ username, postCount }) => {
   const { authContext, authState } = React.useContext(AuthContext)
+  const { theme, changeTheme } = React.useContext(ThemeContext)
   const { colors } = useTheme()
   const navigation = useNavigation()
 
@@ -32,16 +34,21 @@ const HeaderComponent = ({ username, postCount }) => {
         <Text>{postCount}</Text>
       </View>
       {username === authState.userInfo.username && (
-        <TouchableOpacity
-          style={styles.infoBox}
-          onPress={() => {
-            authContext.signOut()
-            navigation.navigate('Home')
-          }}
-        >
-          <LogOut color={colors.red} />
-          <Text style={{ color: colors.red }}>Logout</Text>
-        </TouchableOpacity>
+        <>
+          <TouchableOpacity onPress={() => changeTheme(theme === '')}>
+            <Moon color={colors.black} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.infoBox}
+            onPress={() => {
+              authContext.signOut()
+              navigation.navigate('Home')
+            }}
+          >
+            <LogOut color={colors.red} />
+            <Text style={{ color: colors.red }}>Logout</Text>
+          </TouchableOpacity>
+        </>
       )}
     </View>
   )
@@ -145,6 +152,7 @@ const styles = StyleSheet.create({
   userInfo: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+    alignItems: 'center',
     paddingVertical: 5,
     elevation: 3
   },

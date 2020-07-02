@@ -10,6 +10,7 @@ const customDefaultTheme = {
     green: '#80bdab',
     red: '#d31f4f',
     white: 'white',
+    black: 'black',
     bgColor: 'white',
     signInButton: '#ce815e',
     signUpButton: '#6495ed',

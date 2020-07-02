@@ -16,8 +16,8 @@ const SignUp = ({ navigation }) => {
     <Formik
       initialValues={{ username: '', password: '' }}
       onSubmit={values => {
-        // authContext.signIn(values)
-        // navigation.navigate('Home')
+        authContext.signIn(values)
+        navigation.navigate('Home')
         console.log('calisti')
       }}
       validationSchema={Yup.object({
