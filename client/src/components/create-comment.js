@@ -11,7 +11,10 @@ const CreateComment = ({ onPress, setComment, comment, setIsFocused }) => {
   return (
     <View style={[styles.container, { backgroundColor: colors.bgColor }]}>
       <TextInput
-        style={[styles.textInput, { backgroundColor: colors.background }]}
+        style={[
+          styles.textInput,
+          { backgroundColor: colors.background, color: colors.text }
+        ]}
         ref={textInputRef}
         placeholder="Add a comment"
         onFocus={() => setIsFocused(true)}
@@ -27,7 +30,7 @@ const CreateComment = ({ onPress, setComment, comment, setIsFocused }) => {
           onPress()
         }}
       >
-        <Send color={colors.grey} />
+        <Send color={colors.text} />
       </TouchableOpacity>
     </View>
   )

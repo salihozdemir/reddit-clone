@@ -10,7 +10,12 @@ function TabBar({ state, descriptors, navigation }) {
   const { colors } = useTheme()
 
   return (
-    <View style={[styles.tabBarContainer, { backgroundColor: colors.bgColor }]}>
+    <View
+      style={[
+        styles.tabBarContainer,
+        { backgroundColor: colors.bgColor, borderColor: colors.border }
+      ]}
+    >
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key]
         const label =
@@ -47,13 +52,13 @@ function TabBar({ state, descriptors, navigation }) {
             style={styles.button}
           >
             {label === 'Home' && (
-              <Home color={isFocused ? colors.blue : colors.grey} />
+              <Home color={isFocused ? colors.blue : colors.text} />
             )}
             {label === 'CreatePost' && (
-              <PlusSquare color={isFocused ? colors.blue : colors.grey} />
+              <PlusSquare color={isFocused ? colors.blue : colors.text} />
             )}
             {label === 'User' && (
-              <User color={isFocused ? colors.blue : colors.grey} />
+              <User color={isFocused ? colors.blue : colors.text} />
             )}
           </TouchableOpacity>
         )
@@ -66,12 +71,13 @@ const styles = StyleSheet.create({
   tabBarContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 28,
-    elevation: 10
+    elevation: 2,
+    borderTopWidth: 1
   },
   button: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingVertical: 5
   }
 })
 

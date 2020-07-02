@@ -26,17 +26,30 @@ const HeaderComponent = ({ username, postCount }) => {
   return (
     <View style={[styles.userInfo, { backgroundColor: colors.bgColor }]}>
       <View style={styles.infoBox}>
-        <Text style={styles.label}>Username</Text>
-        <Text>{username ?? authState.userInfo.username}</Text>
+        <Text style={[styles.label, { color: colors.text }]}>Username</Text>
+        <Text style={{ color: colors.text }}>
+          {username ?? authState.userInfo.username}
+        </Text>
       </View>
       <View style={styles.infoBox}>
-        <Text style={styles.label}>Post Count</Text>
-        <Text>{postCount}</Text>
+        <Text style={[styles.label, { color: colors.text }]}>Post Count</Text>
+        <Text style={{ color: colors.text }}>{postCount}</Text>
       </View>
       {username === authState.userInfo.username && (
         <>
-          <TouchableOpacity onPress={() => changeTheme(theme === '')}>
-            <Moon color={colors.black} />
+          <View style={[styles.line, { borderColor: colors.border }]} />
+          <TouchableOpacity
+            onPress={() => changeTheme(theme === 'light' ? 'dark' : 'light')}
+            style={styles.infoBox}
+          >
+            {theme === 'light' ? (
+              <Moon color={colors.icon} />
+            ) : (
+              <Sun color={colors.icon} />
+            )}
+            <Text style={{ color: colors.text }}>
+              {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.infoBox}
@@ -98,7 +111,7 @@ const User = ({ route }) => {
           onRefresh={() => getUserPostDetail()}
           keyExtractor={item => item.id}
           ListEmptyComponent={
-            <Text style={[styles.empty, { color: colors.grey }]}>
+            <Text style={[styles.empty, { color: colors.text }]}>
               Ups! Not found any post!
             </Text>
           }
@@ -174,6 +187,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 50,
     fontSize: 22
+  },
+  line: {
+    borderLeftWidth: 1,
+    height: '100%'
   }
 })
 

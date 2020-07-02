@@ -2,10 +2,11 @@ import 'react-native-gesture-handler'
 import * as React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator, DarkTheme } from '@react-navigation/stack'
+import { createStackNavigator } from '@react-navigation/stack'
 
 import { ThemeContext } from './context/theme-swich-context'
 import DefaultTheme from './constants/default-theme'
+import DarkTheme from './constants/dark-theme'
 
 import TabBar from './components/tab-bar'
 import HomeScreen from './views/home'

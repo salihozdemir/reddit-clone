@@ -14,12 +14,14 @@ const CommentListItem = ({ body, author, created, deleteComment }) => {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.bgColor }]}>
-      <View style={[styles.header, { borderBottomColor: colors.lightGrey }]}>
+      <View style={[styles.header, { borderBottomColor: colors.border }]}>
         <Text style={[styles.authorName, { color: colors.blue }]}>
           {author?.username}
         </Text>
         <View style={styles.headerRight}>
-          <Text>{moment(created).fromNow()}</Text>
+          <Text style={{ color: colors.text }}>
+            {moment(created).fromNow()}
+          </Text>
           {author?.id === authState.userInfo.id && (
             <TouchableOpacity
               style={styles.trash}
@@ -32,7 +34,7 @@ const CommentListItem = ({ body, author, created, deleteComment }) => {
         </View>
       </View>
       <View style={styles.body}>
-        <Text>{body}</Text>
+        <Text style={{ color: colors.text }}>{body}</Text>
       </View>
     </View>
   )

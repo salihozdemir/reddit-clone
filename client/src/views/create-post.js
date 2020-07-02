@@ -28,7 +28,7 @@ const TypeSwichButton = ({ selected, onClick, title }) => {
         styles.typeButton,
         title === 'Link' ? styles.typeButtonRight : styles.typeButtonLeft,
         selected === title ? { backgroundColor: colors.blue } : '',
-        { borderColor: colors.lightGrey }
+        { borderColor: colors.border }
       ]}
       onPress={() => onClick(title)}
     >
@@ -36,7 +36,8 @@ const TypeSwichButton = ({ selected, onClick, title }) => {
         <Text
           style={[
             styles.typeButtonLabel,
-            selected === title ? { color: colors.white } : ''
+            { color: colors.text },
+            selected === title ? { color: 'white' } : ''
           ]}
         >
           {title}
@@ -59,6 +60,7 @@ const CreatePost = () => {
     try {
       const payload = { type, category, title, url, text }
       await axios.post('posts', payload)
+      console.log('asd')
     } catch (error) {
       console.log(error.response.data)
     }
@@ -69,40 +71,46 @@ const CreatePost = () => {
       as={SafeAreaView}
       style={[styles.container, { backgroundColor: colors.bgColor }]}
     >
-      <Text style={[styles.formLabel, { color: colors.grey }]}>TYPE</Text>
+      <Text style={[styles.formLabel, { color: colors.text }]}>TYPE</Text>
       <TypeSwichContainer>
         <TypeSwichButton selected={type} onClick={setType} title="Text" />
         <TypeSwichButton selected={type} onClick={setType} title="Link" />
       </TypeSwichContainer>
-      <Text style={[styles.formLabel, { color: colors.grey }]}>CATEGORY</Text>
+      <Text style={[styles.formLabel, { color: colors.text }]}>CATEGORY</Text>
       <CategoryPicker
         selected={category}
         onClick={setCategory}
         style={{ marginBottom: 10 }}
       />
-      <Text style={[styles.formLabel, { color: colors.grey }]}>TITLE</Text>
+      <Text style={[styles.formLabel, { color: colors.text }]}>TITLE</Text>
       <TextInput
         style={[
           styles.textInput,
-          { borderColor: colors.lightGrey, height: 40 }
+          { borderColor: colors.border, color: colors.text, height: 40 }
         ]}
         onChangeText={text => setTitle(text)}
         value={title}
       />
       {type === 'Link' ? (
         <>
-          <Text style={[styles.formLabel, { color: colors.grey }]}>URL</Text>
+          <Text style={[styles.formLabel, { color: colors.text }]}>URL</Text>
           <TextInput
-            style={[styles.textInput, { borderColor: colors.lightGrey }]}
+            style={[
+              styles.textInput,
+              { borderColor: colors.border, color: colors.text }
+            ]}
             onChangeText={text => setUrl(text)}
             value={url}
           />
         </>
       ) : (
         <>
-          <Text style={[styles.formLabel, { color: colors.grey }]}>TEXT</Text>
+          <Text style={[styles.formLabel, { color: colors.text }]}>TEXT</Text>
           <TextInput
-            style={[styles.textInput, { borderColor: colors.lightGrey }]}
+            style={[
+              styles.textInput,
+              { borderColor: colors.border, color: colors.text }
+            ]}
             multiline={true}
             numberOfLines={10}
             value={text}
@@ -115,16 +123,8 @@ const CreatePost = () => {
           style={[styles.submitButton, { backgroundColor: colors.blue }]}
           onPress={() => createPost()}
         >
-          <Plus color={colors.white} />
-          <Text
-            style={{
-              color: colors.white,
-              fontWeight: 'bold',
-              fontSize: 15
-            }}
-          >
-            Create Post
-          </Text>
+          <Plus color="white" />
+          <Text style={styles.submitButtonText}>Create Post</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -182,6 +182,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  submitButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 15
   }
 })
 

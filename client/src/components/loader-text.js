@@ -1,13 +1,19 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
+import { useTheme } from '@react-navigation/native'
 
 const LoaderText = ({ ...props }) => {
-  return <View style={[styles.bgLight, props.style]} />
+  const { colors } = useTheme()
+
+  return (
+    <View
+      style={[styles.bgLight, props.style, { backgroundColor: colors.loader }]}
+    />
+  )
 }
 
 const styles = StyleSheet.create({
   bgLight: {
-    backgroundColor: '#eeeeee',
     width: 60,
     height: 16,
     borderRadius: 5

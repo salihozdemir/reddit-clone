@@ -5,6 +5,7 @@ import { useTheme } from '@react-navigation/native'
 
 import axios from '../utils/fetcher'
 import { AuthContext } from '../context/auth-context'
+import { ThemeContext } from '../context/theme-swich-context'
 
 import CategoryPicker from '../components/category-picker'
 import Post from '../components/post'
@@ -13,6 +14,7 @@ import CategoryLoader from '../components/category-loader.js'
 
 const Home = () => {
   const { authState } = React.useContext(AuthContext)
+  const { theme } = React.useContext(ThemeContext)
   const { colors } = useTheme()
 
   const [postData, setPostData] = React.useState(null)
@@ -34,7 +36,10 @@ const Home = () => {
 
   return (
     <View as={SafeAreaView} style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.background} />
+      <StatusBar
+        barStyle={theme === 'light' ? 'dark-content' : 'light-content'}
+        backgroundColor={colors.background}
+      />
       {postData ? (
         <FlatList
           data={postData}
@@ -50,7 +55,7 @@ const Home = () => {
             { backgroundColor: colors.bgColor }
           ]}
           ListEmptyComponent={
-            <Text style={[styles.empty, { color: colors.grey }]}>
+            <Text style={[styles.empty, { color: colors.text }]}>
               Ups! Not found any post!
             </Text>
           }

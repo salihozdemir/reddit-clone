@@ -37,7 +37,7 @@ const CategoryItem = ({ item, isActive, setActive }) => {
       padding: 5,
       marginLeft: 5,
       marginRight: 5,
-      color: isActive ? colors.blue : colors.grey,
+      color: isActive ? colors.blue : colors.text,
       borderBottomWidth: 1,
       borderBottomColor: isActive ? colors.blue : 'transparent',
       fontWeight: isActive ? 'bold' : 'normal'

@@ -87,11 +87,14 @@ const Post = ({
   return (
     <View
       as={SafeAreaView}
-      style={[styles.container, { backgroundColor: colors.bgColor }]}
+      style={[
+        styles.container,
+        { backgroundColor: colors.bgColor, borderColor: colors.postBorder }
+      ]}
     >
       <View style={styles.headerContainer}>
         <View style={styles.headerLeft}>
-          <Text style={{ color: colors.grey }}>/{category} </Text>
+          <Text style={{ color: colors.text }}>{category} </Text>
           <Text
             style={{ color: colors.blue }}
             onPress={() =>
@@ -100,7 +103,9 @@ const Post = ({
           >
             @{author?.username} ·{' '}
           </Text>
-          <Text>{moment(created).fromNow()}</Text>
+          <Text style={{ color: colors.text }}>
+            {moment(created).fromNow()}
+          </Text>
         </View>
         <View style={styles.headerRight}>
           {deleteButton && author?.id === authState.userInfo.id && (
@@ -115,7 +120,7 @@ const Post = ({
         </View>
       </View>
       <Text
-        style={[styles.title, { color: colors.grey }]}
+        style={[styles.title, { color: colors.text }]}
         onPress={() =>
           navigation.navigate('PostDetail', { postId, category, comments })
         }
@@ -124,7 +129,7 @@ const Post = ({
       </Text>
       <Text
         numberOfLines={10}
-        style={{ color: colors.grey }}
+        style={{ color: colors.text }}
         onPress={() =>
           navigation.navigate('PostDetail', { postId, category, comments })
         }
@@ -141,7 +146,7 @@ const Post = ({
               color={isUpVoted() ? colors.green : colors.icon}
             />
           </TouchableOpacity>
-          <Text style={styles.score}>{score}</Text>
+          <Text style={[styles.score, { color: colors.text }]}>{score}</Text>
           <TouchableOpacity
             onPress={() => (isDownVoted() ? unVote() : downVote())}
           >
@@ -167,9 +172,11 @@ const Post = ({
             height={20}
             strokeWidth={3}
           />
-          <Text style={styles.icon}> {comments?.length}</Text>
+          <Text style={[styles.commentText, { color: colors.text }]}>
+            {comments?.length}
+          </Text>
         </TouchableOpacity>
-        <Text>{views} views</Text>
+        <Text style={{ color: colors.text }}>{views} views</Text>
       </View>
     </View>
   )
@@ -180,7 +187,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 7,
     marginBottom: 7,
-    elevation: 1
+    elevation: 1,
+    borderWidth: 1
   },
   headerContainer: {
     flexDirection: 'row',
@@ -211,6 +219,9 @@ const styles = StyleSheet.create({
   },
   commentIcon: {
     marginBottom: -3
+  },
+  commentText: {
+    marginLeft: 3
   }
 })
 
