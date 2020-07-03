@@ -10,15 +10,14 @@ import Button from '../components/button'
 import { AuthContext } from '../context/auth-context'
 
 const SignUp = ({ navigation }) => {
-  const { authContext } = React.useContext(AuthContext)
+  const { signIn } = React.useContext(AuthContext)
   const { colors } = useTheme()
   return (
     <Formik
       initialValues={{ username: '', password: '' }}
       onSubmit={values => {
-        authContext.signIn(values)
+        signIn(values)
         navigation.navigate('Home')
-        console.log('calisti')
       }}
       validationSchema={Yup.object({
         username: Yup.string()

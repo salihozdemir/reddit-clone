@@ -18,7 +18,7 @@ import Post from '../components/post'
 import PostLoader from '../components/post-loader'
 
 const HeaderComponent = ({ username, postCount }) => {
-  const { authContext, authState } = React.useContext(AuthContext)
+  const { signOut, authState } = React.useContext(AuthContext)
   const { theme, changeTheme } = React.useContext(ThemeContext)
   const { colors } = useTheme()
   const navigation = useNavigation()
@@ -54,7 +54,7 @@ const HeaderComponent = ({ username, postCount }) => {
           <TouchableOpacity
             style={styles.infoBox}
             onPress={() => {
-              authContext.signOut()
+              signOut()
               navigation.navigate('Home')
             }}
           >
