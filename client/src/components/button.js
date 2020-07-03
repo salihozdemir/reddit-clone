@@ -1,16 +1,19 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableHighlight } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 
-const Button = ({ children, ...props }) => {
+const Button = ({ children, bgColor, title, ...props }) => {
   const { colors } = useTheme()
 
   return (
-    <TouchableHighlight {...props} style={[styles.button, props.style]}>
-      <Text style={[styles.buttonText, { color: colors.text }]}>
-        {children}
-      </Text>
-    </TouchableHighlight>
+    <TouchableOpacity
+      {...props}
+      style={[styles.button, { backgroundColor: bgColor }]}
+      activeOpacity={0.8}
+    >
+      {children}
+      <Text style={[styles.buttonText, { color: colors.white }]}>{title}</Text>
+    </TouchableOpacity>
   )
 }
 
@@ -19,13 +22,17 @@ const styles = StyleSheet.create({
     height: 50,
     margin: 10,
     justifyContent: 'center',
-    borderRadius: 999
+    borderRadius: 999,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    elevation: 4
   },
   buttonText: {
     fontWeight: 'bold',
     fontSize: 18,
     textAlign: 'center',
-    letterSpacing: 2
+    marginLeft: 10
   }
 })
 

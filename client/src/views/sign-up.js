@@ -3,12 +3,10 @@ import { StyleSheet, View, TextInput, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import Button from '../components/button'
-import { FurnitureAndHousehold } from '../components/icons/index'
 
 const SignIn = ({ navigation }) => {
   return (
     <View as={SafeAreaView} style={styles.boxCenter}>
-      <FurnitureAndHousehold weight={150} height={150} />
       <View style={styles.textInputContainer}>
         <TextInput
           style={styles.textInput}

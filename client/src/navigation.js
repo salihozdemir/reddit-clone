@@ -13,7 +13,7 @@ import HomeScreen from './views/home'
 import PostDetail from './views/post-detail'
 import CreatePostScreen from './views/create-post'
 import UserScreen from './views/user'
-import SignModal from './components/sign-modal'
+import SignModal from './views/sign-modal'
 import SignInScreen from './views/sign-in'
 import SignUpScreen from './views/sign-up'
 
@@ -24,7 +24,15 @@ const RootStack = createStackNavigator()
 
 function SignScreens() {
   return (
-    <SignStack.Navigator headerMode="screen">
+    <SignStack.Navigator
+      headerMode="screen"
+      screenOptions={{
+        initialRouteName: 'SignModal',
+        cardStyle: {
+          backgroundColor: 'transparent'
+        }
+      }}
+    >
       <SignStack.Screen
         name="SignModal"
         component={SignModal}
@@ -94,14 +102,26 @@ function RootScreen() {
         screenOptions={{
           headerShown: false,
           cardStyle: { backgroundColor: 'transparent' },
-          cardStyleInterpolator: ({ current: { progress } }) => ({
-            cardStyle: {
-              opacity: progress.interpolate({
-                inputRange: [0, 0.5, 0.9, 1],
-                outputRange: [0, 0.25, 0.7, 1]
-              })
+          cardStyleInterpolator: ({ current, layouts }) => {
+            return {
+              cardStyle: {
+                transform: [
+                  {
+                    translateY: current.progress.interpolate({
+                      inputRange: [0.5, 1],
+                      outputRange: [layouts.screen.width, 0]
+                    })
+                  }
+                ]
+              },
+              overlayStyle: {
+                opacity: current.progress.interpolate({
+                  inputRange: [0, 0.5, 1],
+                  outputRange: [0, 0.25, 0.5]
+                })
+              }
             }
-          })
+          }
         }}
         mode="modal"
       >
