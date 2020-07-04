@@ -105,12 +105,14 @@ const PostDetail = ({ route, navigation }) => {
               />
             )}
           />
-          <CreateComment
-            onPress={createComment}
-            setComment={setComment}
-            setIsFocused={setIsFocused}
-            comment={comment}
-          />
+          {authState.token && (
+            <CreateComment
+              onPress={createComment}
+              setComment={setComment}
+              setIsFocused={setIsFocused}
+              comment={comment}
+            />
+          )}
         </>
       ) : (
         <>
