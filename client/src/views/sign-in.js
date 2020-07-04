@@ -10,6 +10,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
 
+import axios from '../utils/fetcher'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 
@@ -19,15 +20,22 @@ import { AuthContext } from '../context/auth-context'
 const SignUp = ({ navigation }) => {
   const { signIn } = React.useContext(AuthContext)
   const { colors } = useTheme()
+
   return (
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
       <Formik
         initialValues={{ username: '', password: '' }}
-        onSubmit={(values, { setStatus, setErrors, resetForm }) => {
-          signIn(values)
-          // navigation.navigate('Home')
-          resetForm({})
-          setStatus('User was updated successfully.')
+        onSubmit={async (values, { setStatus, resetForm }) => {
+          try {
+            const { data } = await axios.post('authenticate', values)
+            console.log(values)
+            const { token, expiresAt, userInfo } = data
+            signIn(token, expiresAt, userInfo)
+            navigation.navigate('Home')
+            resetForm({})
+          } catch (error) {
+            setStatus(error.response.data.message)
+          }
         }}
         validationSchema={Yup.object({
           username: Yup.string()
@@ -47,15 +55,17 @@ const SignUp = ({ navigation }) => {
           touched,
           errors,
           status,
-          values
+          values,
+          setTouched
         }) => (
           <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
             <View as={SafeAreaView} style={styles.container}>
               <View
                 style={[styles.modal, { backgroundColor: colors.background }]}
                 onStartShouldSetResponder={() => true}
+                onResponderRelease={() => setTouched(errors)}
               >
-                {!!status && <Text>{status}</Text>}
+                {!!status && <Text style={styles.status}>{status}</Text>}
                 {touched.username && errors.username && (
                   <Text style={styles.errorMessage}>{errors.username}</Text>
                 )}
@@ -132,6 +142,13 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row'
+  },
+  status: {
+    color: 'red',
+    marginVertical: 15,
+    fontWeight: 'bold',
+    fontSize: 15,
+    textAlign: 'center'
   }
 })
 

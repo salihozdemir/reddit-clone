@@ -34,25 +34,16 @@ const AuthProvider = ({ children }) => {
     bootstrapAsync()
   }, [])
 
-  const signIn = async data => {
-    let response
+  const signIn = async (token, expiresAt, userInfo) => {
     try {
-      // Axiosu taşı sign in dediğim yere.
-      response = await axios.post('authenticate', data)
-
-      const { token, expiresAt, userInfo } = response.data
-      try {
-        await AsyncStorage.setItem('token', token)
-        await AsyncStorage.setItem('expiresAt', JSON.stringify(expiresAt))
-        await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
-      } catch (error) {
-        console.log(error)
-      }
-
-      setAuthState({ token, expiresAt, userInfo })
+      await AsyncStorage.setItem('token', token)
+      await AsyncStorage.setItem('expiresAt', JSON.stringify(expiresAt))
+      await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
     } catch (error) {
-      return error.response.data
+      console.log(error)
     }
+
+    setAuthState({ token, expiresAt, userInfo })
   }
 
   const signOut = async () => {
