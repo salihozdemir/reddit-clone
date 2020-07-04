@@ -1,5 +1,12 @@
 import React from 'react'
-import { StyleSheet, TextInput, View, Text } from 'react-native'
+import {
+  StyleSheet,
+  TextInput,
+  View,
+  Text,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView
+} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
 
@@ -13,82 +20,101 @@ const SignUp = ({ navigation }) => {
   const { signIn } = React.useContext(AuthContext)
   const { colors } = useTheme()
   return (
-    <Formik
-      initialValues={{ username: '', password: '' }}
-      onSubmit={values => {
-        signIn(values)
-        navigation.navigate('Home')
-      }}
-      validationSchema={Yup.object({
-        username: Yup.string()
-          .required('Required')
-          .max(32, 'Must be at most 32 characters long')
-          .matches(/^[a-zA-Z0-9_-]+$/, 'Contains invalid characters'),
-        password: Yup.string()
-          .required('Required')
-          .min(6, 'Must be at least 6 characters long')
-          .max(50, 'Must be at most 50 characters long')
-      })}
-    >
-      {({ handleChange, handleBlur, handleSubmit, touched, errors }) => (
-        <View as={SafeAreaView} style={styles.boxCenter}>
-          <View style={styles.container}>
-            {touched.username && errors.username && (
-              <Text style={styles.errorMessage}>{errors.username}</Text>
-            )}
-            <TextInput
-              style={[
-                styles.textInput,
-                touched.username &&
-                  errors.username && { borderColor: colors.red }
-              ]}
-              placeholder="Username"
-              placeholderTextColor="#1e1e1e"
-              onChangeText={handleChange('username')}
-              onBlur={handleBlur('username')}
-            />
-            {touched.password && errors.password && (
-              <Text style={styles.errorMessage}>{errors.password}</Text>
-            )}
-            <TextInput
-              style={[
-                styles.textInput,
-                touched.password &&
-                  errors.password && { borderColor: colors.red }
-              ]}
-              placeholder="Password"
-              placeholderTextColor="#1e1e1e"
-              onChangeText={handleChange('password')}
-              onBlur={handleBlur('password')}
-              secureTextEntry
-            />
-          </View>
-          <View style={styles.container}>
-            <Button
-              style={styles.submitButton}
-              underlayColor="#4f76b9"
-              onPress={handleSubmit}
-            >
-              Go!
-            </Button>
-          </View>
-        </View>
-      )}
-    </Formik>
+    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+      <Formik
+        initialValues={{ username: '', password: '' }}
+        onSubmit={(values, { setStatus, setErrors, resetForm }) => {
+          signIn(values)
+          // navigation.navigate('Home')
+          resetForm({})
+          setStatus('User was updated successfully.')
+        }}
+        validationSchema={Yup.object({
+          username: Yup.string()
+            .required('Required')
+            .max(32, 'Must be at most 32 characters long')
+            .matches(/^[a-zA-Z0-9_-]+$/, 'Contains invalid characters'),
+          password: Yup.string()
+            .required('Required')
+            .min(6, 'Must be at least 6 characters long')
+            .max(50, 'Must be at most 50 characters long')
+        })}
+      >
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          touched,
+          errors,
+          status,
+          values
+        }) => (
+          <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+            <View as={SafeAreaView} style={styles.container}>
+              <View
+                style={[styles.modal, { backgroundColor: colors.background }]}
+                onStartShouldSetResponder={() => true}
+              >
+                {!!status && <Text>{status}</Text>}
+                {touched.username && errors.username && (
+                  <Text style={styles.errorMessage}>{errors.username}</Text>
+                )}
+                <TextInput
+                  style={[
+                    styles.textInput,
+                    touched.username &&
+                      errors.username && { borderColor: colors.red }
+                  ]}
+                  placeholder="Username"
+                  placeholderTextColor="#1e1e1e"
+                  value={values.username}
+                  onChangeText={handleChange('username')}
+                  onBlur={handleBlur('username')}
+                />
+                {touched.password && errors.password && (
+                  <Text style={styles.errorMessage}>{errors.password}</Text>
+                )}
+                <TextInput
+                  style={[
+                    styles.textInput,
+                    touched.password &&
+                      errors.password && { borderColor: colors.red }
+                  ]}
+                  placeholder="Password"
+                  placeholderTextColor="#1e1e1e"
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  secureTextEntry
+                />
+                <View style={styles.buttonContainer}>
+                  <Button
+                    onPress={handleSubmit}
+                    title="Go!"
+                    bgColor={colors.blue}
+                  />
+                </View>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        )}
+      </Formik>
+    </KeyboardAvoidingView>
   )
 }
 
 const styles = StyleSheet.create({
-  boxCenter: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
   container: {
-    width: '90%'
+    flex: 1,
+    justifyContent: 'flex-end'
   },
-  submitButton: {
-    backgroundColor: 'cornflowerblue'
+  modal: {
+    padding: 16,
+    width: '100%',
+    height: 300,
+    borderRadius: 6,
+    elevation: 6,
+    justifyContent: 'center'
   },
   textInput: {
     borderWidth: 1,
@@ -103,6 +129,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     fontWeight: 'bold',
     fontSize: 15
+  },
+  buttonContainer: {
+    flexDirection: 'row'
   }
 })
 

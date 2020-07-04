@@ -35,9 +35,11 @@ const AuthProvider = ({ children }) => {
   }, [])
 
   const signIn = async data => {
-    const response = await axios.post('authenticate', data)
+    let response
+    try {
+      // Axiosu taşı sign in dediğim yere.
+      response = await axios.post('authenticate', data)
 
-    if (response.status === 200) {
       const { token, expiresAt, userInfo } = response.data
       try {
         await AsyncStorage.setItem('token', token)
@@ -48,6 +50,8 @@ const AuthProvider = ({ children }) => {
       }
 
       setAuthState({ token, expiresAt, userInfo })
+    } catch (error) {
+      return error.response.data
     }
   }
 
