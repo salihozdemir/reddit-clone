@@ -34,7 +34,7 @@ const AuthProvider = ({ children }) => {
     bootstrapAsync()
   }, [])
 
-  const signIn = async (token, expiresAt, userInfo) => {
+  const setStorage = async (token, expiresAt, userInfo) => {
     try {
       await AsyncStorage.setItem('token', token)
       await AsyncStorage.setItem('expiresAt', JSON.stringify(expiresAt))
@@ -58,27 +58,8 @@ const AuthProvider = ({ children }) => {
     setAuthState({ token: null, expiresAt: null, userInfo: {} })
   }
 
-  const signUp = async data => {
-    const response = await axios.post('signup', data)
-
-    if (response.status === 200) {
-      const { token, expiresAt, userInfo } = response.data
-      try {
-        await AsyncStorage.setItem('token', token)
-        await AsyncStorage.setItem('expiresAt', JSON.stringify(expiresAt))
-        await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
-      } catch (error) {
-        console.error(error)
-      }
-
-      setAuthState({ token, expiresAt, userInfo })
-    }
-  }
-
   return (
-    <Provider value={{ authState, signIn, signOut, signUp }}>
-      {children}
-    </Provider>
+    <Provider value={{ authState, setStorage, signOut }}>{children}</Provider>
   )
 }
 

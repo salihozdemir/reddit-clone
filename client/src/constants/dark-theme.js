@@ -12,8 +12,8 @@ const customDarkTheme = {
     red: '#d31f4f',
     white: 'white',
     bgColor: '#1b1b2f',
-    signInButton: '#ce815e',
-    signUpButton: '#6495ed',
+    signUpButton: '#ce815e',
+    signInButton: '#6495ed',
     icon: '#888a8c',
     loader: '#393e46'
   }

@@ -17,8 +17,8 @@ import * as Yup from 'yup'
 import Button from '../components/button'
 import { AuthContext } from '../context/auth-context'
 
-const SignUp = ({ navigation }) => {
-  const { signIn } = React.useContext(AuthContext)
+const SignIn = ({ navigation }) => {
+  const { setStorage } = React.useContext(AuthContext)
   const { colors } = useTheme()
 
   return (
@@ -28,9 +28,8 @@ const SignUp = ({ navigation }) => {
         onSubmit={async (values, { setStatus, resetForm }) => {
           try {
             const { data } = await axios.post('authenticate', values)
-            console.log(values)
             const { token, expiresAt, userInfo } = data
-            signIn(token, expiresAt, userInfo)
+            setStorage(token, expiresAt, userInfo)
             navigation.navigate('Home')
             resetForm({})
           } catch (error) {
@@ -100,8 +99,8 @@ const SignUp = ({ navigation }) => {
                 <View style={styles.buttonContainer}>
                   <Button
                     onPress={handleSubmit}
-                    title="Go!"
-                    bgColor={colors.blue}
+                    title="Login"
+                    bgColor={colors.signInButton}
                   />
                 </View>
               </View>
@@ -152,4 +151,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default SignUp
+export default SignIn

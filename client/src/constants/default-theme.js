@@ -11,8 +11,8 @@ const customDefaultTheme = {
     red: '#d31f4f',
     white: 'white',
     bgColor: 'white',
-    signInButton: '#ce815e',
-    signUpButton: '#6495ed',
+    signUpButton: '#ce815e',
+    signInButton: '#6495ed',
     icon: '#888a8c',
     loader: '#eeeeee',
     postBorder: '#ecedf0'
