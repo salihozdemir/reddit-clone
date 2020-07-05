@@ -5,7 +5,8 @@ import {
   Text,
   TextInput,
   TouchableWithoutFeedback,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ActivityIndicator
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
@@ -20,6 +21,7 @@ import { AuthContext } from '../context/auth-context'
 const SignUp = ({ navigation }) => {
   const { setStorage } = React.useContext(AuthContext)
   const { colors } = useTheme()
+  const [isLoading, setIsLoading] = React.useState(false)
 
   return (
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
@@ -124,7 +126,11 @@ const SignUp = ({ navigation }) => {
                     onPress={handleSubmit}
                     title="Create Account"
                     bgColor={colors.signUpButton}
-                  />
+                  >
+                    {isLoading && (
+                      <ActivityIndicator size="small" color="white" />
+                    )}
+                  </Button>
                 </View>
               </View>
             </View>

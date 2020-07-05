@@ -5,7 +5,8 @@ import {
   View,
   Text,
   TouchableWithoutFeedback,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ActivityIndicator
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
@@ -20,12 +21,14 @@ import { AuthContext } from '../context/auth-context'
 const SignIn = ({ navigation }) => {
   const { setStorage } = React.useContext(AuthContext)
   const { colors } = useTheme()
+  const [isLoading, setIsLoading] = React.useState(false)
 
   return (
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
       <Formik
         initialValues={{ username: '', password: '' }}
         onSubmit={async (values, { setStatus, resetForm }) => {
+          setIsLoading(true)
           try {
             const { data } = await axios.post('authenticate', values)
             const { token, expiresAt, userInfo } = data
@@ -35,6 +38,7 @@ const SignIn = ({ navigation }) => {
           } catch (error) {
             setStatus(error.response.data.message)
           }
+          setIsLoading(false)
         }}
         validationSchema={Yup.object({
           username: Yup.string()
@@ -101,7 +105,11 @@ const SignIn = ({ navigation }) => {
                     onPress={handleSubmit}
                     title="Login"
                     bgColor={colors.signInButton}
-                  />
+                  >
+                    {isLoading && (
+                      <ActivityIndicator size="small" color="white" />
+                    )}
+                  </Button>
                 </View>
               </View>
             </View>

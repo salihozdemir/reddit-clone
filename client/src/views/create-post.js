@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
-  ScrollView
+  ScrollView,
+  ActivityIndicator
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
@@ -51,7 +52,7 @@ const TypeSwichButton = ({ selected, onClick, type }) => {
 
 const CreatePost = () => {
   const { colors } = useTheme()
-
+  const [isLoading, setIsLoading] = React.useState(false)
   return (
     <ScrollView
       as={SafeAreaView}
@@ -66,12 +67,14 @@ const CreatePost = () => {
           text: ''
         }}
         onSubmit={async (values, { setStatus, resetForm }) => {
+          setIsLoading(true)
           try {
             await axios.post('posts', values)
             resetForm({ ...values, type: 'text' })
           } catch (error) {
             setStatus(error.response.data.message)
           }
+          setIsLoading(false)
         }}
         validationSchema={Yup.object({
           type: Yup.mixed().oneOf(['text', 'link']),
@@ -208,7 +211,11 @@ const CreatePost = () => {
                 style={[styles.submitButton, { backgroundColor: colors.blue }]}
                 onPress={handleSubmit}
               >
-                <Plus color="white" />
+                {isLoading ? (
+                  <ActivityIndicator size="small" color="white" />
+                ) : (
+                  <Plus color="white" />
+                )}
                 <Text style={styles.submitButtonText}>Create Post</Text>
               </TouchableOpacity>
             </View>
