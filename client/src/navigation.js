@@ -2,7 +2,11 @@ import 'react-native-gesture-handler'
 import * as React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
+import {
+  createStackNavigator,
+  TransitionPresets,
+  CardStyleInterpolators
+} from '@react-navigation/stack'
 
 import { ThemeContext } from './context/theme-swich-context'
 import DefaultTheme from './constants/default-theme'
@@ -28,41 +32,31 @@ function SignScreens() {
       headerMode="screen"
       screenOptions={{
         initialRouteName: 'SignModal',
+        gestureEnabled: true,
+        gestureDirection: 'vertical',
+        ...TransitionPresets.ModalSlideFromBottomIOS,
         cardStyle: {
           backgroundColor: 'transparent'
-        }
+        },
+        headerShown: false
       }}
     >
-      <SignStack.Screen
-        name="SignModal"
-        component={SignModal}
-        options={{
-          headerShown: false
-        }}
-      />
-      <SignStack.Screen
-        name="SignUp"
-        component={SignUpScreen}
-        options={{
-          headerTitle: '',
-          headerTransparent: true
-        }}
-      />
-      <SignStack.Screen
-        name="SignIn"
-        component={SignInScreen}
-        options={{
-          headerTitle: '',
-          headerTransparent: true
-        }}
-      />
+      <SignStack.Screen name="SignModal" component={SignModal} />
+      <SignStack.Screen name="SignUp" component={SignUpScreen} />
+      <SignStack.Screen name="SignIn" component={SignInScreen} />
     </SignStack.Navigator>
   )
 }
 
 function HomeScreens() {
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator
+      screenOptions={{
+        gestureEnabled: true,
+        gestureDirection: 'horizontal',
+        ...TransitionPresets.SlideFromRightIOS
+      }}
+    >
       <HomeStack.Screen
         name="Home"
         component={HomeScreen}
@@ -86,7 +80,12 @@ function HomeScreens() {
 
 function MyTabs() {
   return (
-    <Tab.Navigator tabBar={props => <TabBar {...props} />}>
+    <Tab.Navigator
+      tabBar={props => <TabBar {...props} />}
+      screenOptions={{
+        animationEnabled: true
+      }}
+    >
       <Tab.Screen name="Home" component={HomeScreens} />
       <Tab.Screen name="CreatePost" component={CreatePostScreen} />
       <Tab.Screen name="User" component={UserScreen} />
@@ -102,26 +101,9 @@ function RootScreen() {
         screenOptions={{
           headerShown: false,
           cardStyle: { backgroundColor: 'transparent' },
-          cardStyleInterpolator: ({ current, layouts }) => {
-            return {
-              cardStyle: {
-                transform: [
-                  {
-                    translateY: current.progress.interpolate({
-                      inputRange: [0.5, 1],
-                      outputRange: [layouts.screen.width, 0]
-                    })
-                  }
-                ]
-              },
-              overlayStyle: {
-                opacity: current.progress.interpolate({
-                  inputRange: [0, 0.5, 1],
-                  outputRange: [0, 0.25, 0.5]
-                })
-              }
-            }
-          }
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+          gestureEnabled: true,
+          gestureDirection: 'vertical'
         }}
         mode="modal"
       >
