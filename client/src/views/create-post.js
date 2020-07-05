@@ -11,6 +11,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
 
 import axios from '../utils/fetcher'
+import { Formik } from 'formik'
+import * as Yup from 'yup'
 
 import { Plus } from '../components/icons'
 import CategoryPicker from '../components/category-picker'
@@ -19,28 +21,28 @@ const TypeSwichContainer = ({ children }) => {
   return <View style={styles.typeContainer}>{children}</View>
 }
 
-const TypeSwichButton = ({ selected, onClick, title }) => {
+const TypeSwichButton = ({ selected, onClick, type }) => {
   const { colors } = useTheme()
 
   return (
     <TouchableOpacity
       style={[
         styles.typeButton,
-        title === 'Link' ? styles.typeButtonRight : styles.typeButtonLeft,
-        selected === title ? { backgroundColor: colors.blue } : '',
+        type === 'link' ? styles.typeButtonRight : styles.typeButtonLeft,
+        selected === type ? { backgroundColor: colors.blue } : '',
         { borderColor: colors.border }
       ]}
-      onPress={() => onClick(title)}
+      onPress={() => onClick('type', type)}
     >
       <View>
         <Text
           style={[
             styles.typeButtonLabel,
             { color: colors.text },
-            selected === title ? { color: 'white' } : ''
+            selected === type ? { color: 'white' } : ''
           ]}
         >
-          {title}
+          {type}
         </Text>
       </View>
     </TouchableOpacity>
@@ -50,83 +52,169 @@ const TypeSwichButton = ({ selected, onClick, title }) => {
 const CreatePost = () => {
   const { colors } = useTheme()
 
-  const [type, setType] = React.useState('Text')
-  const [category, setCategory] = React.useState('')
-  const [title, setTitle] = React.useState('')
-  const [url, setUrl] = React.useState('')
-  const [text, setText] = React.useState('')
-
-  const createPost = async () => {
-    try {
-      const payload = { type, category, title, url, text }
-      await axios.post('posts', payload)
-      console.log('asd')
-    } catch (error) {
-      console.log(error.response.data)
-    }
-  }
-
   return (
     <ScrollView
       as={SafeAreaView}
-      style={[styles.container, { backgroundColor: colors.bgColor }]}
+      style={[styles.container, { backgroundColor: colors.background }]}
     >
-      <Text style={[styles.formLabel, { color: colors.text }]}>TYPE</Text>
-      <TypeSwichContainer>
-        <TypeSwichButton selected={type} onClick={setType} title="Text" />
-        <TypeSwichButton selected={type} onClick={setType} title="Link" />
-      </TypeSwichContainer>
-      <Text style={[styles.formLabel, { color: colors.text }]}>CATEGORY</Text>
-      <CategoryPicker
-        selected={category}
-        onClick={setCategory}
-        style={{ marginBottom: 10 }}
-      />
-      <Text style={[styles.formLabel, { color: colors.text }]}>TITLE</Text>
-      <TextInput
-        style={[
-          styles.textInput,
-          { borderColor: colors.border, color: colors.text, height: 40 }
-        ]}
-        onChangeText={text => setTitle(text)}
-        value={title}
-      />
-      {type === 'Link' ? (
-        <>
-          <Text style={[styles.formLabel, { color: colors.text }]}>URL</Text>
-          <TextInput
-            style={[
-              styles.textInput,
-              { borderColor: colors.border, color: colors.text }
-            ]}
-            onChangeText={text => setUrl(text)}
-            value={url}
-          />
-        </>
-      ) : (
-        <>
-          <Text style={[styles.formLabel, { color: colors.text }]}>TEXT</Text>
-          <TextInput
-            style={[
-              styles.textInput,
-              { borderColor: colors.border, color: colors.text }
-            ]}
-            multiline={true}
-            numberOfLines={10}
-            value={text}
-            onChangeText={text => setText(text)}
-          />
-        </>
-      )}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={[styles.submitButton, { backgroundColor: colors.blue }]}
-          onPress={() => createPost()}
-        >
-          <Plus color="white" />
-          <Text style={styles.submitButtonText}>Create Post</Text>
-        </TouchableOpacity>
-      </View>
+      <Formik
+        initialValues={{
+          type: 'text',
+          category: '',
+          title: '',
+          url: '',
+          text: ''
+        }}
+        onSubmit={async (values, { setStatus, resetForm }) => {
+          try {
+            await axios.post('posts', values)
+            resetForm({ ...values, type: 'text' })
+          } catch (error) {
+            setStatus(error.response.data.message)
+          }
+        }}
+        validationSchema={Yup.object({
+          type: Yup.mixed().oneOf(['text', 'link']),
+          category: Yup.string().required('Required'),
+          title: Yup.string()
+            .required('Required')
+            .max(100, 'Must be at most 100 characters long'),
+          text: Yup.string().when('type', {
+            is: 'text',
+            then: Yup.string()
+              .required('Required')
+              .min(4, 'Must be at least 4 characters long')
+          }),
+          url: Yup.string().when('type', {
+            is: 'link',
+            then: Yup.string()
+              .required('Required')
+              .url('Invalid Url')
+          })
+        })}
+      >
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          touched,
+          errors,
+          status,
+          values,
+          setFieldValue
+        }) => (
+          <View>
+            {!!status && <Text style={styles.status}>{status}</Text>}
+            <View style={styles.flexRow}>
+              <Text style={[styles.formLabel, { color: colors.text }]}>
+                Type
+              </Text>
+              {touched.type && errors.type && (
+                <Text style={styles.errorMessage}>{errors.type}</Text>
+              )}
+            </View>
+            <TypeSwichContainer>
+              <TypeSwichButton
+                selected={values.type}
+                onClick={setFieldValue}
+                type="text"
+              />
+              <TypeSwichButton
+                selected={values.type}
+                onClick={setFieldValue}
+                type="link"
+              />
+            </TypeSwichContainer>
+            <View style={styles.flexRow}>
+              <Text style={[styles.formLabel, { color: colors.text }]}>
+                Category
+              </Text>
+              {touched.category && errors.category && (
+                <Text style={styles.errorMessage}>{errors.category}</Text>
+              )}
+            </View>
+            <CategoryPicker
+              selectedCategory={values.category}
+              setFieldValue={setFieldValue}
+            />
+
+            <View style={styles.flexRow}>
+              <Text style={[styles.formLabel, { color: colors.text }]}>
+                Title
+              </Text>
+              {touched.title && errors.title && (
+                <Text style={styles.errorMessage}>{errors.title}</Text>
+              )}
+            </View>
+            <TextInput
+              style={[
+                styles.textInput,
+                // eslint-disable-next-line react-native/no-inline-styles
+                { borderColor: colors.border, color: colors.text, height: 40 },
+                touched.title && errors.title && { borderColor: colors.red }
+              ]}
+              value={values.title}
+              onChangeText={handleChange('title')}
+              onBlur={handleBlur('title')}
+            />
+
+            {values.type === 'link' ? (
+              <>
+                <View style={styles.flexRow}>
+                  <Text style={[styles.formLabel, { color: colors.text }]}>
+                    Url
+                  </Text>
+                  {touched.url && errors.url && (
+                    <Text style={styles.errorMessage}>{errors.url}</Text>
+                  )}
+                </View>
+                <TextInput
+                  style={[
+                    styles.textInput,
+                    { borderColor: colors.border, color: colors.text },
+                    touched.url && errors.url && { borderColor: colors.red }
+                  ]}
+                  multiline
+                  value={values.url}
+                  onChangeText={handleChange('url')}
+                  onBlur={handleBlur('url')}
+                />
+              </>
+            ) : (
+              <>
+                <View style={styles.flexRow}>
+                  <Text style={[styles.formLabel, { color: colors.text }]}>
+                    Text
+                  </Text>
+                  {touched.text && errors.text && (
+                    <Text style={styles.errorMessage}>{errors.text}</Text>
+                  )}
+                </View>
+                <TextInput
+                  style={[
+                    styles.textInput,
+                    { borderColor: colors.border, color: colors.text },
+                    touched.text && errors.text && { borderColor: colors.red }
+                  ]}
+                  multiline
+                  value={values.text}
+                  onChangeText={handleChange('text')}
+                  onBlur={handleBlur('text')}
+                />
+              </>
+            )}
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={[styles.submitButton, { backgroundColor: colors.blue }]}
+                onPress={handleSubmit}
+              >
+                <Plus color="white" />
+                <Text style={styles.submitButtonText}>Create Post</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </Formik>
     </ScrollView>
   )
 }
@@ -157,12 +245,14 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10
   },
   typeButtonLabel: {
-    textAlign: 'center'
+    textAlign: 'center',
+    textTransform: 'capitalize'
   },
   textInput: {
     borderWidth: 1,
     textAlignVertical: 'top',
-    marginTop: 5
+    marginTop: 5,
+    paddingLeft: 10
   },
   submitButton: {
     flexDirection: 'row',
@@ -174,8 +264,7 @@ const styles = StyleSheet.create({
   },
   formLabel: {
     fontWeight: 'bold',
-    fontSize: 16,
-    marginTop: 10
+    fontSize: 16
   },
   buttonContainer: {
     marginTop: 30,
@@ -187,6 +276,23 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: 15
+  },
+  status: {
+    color: 'red',
+    marginVertical: 15,
+    fontWeight: 'bold',
+    fontSize: 15,
+    textAlign: 'center'
+  },
+  errorMessage: {
+    color: 'red',
+    marginHorizontal: 10,
+    fontWeight: 'bold',
+    fontSize: 15
+  },
+  flexRow: {
+    flexDirection: 'row',
+    marginTop: 15
   }
 })
 
