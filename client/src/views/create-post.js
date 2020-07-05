@@ -55,7 +55,7 @@ const CreatePost = () => {
   return (
     <ScrollView
       as={SafeAreaView}
-      style={[styles.container, { backgroundColor: colors.background }]}
+      style={[styles.container, { backgroundColor: colors.bgColor }]}
     >
       <Formik
         initialValues={{
