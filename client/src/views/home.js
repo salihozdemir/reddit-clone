@@ -48,7 +48,11 @@ const Home = () => {
           onRefresh={() => getPostData()}
           keyExtractor={item => item.id}
           ListHeaderComponent={
-            <CategoryPicker selected={category} onClick={setCategory} addAll />
+            <CategoryPicker
+              selectedCategory={category}
+              onClick={setCategory}
+              addAll
+            />
           }
           ListHeaderComponentStyle={[
             styles.categoryPicker,

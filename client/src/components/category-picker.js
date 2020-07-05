@@ -10,7 +10,15 @@ import { useTheme } from '@react-navigation/native'
 
 import categories from '../constants/categories'
 
-const CategoryPicker = ({ selected, onClick, addAll, ...props }) => {
+const CategoryPicker = ({
+  selectedCategory,
+  onClick,
+  addAll,
+  setFieldValue,
+  ...props
+}) => {
+  const { colors } = useTheme()
+
   return (
     <View {...props}>
       <FlatList
@@ -18,37 +26,39 @@ const CategoryPicker = ({ selected, onClick, addAll, ...props }) => {
         horizontal
         keyExtractor={item => item}
         renderItem={({ item }) => (
-          <CategoryItem
-            item={item}
-            isActive={item === selected}
-            setActive={() => onClick(item)}
-          />
+          <TouchableOpacity
+            onPress={() =>
+              onClick ? onClick(item) : setFieldValue('category', item)
+            }
+          >
+            <Text
+              style={[
+                styles.category,
+                // eslint-disable-next-line react-native/no-inline-styles
+                {
+                  fontWeight: item === selectedCategory ? 'bold' : 'normal',
+                  borderBottomColor:
+                    item === selectedCategory ? colors.blue : 'transparent',
+                  color: item === selectedCategory ? colors.blue : colors.text
+                }
+              ]}
+            >
+              {item}
+            </Text>
+          </TouchableOpacity>
         )}
       />
     </View>
   )
 }
 
-const CategoryItem = ({ item, isActive, setActive }) => {
-  const { colors } = useTheme()
-
-  const styles = StyleSheet.create({
-    category: {
-      padding: 5,
-      marginLeft: 5,
-      marginRight: 5,
-      color: isActive ? colors.blue : colors.text,
-      borderBottomWidth: 1,
-      borderBottomColor: isActive ? colors.blue : 'transparent',
-      fontWeight: isActive ? 'bold' : 'normal'
-    }
-  })
-
-  return (
-    <TouchableOpacity onPress={setActive}>
-      <Text style={styles.category}>{item}</Text>
-    </TouchableOpacity>
-  )
-}
+const styles = StyleSheet.create({
+  category: {
+    padding: 5,
+    marginLeft: 5,
+    marginRight: 5,
+    borderBottomWidth: 1
+  }
+})
 
 export default CategoryPicker
