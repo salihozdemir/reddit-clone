@@ -145,7 +145,7 @@ exports.validate = [
     .exists()
     .withMessage('is required')
 
-    .isIn(['Link', 'Text'])
+    .isIn(['link', 'text'])
     .withMessage('must be a link or text post'),
   urlOrTextIsValid
 ];
