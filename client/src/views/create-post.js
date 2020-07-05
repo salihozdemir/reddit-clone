@@ -6,7 +6,8 @@ import {
   Text,
   TextInput,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
+  Animated
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
@@ -53,6 +54,17 @@ const TypeSwichButton = ({ selected, onClick, type }) => {
 const CreatePost = () => {
   const { colors } = useTheme()
   const [isLoading, setIsLoading] = React.useState(false)
+  const [message, setMessage] = React.useState('')
+  const fadeAnim = React.useRef(new Animated.Value(0)).current
+
+  const fadeIn = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 2000,
+      useNativeDriver: true
+    }).start()
+  }
+
   return (
     <ScrollView
       as={SafeAreaView}
@@ -71,6 +83,8 @@ const CreatePost = () => {
           try {
             await axios.post('posts', values)
             resetForm({ ...values, type: 'text' })
+            setMessage('Successfully Created')
+            fadeIn()
           } catch (error) {
             setStatus(error.response.data.message)
           }
@@ -107,6 +121,13 @@ const CreatePost = () => {
           setFieldValue
         }) => (
           <View>
+            <Animated.View
+              style={{
+                opacity: fadeAnim
+              }}
+            >
+              {!!message && <Text style={styles.message}>{message}</Text>}
+            </Animated.View>
             {!!status && <Text style={styles.status}>{status}</Text>}
             <View style={styles.flexRow}>
               <Text style={[styles.formLabel, { color: colors.text }]}>
@@ -300,6 +321,16 @@ const styles = StyleSheet.create({
   flexRow: {
     flexDirection: 'row',
     marginTop: 15
+  },
+  message: {
+    color: '#5b715d',
+    marginVertical: 15,
+    fontWeight: 'bold',
+    fontSize: 18,
+    textAlign: 'center',
+    backgroundColor: '#cdffd3',
+    padding: 10,
+    borderRadius: 10
   }
 })
 
