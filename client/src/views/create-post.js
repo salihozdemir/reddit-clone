@@ -274,7 +274,8 @@ const styles = StyleSheet.create({
   },
   typeButtonLabel: {
     textAlign: 'center',
-    textTransform: 'capitalize'
+    textTransform: 'capitalize',
+    fontFamily: 'OpenSans-SemiBold'
   },
   textInput: {
     borderWidth: 1,
@@ -291,7 +292,7 @@ const styles = StyleSheet.create({
     flex: 0.4
   },
   formLabel: {
-    fontWeight: 'bold',
+    fontFamily: 'OpenSans-ExtraBold',
     fontSize: 16
   },
   buttonContainer: {

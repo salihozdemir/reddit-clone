@@ -19,7 +19,7 @@ const CommentListItem = ({ body, author, created, deleteComment }) => {
           {author?.username}
         </Text>
         <View style={styles.headerRight}>
-          <Text style={{ color: colors.text }}>
+          <Text style={[styles.dateText, { color: colors.text }]}>
             {moment(created).fromNow()}
           </Text>
           {author?.id === authState.userInfo.id && (
@@ -34,7 +34,7 @@ const CommentListItem = ({ body, author, created, deleteComment }) => {
         </View>
       </View>
       <View style={styles.body}>
-        <Text style={{ color: colors.text }}>{body}</Text>
+        <Text style={[styles.regularFont, { color: colors.text }]}>{body}</Text>
       </View>
     </View>
   )
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 5,
     borderBottomWidth: 1
   },
@@ -61,11 +62,18 @@ const styles = StyleSheet.create({
     padding: 5
   },
   authorName: {
-    fontWeight: 'bold',
-    marginRight: 10
+    marginRight: 10,
+    fontFamily: 'OpenSans-Bold'
   },
   trash: {
     marginLeft: 10
+  },
+  regularFont: {
+    fontFamily: 'OpenSans-Regular'
+  },
+  dateText: {
+    fontFamily: 'OpenSans-Italic',
+    fontSize: 12
   }
 })
 

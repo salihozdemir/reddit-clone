@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
     padding: 5,
     marginLeft: 5,
     marginRight: 5,
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
+    fontFamily: 'OpenSans-SemiBold'
   }
 })
 

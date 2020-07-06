@@ -94,16 +94,18 @@ const Post = ({
     >
       <View style={styles.headerContainer}>
         <View style={styles.headerLeft}>
-          <Text style={{ color: colors.text }}>{category} </Text>
+          <Text style={[styles.regularFont, { color: colors.text }]}>
+            {category}{' '}
+          </Text>
           <Text
-            style={{ color: colors.blue }}
+            style={[styles.italicFont, { color: colors.blue }]}
             onPress={() =>
               navigation.navigate('User', { username: author.username })
             }
           >
             @{author?.username} ·{' '}
           </Text>
-          <Text style={{ color: colors.text }}>
+          <Text style={[styles.dateText, { color: colors.text }]}>
             {moment(created).fromNow()}
           </Text>
         </View>
@@ -129,7 +131,7 @@ const Post = ({
       </Text>
       <Text
         numberOfLines={10}
-        style={{ color: colors.text }}
+        style={[styles.regularFont, { color: colors.text }]}
         onPress={() =>
           navigation.navigate('PostDetail', { postId, category, comments })
         }
@@ -176,7 +178,9 @@ const Post = ({
             {comments?.length}
           </Text>
         </TouchableOpacity>
-        <Text style={{ color: colors.text }}>{views} views</Text>
+        <Text style={[styles.italicFont, { color: colors.text }]}>
+          {views} views
+        </Text>
       </View>
     </View>
   )
@@ -197,7 +201,8 @@ const styles = StyleSheet.create({
     fontSize: 13
   },
   headerLeft: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   headerRight: {},
   bottomContainer: {
@@ -211,17 +216,29 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   title: {
-    fontWeight: 'bold',
-    fontSize: 18
+    fontSize: 17,
+    fontFamily: 'OpenSans-Bold'
   },
   score: {
-    marginHorizontal: 5
+    marginHorizontal: 5,
+    fontFamily: 'OpenSans-SemiBold'
   },
   commentIcon: {
     marginBottom: -3
   },
   commentText: {
-    marginLeft: 3
+    marginLeft: 3,
+    fontFamily: 'OpenSans-SemiBold'
+  },
+  regularFont: {
+    fontFamily: 'OpenSans-Regular'
+  },
+  italicFont: {
+    fontFamily: 'OpenSans-Italic'
+  },
+  dateText: {
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 12
   }
 })
 
