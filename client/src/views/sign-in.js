@@ -76,11 +76,13 @@ const SignIn = ({ navigation }) => {
                   style={[
                     styles.textInput,
                     touched.username &&
-                      errors.username && { borderColor: colors.red }
+                      errors.username && { borderColor: colors.red },
+                    { color: colors.text }
                   ]}
                   placeholder="Username"
-                  placeholderTextColor="#1e1e1e"
+                  placeholderTextColor={colors.text}
                   value={values.username}
+                  autoCorrect={false}
                   onChangeText={handleChange('username')}
                   onBlur={handleBlur('username')}
                 />
@@ -91,10 +93,11 @@ const SignIn = ({ navigation }) => {
                   style={[
                     styles.textInput,
                     touched.password &&
-                      errors.password && { borderColor: colors.red }
+                      errors.password && { borderColor: colors.red },
+                    { color: colors.text }
                   ]}
                   placeholder="Password"
-                  placeholderTextColor="#1e1e1e"
+                  placeholderTextColor={colors.text}
                   value={values.password}
                   onChangeText={handleChange('password')}
                   onBlur={handleBlur('password')}

@@ -13,10 +13,15 @@ const CreateComment = ({ onPress, setComment, comment, setIsFocused }) => {
       <TextInput
         style={[
           styles.textInput,
-          { backgroundColor: colors.background, color: colors.text }
+          {
+            backgroundColor: colors.background,
+            borderColor: colors.border,
+            color: colors.text
+          }
         ]}
         ref={textInputRef}
         placeholder="Add a comment"
+        placeholderTextColor={colors.text}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         onChangeText={setComment}
