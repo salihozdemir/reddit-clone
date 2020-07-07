@@ -5,5 +5,6 @@ module.exports = {
     semi: 'off',
     'comma-dangle': 'off',
     'no-shadow': 'off',
-  },
-};
+    'react-native/no-inline-styles': 'off'
+  }
+}
