@@ -63,6 +63,10 @@ const CreatePost = () => {
       duration: 2000,
       useNativeDriver: true
     }).start()
+
+    setTimeout(() => {
+      setMessage(null)
+    }, 6000)
   }
 
   return (
@@ -80,7 +84,7 @@ const CreatePost = () => {
           try {
             await axios.post('posts', values)
             resetForm({ ...values, type: 'text' })
-            setMessage('Successfully Created')
+            setMessage('Successfully Created!')
             fadeIn()
           } catch (error) {
             setStatus(error.response.data.message)
@@ -118,13 +122,15 @@ const CreatePost = () => {
           setFieldValue
         }) => (
           <View>
-            <Animated.View
-              style={{
-                opacity: fadeAnim
-              }}
-            >
-              {!!message && <Text style={styles.message}>{message}</Text>}
-            </Animated.View>
+            {message && (
+              <Animated.View
+                style={{
+                  opacity: fadeAnim
+                }}
+              >
+                {!!message && <Text style={styles.message}>{message}</Text>}
+              </Animated.View>
+            )}
             {!!status && <Text style={styles.status}>{status}</Text>}
             <View style={styles.flexRow}>
               <Text style={[styles.formLabel, { color: colors.text }]}>Type</Text>
@@ -153,7 +159,6 @@ const CreatePost = () => {
             <TextInput
               style={[
                 styles.textInput,
-                // eslint-disable-next-line react-native/no-inline-styles
                 { borderColor: colors.border, color: colors.text, height: 40 },
                 touched.title && errors.title && { borderColor: colors.red }
               ]}
@@ -305,7 +310,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
     textAlign: 'center',
-    backgroundColor: '#cdffd3',
     padding: 10,
     borderRadius: 10
   }
