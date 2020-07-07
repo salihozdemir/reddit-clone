@@ -91,7 +91,7 @@ const User = ({ route }) => {
     <View as={SafeAreaView} style={styles.boxCenter}>
       {userPosts ? (
         <FlatList
-          data={userPosts}
+          data={userPosts.sort((a, b) => a.created < b.created)}
           extraData={isLoading}
           refreshing={isLoading}
           onRefresh={() => getUserPostDetail()}
