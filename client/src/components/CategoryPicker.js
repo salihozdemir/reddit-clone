@@ -1,22 +1,10 @@
 import React from 'react'
-import {
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  FlatList,
-  View
-} from 'react-native'
+import { StyleSheet, TouchableOpacity, Text, FlatList, View } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 
 import categories from '../constants/categories'
 
-const CategoryPicker = ({
-  selectedCategory,
-  onClick,
-  addAll,
-  setFieldValue,
-  ...props
-}) => {
+const CategoryPicker = ({ selectedCategory, onClick, addAll, setFieldValue, ...props }) => {
   const { colors } = useTheme()
 
   return (
@@ -27,18 +15,14 @@ const CategoryPicker = ({
         keyExtractor={item => item}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() =>
-              onClick ? onClick(item) : setFieldValue('category', item)
-            }
+            onPress={() => (onClick ? onClick(item) : setFieldValue('category', item))}
           >
             <Text
               style={[
                 styles.category,
-                // eslint-disable-next-line react-native/no-inline-styles
                 {
                   fontWeight: item === selectedCategory ? 'bold' : 'normal',
-                  borderBottomColor:
-                    item === selectedCategory ? colors.blue : 'transparent',
+                  borderBottomColor: item === selectedCategory ? colors.blue : 'transparent',
                   color: item === selectedCategory ? colors.blue : colors.text
                 }
               ]}

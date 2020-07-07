@@ -2,14 +2,10 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { useTheme } from '@react-navigation/native'
 
-const LoaderText = ({ ...props }) => {
+const TextLoader = ({ ...props }) => {
   const { colors } = useTheme()
 
-  return (
-    <View
-      style={[styles.bgLight, props.style, { backgroundColor: colors.loader }]}
-    />
-  )
+  return <View style={[styles.bgLight, props.style, { backgroundColor: colors.loader }]} />
 }
 
 const styles = StyleSheet.create({
@@ -20,4 +16,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default LoaderText
+export default TextLoader

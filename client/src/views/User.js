@@ -1,21 +1,15 @@
 import React from 'react'
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity
-} from 'react-native'
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme, useNavigation } from '@react-navigation/native'
 
 import axios from '../utils/fetcher'
-import { AuthContext } from '../context/auth-context'
-import { ThemeContext } from '../context/theme-swich-context'
+import { AuthContext } from '../context/authContext'
+import { ThemeContext } from '../context/themeSwichContext'
 
 import { LogOut, Moon, Sun } from '../components/icons'
-import Post from '../components/post'
-import PostLoader from '../components/post-loader'
+import Post from '../components/Post'
+import PostLoader from '../components/PostLoader'
 
 const HeaderComponent = ({ username, postCount }) => {
   const { signOut, authState } = React.useContext(AuthContext)
@@ -27,9 +21,7 @@ const HeaderComponent = ({ username, postCount }) => {
     <View style={[styles.userInfo, { backgroundColor: colors.bgColor }]}>
       <View style={styles.infoBox}>
         <Text style={[styles.label, { color: colors.text }]}>Username</Text>
-        <Text style={{ color: colors.text }}>
-          {username ?? authState.userInfo.username}
-        </Text>
+        <Text style={{ color: colors.text }}>{username ?? authState.userInfo.username}</Text>
       </View>
       <View style={styles.infoBox}>
         <Text style={[styles.label, { color: colors.text }]}>Post Count</Text>
@@ -42,11 +34,7 @@ const HeaderComponent = ({ username, postCount }) => {
             onPress={() => changeTheme(theme === 'light' ? 'dark' : 'light')}
             style={styles.infoBox}
           >
-            {theme === 'light' ? (
-              <Moon color={colors.icon} />
-            ) : (
-              <Sun color={colors.icon} />
-            )}
+            {theme === 'light' ? <Moon color={colors.icon} /> : <Sun color={colors.icon} />}
             <Text style={{ color: colors.text }}>
               {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
             </Text>
@@ -78,9 +66,7 @@ const User = ({ route }) => {
 
   const getUserPostDetail = React.useCallback(async () => {
     setIsLoaading(true)
-    const { data } = await axios.get(
-      `user/${username || authState.userInfo.username}`
-    )
+    const { data } = await axios.get(`user/${username || authState.userInfo.username}`)
     setuserPosts(data)
     setIsLoaading(false)
   }, [authState.userInfo.username, username])
@@ -111,13 +97,9 @@ const User = ({ route }) => {
           onRefresh={() => getUserPostDetail()}
           keyExtractor={item => item.id}
           ListEmptyComponent={
-            <Text style={[styles.empty, { color: colors.text }]}>
-              Ups! Not found any post!
-            </Text>
+            <Text style={[styles.empty, { color: colors.text }]}>Ups! Not found any post!</Text>
           }
-          ListHeaderComponent={
-            <HeaderComponent username={username} postCount={userPosts.length} />
-          }
+          ListHeaderComponent={<HeaderComponent username={username} postCount={userPosts.length} />}
           stickyHeaderIndices={[0]}
           ListHeaderComponentStyle={styles.headerComponentStyle}
           renderItem={({ item, index }) => (

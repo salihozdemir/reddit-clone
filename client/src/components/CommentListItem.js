@@ -4,9 +4,9 @@ import { useTheme } from '@react-navigation/native'
 
 import moment from 'moment'
 
-import { AuthContext } from '../context/auth-context'
+import { AuthContext } from '../context/authContext'
 
-import { Trash } from '../components/icons'
+import { Trash } from './icons'
 
 const CommentListItem = ({ body, author, created, deleteComment }) => {
   const { colors } = useTheme()
@@ -15,19 +15,11 @@ const CommentListItem = ({ body, author, created, deleteComment }) => {
   return (
     <View style={[styles.container, { backgroundColor: colors.bgColor }]}>
       <View style={[styles.header, { borderBottomColor: colors.border }]}>
-        <Text style={[styles.authorName, { color: colors.blue }]}>
-          {author?.username}
-        </Text>
+        <Text style={[styles.authorName, { color: colors.blue }]}>{author?.username}</Text>
         <View style={styles.headerRight}>
-          <Text style={[styles.dateText, { color: colors.text }]}>
-            {moment(created).fromNow()}
-          </Text>
+          <Text style={[styles.dateText, { color: colors.text }]}>{moment(created).fromNow()}</Text>
           {author?.id === authState.userInfo.id && (
-            <TouchableOpacity
-              style={styles.trash}
-              activeOpacity={0.5}
-              onPress={deleteComment}
-            >
+            <TouchableOpacity style={styles.trash} activeOpacity={0.5} onPress={deleteComment}>
               <Trash color={colors.red} width={20} height={20} />
             </TouchableOpacity>
           )}

@@ -8,18 +8,18 @@ import {
   CardStyleInterpolators
 } from '@react-navigation/stack'
 
-import { ThemeContext } from './context/theme-swich-context'
+import { ThemeContext } from './context/themeSwichContext'
 import DefaultTheme from './constants/default-theme'
 import DarkTheme from './constants/dark-theme'
 
-import TabBar from './components/tab-bar'
-import HomeScreen from './views/home'
-import PostDetail from './views/post-detail'
-import CreatePostScreen from './views/create-post'
-import UserScreen from './views/user'
-import SignModal from './views/sign-modal'
-import SignInScreen from './views/sign-in'
-import SignUpScreen from './views/sign-up'
+import TabBar from './components/TabBar'
+import HomeScreen from './views/Home'
+import PostDetail from './views/PostDetail'
+import CreatePostScreen from './views/CreatePost'
+import UserScreen from './views/User'
+import SignModal from './views/SignModal'
+import SignInScreen from './views/SignIn'
+import SignUpScreen from './views/SignUp'
 
 const Tab = createBottomTabNavigator()
 const HomeStack = createStackNavigator()
@@ -57,11 +57,7 @@ function HomeScreens() {
         ...TransitionPresets.SlideFromRightIOS
       }}
     >
-      <HomeStack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{ headerShown: false }}
-      />
+      <HomeStack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
       <HomeStack.Screen
         name="PostDetail"
         component={PostDetail}

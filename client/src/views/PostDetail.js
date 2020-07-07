@@ -3,13 +3,13 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { StyleSheet, View, FlatList } from 'react-native'
 
 import axios from '../utils/fetcher'
-import { AuthContext } from '../context/auth-context'
+import { AuthContext } from '../context/authContext'
 
-import Post from '../components/post'
-import CommentListItem from '../components/comment-list-item'
-import CreateComment from '../components/create-comment'
-import CommentLoader from '../components/comment-loader'
-import PostLoader from '../components/post-loader'
+import Post from '../components/Post'
+import CommentListItem from '../components/CommentListItem'
+import CreateComment from '../components/CreateComment'
+import CommentLoader from '../components/CommentLoader'
+import PostLoader from '../components/PostLoader'
 
 const PostDetail = ({ route, navigation }) => {
   const { authState } = React.useContext(AuthContext)
@@ -35,8 +35,7 @@ const PostDetail = ({ route, navigation }) => {
   }, [getPostData])
 
   React.useEffect(() => {
-    isFocused &&
-      flatListRef.current.scrollToOffset({ animated: true, offset: 0 })
+    isFocused && flatListRef.current.scrollToOffset({ animated: true, offset: 0 })
   }, [isFocused])
 
   const createComment = async () => {

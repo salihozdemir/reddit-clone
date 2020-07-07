@@ -4,8 +4,8 @@ if (__DEV__) {
   import('../ReactotronConfig').then(() => console.log('Reactotron Configured'))
 }
 
-import { AuthProvider } from './context/auth-context'
-import { ThemeProvider } from './context/theme-swich-context'
+import { AuthProvider } from './context/authContext'
+import { ThemeProvider } from './context/themeSwichContext'
 import Navigation from './navigation'
 
 const App = () => {

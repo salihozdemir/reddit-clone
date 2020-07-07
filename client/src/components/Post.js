@@ -5,7 +5,7 @@ import { useNavigation, useTheme } from '@react-navigation/native'
 import moment from 'moment'
 
 import axios from '../utils/fetcher'
-import { AuthContext } from '../context/auth-context'
+import { AuthContext } from '../context/authContext'
 
 import { ArrowDown, ArrowUp, MessageSquare, Trash } from './icons/index'
 
@@ -94,28 +94,18 @@ const Post = ({
     >
       <View style={styles.headerContainer}>
         <View style={styles.headerLeft}>
-          <Text style={[styles.regularFont, { color: colors.text }]}>
-            {category}{' '}
-          </Text>
+          <Text style={[styles.regularFont, { color: colors.text }]}>{category} </Text>
           <Text
             style={[styles.italicFont, { color: colors.blue }]}
-            onPress={() =>
-              navigation.navigate('User', { username: author.username })
-            }
+            onPress={() => navigation.navigate('User', { username: author.username })}
           >
             @{author?.username} ·{' '}
           </Text>
-          <Text style={[styles.dateText, { color: colors.text }]}>
-            {moment(created).fromNow()}
-          </Text>
+          <Text style={[styles.dateText, { color: colors.text }]}>{moment(created).fromNow()}</Text>
         </View>
         <View style={styles.headerRight}>
           {deleteButton && author?.id === authState.userInfo.id && (
-            <TouchableOpacity
-              style={styles.trash}
-              activeOpacity={0.5}
-              onPress={deletePost}
-            >
+            <TouchableOpacity style={styles.trash} activeOpacity={0.5} onPress={deletePost}>
               <Trash color={colors.red} width={20} height={20} />
             </TouchableOpacity>
           )}
@@ -123,18 +113,14 @@ const Post = ({
       </View>
       <Text
         style={[styles.title, { color: colors.text }]}
-        onPress={() =>
-          navigation.navigate('PostDetail', { postId, category, comments })
-        }
+        onPress={() => navigation.navigate('PostDetail', { postId, category, comments })}
       >
         {title}
       </Text>
       <Text
         numberOfLines={10}
         style={[styles.regularFont, { color: colors.text }]}
-        onPress={() =>
-          navigation.navigate('PostDetail', { postId, category, comments })
-        }
+        onPress={() => navigation.navigate('PostDetail', { postId, category, comments })}
       >
         {type === 'link' ? url : text}
       </Text>
@@ -149,9 +135,7 @@ const Post = ({
             />
           </TouchableOpacity>
           <Text style={[styles.score, { color: colors.text }]}>{score}</Text>
-          <TouchableOpacity
-            onPress={() => (isDownVoted() ? unVote() : downVote())}
-          >
+          <TouchableOpacity onPress={() => (isDownVoted() ? unVote() : downVote())}>
             <ArrowDown
               width={22}
               height={22}
@@ -163,9 +147,7 @@ const Post = ({
         <TouchableOpacity
           style={styles.centerAlign}
           activeOpacity={0.7}
-          onPress={() =>
-            navigation.navigate('PostDetail', { postId, category, comments })
-          }
+          onPress={() => navigation.navigate('PostDetail', { postId, category, comments })}
         >
           <MessageSquare
             color={colors.icon}
@@ -174,13 +156,9 @@ const Post = ({
             height={20}
             strokeWidth={3}
           />
-          <Text style={[styles.commentText, { color: colors.text }]}>
-            {comments?.length}
-          </Text>
+          <Text style={[styles.commentText, { color: colors.text }]}>{comments?.length}</Text>
         </TouchableOpacity>
-        <Text style={[styles.italicFont, { color: colors.text }]}>
-          {views} views
-        </Text>
+        <Text style={[styles.italicFont, { color: colors.text }]}>{views} views</Text>
       </View>
     </View>
   )

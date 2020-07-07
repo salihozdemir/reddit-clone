@@ -1,14 +1,9 @@
 import React from 'react'
-import {
-  StyleSheet,
-  View,
-  TouchableWithoutFeedback,
-  StatusBar
-} from 'react-native'
+import { StyleSheet, View, TouchableWithoutFeedback, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
 
-import Button from '../components/button'
+import Button from '../components/Button'
 import { LogIn, PlusCircle } from '../components/icons'
 
 const SignModal = ({ navigation }) => {

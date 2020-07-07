@@ -4,13 +4,13 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTheme } from '@react-navigation/native'
 
 import axios from '../utils/fetcher'
-import { AuthContext } from '../context/auth-context'
-import { ThemeContext } from '../context/theme-swich-context'
+import { AuthContext } from '../context/authContext'
+import { ThemeContext } from '../context/themeSwichContext'
 
-import CategoryPicker from '../components/category-picker'
-import Post from '../components/post'
-import PostLoader from '../components/post-loader'
-import CategoryLoader from '../components/category-loader.js'
+import CategoryPicker from '../components/CategoryPicker'
+import Post from '../components/Post'
+import PostLoader from '../components/PostLoader'
+import CategoryLoader from '../components/CategoryLoader'
 
 const Home = () => {
   const { authState } = React.useContext(AuthContext)
@@ -48,20 +48,11 @@ const Home = () => {
           onRefresh={() => getPostData()}
           keyExtractor={item => item.id}
           ListHeaderComponent={
-            <CategoryPicker
-              selectedCategory={category}
-              onClick={setCategory}
-              addAll
-            />
+            <CategoryPicker selectedCategory={category} onClick={setCategory} addAll />
           }
-          ListHeaderComponentStyle={[
-            styles.categoryPicker,
-            { backgroundColor: colors.bgColor }
-          ]}
+          ListHeaderComponentStyle={[styles.categoryPicker, { backgroundColor: colors.bgColor }]}
           ListEmptyComponent={
-            <Text style={[styles.empty, { color: colors.text }]}>
-              Ups! Not found any post!
-            </Text>
+            <Text style={[styles.empty, { color: colors.text }]}>Ups! Not found any post!</Text>
           }
           renderItem={({ item, index }) => (
             <Post

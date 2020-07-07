@@ -17,7 +17,7 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 
 import { Plus } from '../components/icons'
-import CategoryPicker from '../components/category-picker'
+import CategoryPicker from '../components/CategoryPicker'
 
 const TypeSwichContainer = ({ children }) => {
   return <View style={styles.typeContainer}>{children}</View>
@@ -66,10 +66,7 @@ const CreatePost = () => {
   }
 
   return (
-    <ScrollView
-      as={SafeAreaView}
-      style={[styles.container, { backgroundColor: colors.bgColor }]}
-    >
+    <ScrollView as={SafeAreaView} style={[styles.container, { backgroundColor: colors.bgColor }]}>
       <Formik
         initialValues={{
           type: 'text',
@@ -130,42 +127,25 @@ const CreatePost = () => {
             </Animated.View>
             {!!status && <Text style={styles.status}>{status}</Text>}
             <View style={styles.flexRow}>
-              <Text style={[styles.formLabel, { color: colors.text }]}>
-                Type
-              </Text>
+              <Text style={[styles.formLabel, { color: colors.text }]}>Type</Text>
               {touched.type && errors.type && (
                 <Text style={styles.errorMessage}>{errors.type}</Text>
               )}
             </View>
             <TypeSwichContainer>
-              <TypeSwichButton
-                selected={values.type}
-                onClick={setFieldValue}
-                type="text"
-              />
-              <TypeSwichButton
-                selected={values.type}
-                onClick={setFieldValue}
-                type="link"
-              />
+              <TypeSwichButton selected={values.type} onClick={setFieldValue} type="text" />
+              <TypeSwichButton selected={values.type} onClick={setFieldValue} type="link" />
             </TypeSwichContainer>
             <View style={styles.flexRow}>
-              <Text style={[styles.formLabel, { color: colors.text }]}>
-                Category
-              </Text>
+              <Text style={[styles.formLabel, { color: colors.text }]}>Category</Text>
               {touched.category && errors.category && (
                 <Text style={styles.errorMessage}>{errors.category}</Text>
               )}
             </View>
-            <CategoryPicker
-              selectedCategory={values.category}
-              setFieldValue={setFieldValue}
-            />
+            <CategoryPicker selectedCategory={values.category} setFieldValue={setFieldValue} />
 
             <View style={styles.flexRow}>
-              <Text style={[styles.formLabel, { color: colors.text }]}>
-                Title
-              </Text>
+              <Text style={[styles.formLabel, { color: colors.text }]}>Title</Text>
               {touched.title && errors.title && (
                 <Text style={styles.errorMessage}>{errors.title}</Text>
               )}
@@ -185,9 +165,7 @@ const CreatePost = () => {
             {values.type === 'link' ? (
               <>
                 <View style={styles.flexRow}>
-                  <Text style={[styles.formLabel, { color: colors.text }]}>
-                    Url
-                  </Text>
+                  <Text style={[styles.formLabel, { color: colors.text }]}>Url</Text>
                   {touched.url && errors.url && (
                     <Text style={styles.errorMessage}>{errors.url}</Text>
                   )}
@@ -207,9 +185,7 @@ const CreatePost = () => {
             ) : (
               <>
                 <View style={styles.flexRow}>
-                  <Text style={[styles.formLabel, { color: colors.text }]}>
-                    Text
-                  </Text>
+                  <Text style={[styles.formLabel, { color: colors.text }]}>Text</Text>
                   {touched.text && errors.text && (
                     <Text style={styles.errorMessage}>{errors.text}</Text>
                   )}

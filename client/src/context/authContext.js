@@ -1,8 +1,6 @@
 import React from 'react'
 import AsyncStorage from '@react-native-community/async-storage'
 
-import axios from '../utils/fetcher'
-
 const AuthContext = React.createContext()
 const { Provider } = AuthContext
 
@@ -58,9 +56,7 @@ const AuthProvider = ({ children }) => {
     setAuthState({ token: null, expiresAt: null, userInfo: {} })
   }
 
-  return (
-    <Provider value={{ authState, setStorage, signOut }}>{children}</Provider>
-  )
+  return <Provider value={{ authState, setStorage, signOut }}>{children}</Provider>
 }
 
 export { AuthContext, AuthProvider }
