@@ -1,7 +1,7 @@
 import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, Linking } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useNavigation, useTheme } from '@react-navigation/native'
+import { useNavigation, useTheme, useRoute } from '@react-navigation/native'
 import moment from 'moment'
 
 import axios from '../utils/fetcher'
@@ -33,6 +33,7 @@ const Post = ({
   const { colors } = useTheme()
   const navigation = useNavigation()
   const { authState } = React.useContext(AuthContext)
+  const route = useRoute()
 
   const isUpVoted = () => {
     return votes.find(v => v.user === userId)?.vote === 1
@@ -119,8 +120,16 @@ const Post = ({
       </Text>
       <Text
         numberOfLines={10}
-        style={[styles.regularFont, { color: colors.text }]}
-        onPress={() => navigation.navigate('PostDetail', { postId, category, comments })}
+        style={[
+          styles.regularFont,
+          { color: colors.text },
+          type === 'link' && route.name === 'PostDetail' && styles.link
+        ]}
+        onPress={() =>
+          route.name === 'PostDetail' && type === 'link'
+            ? Linking.openURL(url)
+            : navigation.navigate('PostDetail', { postId, category, comments })
+        }
       >
         {type === 'link' ? url : text}
       </Text>
@@ -217,6 +226,10 @@ const styles = StyleSheet.create({
   dateText: {
     fontFamily: 'OpenSans-Regular',
     fontSize: 12
+  },
+  link: {
+    color: '#0064bd',
+    fontWeight: 'bold'
   }
 })
 
