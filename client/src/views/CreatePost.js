@@ -54,7 +54,7 @@ const TypeSwichButton = ({ selected, onClick, type }) => {
 const CreatePost = () => {
   const { colors } = useTheme()
   const [isLoading, setIsLoading] = React.useState(false)
-  const [message, setMessage] = React.useState('')
+  const [message, setMessage] = React.useState(null)
   const fadeAnim = React.useRef(new Animated.Value(0)).current
 
   const fadeIn = () => {
