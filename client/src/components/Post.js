@@ -119,7 +119,7 @@ const Post = ({
         {title}
       </Text>
       <Text
-        numberOfLines={10}
+        numberOfLines={route.name === 'PostDetail' ? 10000 : 10}
         style={[
           styles.regularFont,
           { color: colors.text },
