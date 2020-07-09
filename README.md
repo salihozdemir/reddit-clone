@@ -11,9 +11,9 @@
 ## :eyes: Preview
 
 <p align='center'>
-  <img src="./screenshots/1.gif" alt="App Preview 1" width="300" />
-  <img src="./screenshots/2.gif" alt="App Preview 2" width="300" />
-  <img src="./screenshots/3.gif" alt="App Preview 3" width="300" />
+  <img src="./screenshots/1.gif" alt="App Preview 1" width="275" />
+  <img src="./screenshots/2.gif" alt="App Preview 2" width="275" />
+  <img src="./screenshots/3.gif" alt="App Preview 3" width="275" />
 </p>
 
 ## :warning: Prerequisite
