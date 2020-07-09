@@ -10,11 +10,11 @@
 
 ## :eyes: Preview
 
-<div style="display: inline">
-<img src="./screenshots/1.gif" alt="App Preview 1" width="250"  border="0" style="margin-right: 30px" />
-<img src="./screenshots/2.gif" alt="App Preview 2" width="250"  border="0" style="margin-right: 30px" />
-<img src="./screenshots/3.gif" alt="App Preview 3" width="250"  border="0" />
-</div>
+<p align='center'>
+  <img src="./screenshots/1.gif" alt="App Preview 1" width="300" />
+  <img src="./screenshots/2.gif" alt="App Preview 2" width="300" />
+  <img src="./screenshots/3.gif" alt="App Preview 3" width="300" />
+</p>
 
 ## :warning: Prerequisite
 
