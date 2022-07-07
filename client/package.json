@@ -18,7 +18,7 @@
     "@react-navigation/stack": "^5.5.1",
     "axios": "^0.19.2",
     "formik": "^2.1.4",
-    "moment": "^2.26.0",
+    "moment": "^2.29.4",
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-gesture-handler": "^1.6.1",
