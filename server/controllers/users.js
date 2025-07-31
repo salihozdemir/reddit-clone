@@ -18,6 +18,13 @@ exports.signup = async (req, res) => {
   try {
     const { username } = req.body;
 
+    // Ensure username is a string before calling toLowerCase
+    if (typeof username !== 'string') {
+      return res.status(400).json({
+        message: 'Invalid username format.'
+      });
+    }
+
     const hashedPassword = await hashPassword(req.body.password);
 
     const userData = {
@@ -76,6 +83,14 @@ exports.authenticate = async (req, res) => {
   }
   try {
     const { username, password } = req.body;
+
+    // Ensure username is a string before calling toLowerCase
+    if (typeof username !== 'string') {
+      return res.status(400).json({
+        message: 'Invalid username format.'
+      });
+    }
+
     const user = await User.findOne({
       username: username.toLowerCase()
     });

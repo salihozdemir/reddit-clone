@@ -76,7 +76,7 @@ describe('auth endpoints', () => {
     test('returns a valid auth token', (done) => {
       request(app)
         .post('/api/authenticate')
-        .send(user)
+        .send({ username: user.username, password: user.password })
         .expect('Content-Type', /json/)
         .expect((res) => {
           const { token } = res.body;
@@ -175,7 +175,7 @@ describe('auth endpoints', () => {
     test('rejects requests with existing name', (done) => {
       request(app)
         .post('/api/signup')
-        .send(user)
+        .send({ username: user.username, password: user.password })
         .expect((res) => {
           expect(res.body.message).toBeDefined();
           expect(res.body.message).toContain('Username already exists.');
@@ -186,7 +186,7 @@ describe('auth endpoints', () => {
     test('creates a new user and returns a valid auth token', (done) => {
       request(app)
         .post('/api/signup')
-        .send({ ...user, username: username.nonExisting })
+        .send({ username: username.nonExisting, password: user.password })
         .expect('Content-Type', /json/)
         .expect((res) => {
           const { token } = res.body;
