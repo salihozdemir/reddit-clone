@@ -6,6 +6,8 @@ const cors = require('cors');
 
 const app = express();
 
+app.disable('x-powered-by'); // Disable X-Powered-By header
+
 app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
